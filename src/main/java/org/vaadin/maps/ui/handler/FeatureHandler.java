@@ -6,11 +6,11 @@ package org.vaadin.maps.ui.handler;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
+import org.vaadin.maps.event.ComponentEvent;
 import org.vaadin.maps.shared.ui.Style;
 import org.vaadin.maps.ui.control.Control;
 import org.vaadin.maps.ui.feature.VectorFeature;
 
-import com.vaadin.ui.Component;
 import com.vaadin.util.ReflectTools;
 
 /**
@@ -39,10 +39,10 @@ public abstract class FeatureHandler extends AbstractHandler implements
 	 * This event is thrown, when the geometry is drawn.
 	 * 
 	 */
-	public class DrawFeatureEvent extends Component.Event {
+	public class DrawFeatureEvent extends ComponentEvent {
 		
-		public DrawFeatureEvent(PointHandler source, VectorFeature feature) {
-			super(source);
+		public DrawFeatureEvent(long timestamp, PointHandler source, VectorFeature feature) {
+			super(timestamp, source);
 			this.feature = feature;
 		}
 

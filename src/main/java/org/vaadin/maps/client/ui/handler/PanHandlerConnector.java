@@ -3,6 +3,7 @@
  */
 package org.vaadin.maps.client.ui.handler;
 
+import org.vaadin.maps.client.DateUtility;
 import org.vaadin.maps.client.ui.VPanHandler;
 import org.vaadin.maps.client.ui.VPanHandler.PanEndEvent;
 import org.vaadin.maps.client.ui.VPanHandler.PanEndEventHandler;
@@ -41,12 +42,12 @@ public class PanHandlerConnector extends LayerLayoutHandlerConnector implements 
 
 	@Override
 	public void panStart(PanStartEvent event) {
-		getRpcProxy(PanHandlerRpc.class).panStart(event.getX(), event.getY());
+		getRpcProxy(PanHandlerRpc.class).panStart(DateUtility.getTimestamp(), event.getX(), event.getY());
 	}
 
 	@Override
 	public void panEnd(PanEndEvent event) {
-		getRpcProxy(PanHandlerRpc.class).panEnd(event.getDeltaX(), event.getDeltaY());
+		getRpcProxy(PanHandlerRpc.class).panEnd(DateUtility.getTimestamp(), event.getDeltaX(), event.getDeltaY());
 	}
 
 }

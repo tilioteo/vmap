@@ -3,8 +3,9 @@
  */
 package org.vaadin.maps.shared.ui.gridlayout;
 
+import org.vaadin.maps.shared.ui.LayoutClickRpc;
+
 import com.vaadin.shared.communication.ServerRpc;
-import com.vaadin.shared.ui.LayoutClickRpc;
 
 /**
  * @author morong

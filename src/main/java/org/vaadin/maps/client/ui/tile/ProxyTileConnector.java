@@ -3,6 +3,7 @@
  */
 package org.vaadin.maps.client.ui.tile;
 
+import org.vaadin.maps.client.DateUtility;
 import org.vaadin.maps.shared.ui.tile.ProxyTileServerRpc;
 
 import com.google.gwt.dom.client.NativeEvent;
@@ -22,7 +23,7 @@ public abstract class ProxyTileConnector extends AbstractComponentConnector {
             this) {
         @Override
         protected void fireClick(NativeEvent event, MouseEventDetails mouseDetails) {
-            getRpcProxy(ProxyTileServerRpc.class).click(mouseDetails);
+            getRpcProxy(ProxyTileServerRpc.class).click(DateUtility.getTimestamp(), mouseDetails);
         }
 
     };

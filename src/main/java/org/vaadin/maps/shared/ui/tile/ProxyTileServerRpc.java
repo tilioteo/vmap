@@ -3,9 +3,8 @@
  */
 package org.vaadin.maps.shared.ui.tile;
 
+import org.vaadin.maps.shared.ui.ClickRpc;
 import org.vaadin.maps.shared.ui.LoadRpc;
-
-import com.vaadin.shared.ui.ClickRpc;
 
 /**
  * @author morong

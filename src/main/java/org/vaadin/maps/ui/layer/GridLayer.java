@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import org.vaadin.maps.event.LayoutEvents;
 import org.vaadin.maps.event.LayoutEvents.LayoutClickEvent;
 import org.vaadin.maps.event.LayoutEvents.LayoutClickListener;
+import org.vaadin.maps.event.MouseEvents.ClickEvent;
+import org.vaadin.maps.event.MouseEvents.ClickListener;
 import org.vaadin.maps.ui.GridLayout;
 import org.vaadin.maps.ui.MeasuredSizeHandler;
 
-import com.vaadin.event.MouseEvents.ClickEvent;
-import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.shared.EventId;
 import com.vaadin.ui.Component;
 

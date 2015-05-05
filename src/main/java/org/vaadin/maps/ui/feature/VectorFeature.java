@@ -6,7 +6,7 @@ package org.vaadin.maps.ui.feature;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
-import org.apache.log4j.Logger;
+import org.vaadin.maps.event.ComponentEvent;
 import org.vaadin.maps.geometry.Utils;
 import org.vaadin.maps.server.ViewWorldTransform;
 import org.vaadin.maps.server.ViewWorldTransform.TransformChangeEvent;
@@ -30,19 +30,15 @@ import com.vividsolutions.jts.geom.Point;
 @SuppressWarnings("serial")
 public class VectorFeature extends AbstractFeature implements TransformChangeListener {
 
-	private static Logger log = Logger.getLogger(VectorFeature.class);
-
 	private FeatureServerRpc rpc = new FeatureServerRpc() {
 		@Override
-		public void click(MouseEventDetails mouseDetails) {
-			log.debug("FeatureServerRpc: click()");
-			fireEvent(new ClickEvent(VectorFeature.this, mouseDetails));
+		public void click(long timestamp, MouseEventDetails mouseDetails) {
+			fireEvent(new ClickEvent(timestamp, VectorFeature.this, mouseDetails));
 		}
 
 		@Override
-		public void doubleClick(MouseEventDetails mouseDetails) {
-			log.debug("FeatureServerRpc: doubleClick()");
-			fireEvent(new DoubleClickEvent(VectorFeature.this, mouseDetails));
+		public void doubleClick(long timestamp, MouseEventDetails mouseDetails) {
+			fireEvent(new DoubleClickEvent(timestamp, VectorFeature.this, mouseDetails));
 		}
 	};
 	
@@ -174,7 +170,7 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 	 * Click event. This event is thrown, when the vector feature is clicked.
 	 * 
 	 */
-	public class ClickEvent extends Component.Event {
+	public class ClickEvent extends ComponentEvent {
 
 		private final MouseEventDetails details;
 
@@ -184,8 +180,8 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 		 * @param source
 		 *            the Source of the event.
 		 */
-		public ClickEvent(Component source) {
-			super(source);
+		public ClickEvent(long timestamp, Component source) {
+			super(timestamp, source);
 			details = null;
 		}
 
@@ -197,8 +193,8 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 		 * @param details
 		 *            Details about the mouse click
 		 */
-		public ClickEvent(Component source, MouseEventDetails details) {
-			super(source);
+		public ClickEvent(long timestamp, Component source, MouseEventDetails details) {
+			super(timestamp, source);
 			this.details = details;
 		}
 
@@ -372,12 +368,12 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 
 	public class DoubleClickEvent extends ClickEvent {
 
-		public DoubleClickEvent(Component source) {
-			super(source);
+		public DoubleClickEvent(long timestamp, Component source) {
+			super(timestamp, source);
 		}
 
-		public DoubleClickEvent(Component source, MouseEventDetails details) {
-			super(source, details);
+		public DoubleClickEvent(long timestamp, Component source, MouseEventDetails details) {
+			super(timestamp, source, details);
 		}
 		
 	}

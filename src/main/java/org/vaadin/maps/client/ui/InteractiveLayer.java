@@ -50,6 +50,7 @@ public abstract class InteractiveLayer extends AbstractLayer implements PanHandl
 	@Override
 	public void onZoom(double zoom) {
 		if (!fixed) {
+			@SuppressWarnings("unused")
 			Widget content = getWidget();
 		}
 	}

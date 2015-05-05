@@ -11,6 +11,6 @@ import com.vaadin.shared.communication.ServerRpc;
  */
 public interface ZoomHandlerRpc extends ServerRpc {
 
-	public void zoomChange(double zoomStep);
+	public void zoomChange(long timestamp, double zoomStep);
 	
 }

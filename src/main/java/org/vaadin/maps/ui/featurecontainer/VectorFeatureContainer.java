@@ -6,7 +6,7 @@ package org.vaadin.maps.ui.featurecontainer;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
-import org.apache.log4j.Logger;
+import org.vaadin.maps.event.ComponentEvent;
 import org.vaadin.maps.shared.ui.featurecontainer.VectorFeatureContainerServerRpc;
 import org.vaadin.maps.ui.feature.VectorFeature;
 
@@ -21,13 +21,10 @@ import com.vaadin.util.ReflectTools;
 @SuppressWarnings("serial")
 public class VectorFeatureContainer extends AbstractFeatureContainer<VectorFeature> {
 
-	private static Logger log = Logger.getLogger(VectorFeatureContainer.class);
-
 	VectorFeatureContainerServerRpc rpc = new VectorFeatureContainerServerRpc() {
 		@Override
-		public void click(MouseEventDetails mouseDetails) {
-			log.debug("VectorFeatureContainerServerRpc: click()");
-			fireEvent(new ClickEvent(VectorFeatureContainer.this, mouseDetails));
+		public void click(long timestamp, MouseEventDetails mouseDetails) {
+			fireEvent(new ClickEvent(timestamp, VectorFeatureContainer.this, mouseDetails));
 		}
 	};
 
@@ -39,7 +36,7 @@ public class VectorFeatureContainer extends AbstractFeatureContainer<VectorFeatu
 	 * Click event. This event is thrown, when the vector feature container is clicked.
 	 * 
 	 */
-	public class ClickEvent extends Component.Event {
+	public class ClickEvent extends ComponentEvent {
 
 		private final MouseEventDetails details;
 
@@ -49,8 +46,8 @@ public class VectorFeatureContainer extends AbstractFeatureContainer<VectorFeatu
 		 * @param source
 		 *            the Source of the event.
 		 */
-		public ClickEvent(Component source) {
-			super(source);
+		public ClickEvent(long timestamp, Component source) {
+			super(timestamp, source);
 			details = null;
 		}
 
@@ -62,8 +59,8 @@ public class VectorFeatureContainer extends AbstractFeatureContainer<VectorFeatu
 		 * @param details
 		 *            Details about the mouse click
 		 */
-		public ClickEvent(Component source, MouseEventDetails details) {
-			super(source);
+		public ClickEvent(long timestamp, Component source, MouseEventDetails details) {
+			super(timestamp, source);
 			this.details = details;
 		}
 

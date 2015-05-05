@@ -9,12 +9,12 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.vaadin.maps.event.ComponentEvent;
+import org.vaadin.maps.event.MouseEvents;
 import org.vaadin.maps.shared.ui.tile.ImageSequenceTileServerRpc;
 import org.vaadin.maps.shared.ui.tile.ImageSequenceTileState;
 
 import com.vaadin.event.ConnectorEventListener;
-import com.vaadin.event.MouseEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ResourceReference;
@@ -31,31 +31,25 @@ import com.vaadin.util.ReflectTools;
 @SuppressWarnings("serial")
 public class ImageSequenceTile extends AbstractTile {
 	
-	private static Logger log = Logger.getLogger(ImageSequenceTile.class);
-
 	protected ImageSequenceTileServerRpc rpc = new ImageSequenceTileServerRpc() {
 		@Override
-		public void load() {
-			log.debug("ImageSequenceTileServerRpc: load()");
-			fireEvent(new LoadEvent(ImageSequenceTile.this));
+		public void load(long timestamp) {
+			fireEvent(new LoadEvent(timestamp, ImageSequenceTile.this));
 		}
 		
 		@Override
-		public void error() {
-			log.debug("ImageSequenceTileServerRpc: error()");
-			fireEvent(new ErrorEvent(ImageSequenceTile.this));
+		public void error(long timestamp) {
+			fireEvent(new ErrorEvent(timestamp, ImageSequenceTile.this));
 		}
 		
 		@Override
-		public void changed(int index) {
-			log.debug("ImageSequenceTileServerRpc: changed()");
-			fireEvent(new ChangeEvent(ImageSequenceTile.this, index));
+		public void changed(long timestamp, int index) {
+			fireEvent(new ChangeEvent(timestamp, ImageSequenceTile.this, index));
 		}
 
 		@Override
-		public void click(MouseEventDetails mouseDetails, int index) {
-			log.debug("ImageSequenceTileServerRpc: click()");
-			fireEvent(new ClickEvent(ImageSequenceTile.this, mouseDetails, index));
+		public void click(long timestamp, MouseEventDetails mouseDetails, int index) {
+			fireEvent(new ClickEvent(timestamp, ImageSequenceTile.this, mouseDetails, index));
 		}
 	};
 
@@ -111,7 +105,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 * Load event. This event is thrown, when the image sequence is loaded.
 	 * 
 	 */
-	public static class LoadEvent extends Component.Event {
+	public static class LoadEvent extends ComponentEvent {
 		
 		/**
 		 * New instance of tile load event.
@@ -119,8 +113,8 @@ public class ImageSequenceTile extends AbstractTile {
 		 * @param source
 		 *            the Source of the event.
 		 */
-		public LoadEvent(ImageSequenceTile source) {
-			super(source);
+		public LoadEvent(long timestamp, ImageSequenceTile source) {
+			super(timestamp, source);
 		}
 
 		/**
@@ -159,7 +153,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 * Error event. This event is thrown, when the image sequence loading failed.
 	 * 
 	 */
-	public static class ErrorEvent extends Component.Event {
+	public static class ErrorEvent extends ComponentEvent {
 		
 		/**
 		 * New instance of tile error event.
@@ -167,8 +161,8 @@ public class ImageSequenceTile extends AbstractTile {
 		 * @param source
 		 *            the Source of the event.
 		 */
-		public ErrorEvent(ImageSequenceTile source) {
-			super(source);
+		public ErrorEvent(long timestamp, ImageSequenceTile source) {
+			super(timestamp, source);
 		}
 
 		/**
@@ -207,7 +201,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 * Change event. This event is thrown, when the image has changed.
 	 * 
 	 */
-	public static class ChangeEvent extends Component.Event {
+	public static class ChangeEvent extends ComponentEvent {
 		
 		private int index;
 		
@@ -217,8 +211,8 @@ public class ImageSequenceTile extends AbstractTile {
 		 * @param source
 		 *            the Source of the event.
 		 */
-		public ChangeEvent(ImageSequenceTile source, int index) {
-			super(source);
+		public ChangeEvent(long timestamp, ImageSequenceTile source, int index) {
+			super(timestamp, source);
 			this.index = index;
 		}
 
@@ -262,8 +256,8 @@ public class ImageSequenceTile extends AbstractTile {
 		
 		private int index;
 
-		public ClickEvent(ImageSequenceTile source, MouseEventDetails mouseEventDetails, int index) {
-			super(source, mouseEventDetails);
+		public ClickEvent(long timestamp, ImageSequenceTile source, MouseEventDetails mouseEventDetails, int index) {
+			super(timestamp, source, mouseEventDetails);
 			this.index = index;
 		}
 

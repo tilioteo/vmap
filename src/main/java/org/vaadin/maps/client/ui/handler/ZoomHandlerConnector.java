@@ -3,6 +3,7 @@
  */
 package org.vaadin.maps.client.ui.handler;
 
+import org.vaadin.maps.client.DateUtility;
 import org.vaadin.maps.client.ui.VZoomHandler;
 import org.vaadin.maps.client.ui.VZoomHandler.ZoomEvent;
 import org.vaadin.maps.client.ui.VZoomHandler.ZoomEventHandler;
@@ -38,7 +39,7 @@ public class ZoomHandlerConnector extends LayerLayoutHandlerConnector implements
 
 	@Override
 	public void zoom(ZoomEvent event) {
-		getRpcProxy(ZoomHandlerRpc.class).zoomChange(event.getZoom());
+		getRpcProxy(ZoomHandlerRpc.class).zoomChange(DateUtility.getTimestamp(), event.getZoom());
 	}
 
 }

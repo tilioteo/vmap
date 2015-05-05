@@ -23,8 +23,8 @@ public interface ImageSequenceTileServerRpc extends LoadRpc {
      * @param index
      *            Index of frame
      */
-    public void click(MouseEventDetails mouseDetails, int index);
+    public void click(long timestamp, MouseEventDetails mouseDetails, int index);
     
-    public void changed(int index);
+    public void changed(long timestamp, int index);
     
 }

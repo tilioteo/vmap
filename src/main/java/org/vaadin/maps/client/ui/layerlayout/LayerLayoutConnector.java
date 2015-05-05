@@ -7,8 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.vaadin.maps.client.ui.AbstractLayoutConnector;
+import org.vaadin.maps.client.ui.LayoutClickEventHandler;
 import org.vaadin.maps.client.ui.SizeChangeHandler;
 import org.vaadin.maps.client.ui.VLayerLayout;
+import org.vaadin.maps.shared.ui.LayoutClickRpc;
 import org.vaadin.maps.shared.ui.layerlayout.LayerLayoutServerRpc;
 import org.vaadin.maps.shared.ui.layerlayout.LayerLayoutState;
 
@@ -20,11 +22,9 @@ import com.vaadin.client.LayoutManager;
 import com.vaadin.client.Util;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.communication.StateChangeEvent.StateChangeHandler;
-import com.vaadin.client.ui.LayoutClickEventHandler;
 import com.vaadin.client.ui.layout.ElementResizeEvent;
 import com.vaadin.client.ui.layout.ElementResizeListener;
 import com.vaadin.shared.ui.Connect;
-import com.vaadin.shared.ui.LayoutClickRpc;
 
 /**
  * @author morong
@@ -34,11 +34,10 @@ import com.vaadin.shared.ui.LayoutClickRpc;
 @Connect(org.vaadin.maps.ui.LayerLayout.class)
 public class LayerLayoutConnector extends AbstractLayoutConnector implements ElementResizeListener {
 
-    private LayoutClickEventHandler clickEventHandler = new LayoutClickEventHandler(
-            this) {
+    private LayoutClickEventHandler clickEventHandler = new LayoutClickEventHandler(this) {
 
         @Override
-        protected ComponentConnector getChildComponent(com.google.gwt.user.client.Element element) {
+        protected ComponentConnector getChildComponent(Element element) {
             return getConnectorForElement(element);
         }
 

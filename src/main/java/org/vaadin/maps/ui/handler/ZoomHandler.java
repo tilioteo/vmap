@@ -6,12 +6,12 @@ package org.vaadin.maps.ui.handler;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
+import org.vaadin.maps.event.ComponentEvent;
 import org.vaadin.maps.shared.ui.handler.ZoomHandlerRpc;
 import org.vaadin.maps.shared.ui.handler.ZoomHandlerState;
 import org.vaadin.maps.ui.LayerLayout;
 import org.vaadin.maps.ui.control.Control;
 
-import com.vaadin.ui.Component;
 import com.vaadin.util.ReflectTools;
 
 /**
@@ -25,8 +25,8 @@ public class ZoomHandler extends NavigateHandler {
 	
 	private ZoomHandlerRpc rpc = new ZoomHandlerRpc() {
 		@Override
-		public void zoomChange(double zoomStep) {
-			fireEvent(new ZoomChangeEvent(ZoomHandler.this, zoomStep));
+		public void zoomChange(long timestamp, double zoomStep) {
+			fireEvent(new ZoomChangeEvent(timestamp, ZoomHandler.this, zoomStep));
 		}
 	};
 	
@@ -51,12 +51,12 @@ public class ZoomHandler extends NavigateHandler {
 	 * This event is thrown, when zoom changed.
 	 * 
 	 */
-	public class ZoomChangeEvent extends Component.Event {
+	public class ZoomChangeEvent extends ComponentEvent {
 		
 		private double zoomStep;
 		
-		public ZoomChangeEvent(ZoomHandler source, double zoomStep) {
-			super(source);
+		public ZoomChangeEvent(long timestamp, ZoomHandler source, double zoomStep) {
+			super(timestamp, source);
 			this.zoomStep = zoomStep;
 		}
 

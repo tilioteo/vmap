@@ -3,6 +3,7 @@
  */
 package org.vaadin.maps.client.ui.feature;
 
+import org.vaadin.maps.client.DateUtility;
 import org.vaadin.maps.client.drawing.Utils;
 import org.vaadin.maps.client.io.ParseException;
 import org.vaadin.maps.client.ui.MapUtility;
@@ -37,7 +38,7 @@ public class VectorFeatureConnector extends AbstractComponentConnector {
 			@Override
 			public void onClick(ClickEvent event) {
 				MouseEventDetails mouseDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(), getWidget().getElement());
-				getRpcProxy(FeatureServerRpc.class).click(mouseDetails);
+				getRpcProxy(FeatureServerRpc.class).click(DateUtility.getTimestamp(), mouseDetails);
 			}
 		});
 
@@ -45,7 +46,7 @@ public class VectorFeatureConnector extends AbstractComponentConnector {
 			@Override
 			public void onDoubleClick(DoubleClickEvent event) {
 				MouseEventDetails mouseDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(), getWidget().getElement());
-				getRpcProxy(FeatureServerRpc.class).doubleClick(mouseDetails);
+				getRpcProxy(FeatureServerRpc.class).doubleClick(DateUtility.getTimestamp(), mouseDetails);
 			}
 		});
 }

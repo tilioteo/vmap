@@ -11,7 +11,7 @@ import com.vaadin.shared.communication.ServerRpc;
  */
 public interface PanHandlerRpc extends ServerRpc {
 	
-	public void panStart(int x, int y);
-	public void panEnd(int deltaX, int deltaY);
+	public void panStart(long timestamp, int x, int y);
+	public void panEnd(long timestamp, int deltaX, int deltaY);
 
 }

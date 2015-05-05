@@ -6,16 +6,15 @@ package org.vaadin.maps.ui.tile;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
-import org.apache.log4j.Logger;
+import org.vaadin.maps.event.ComponentEvent;
+import org.vaadin.maps.event.MouseEvents.ClickEvent;
+import org.vaadin.maps.event.MouseEvents.ClickListener;
 import org.vaadin.maps.server.TileResource;
 import org.vaadin.maps.shared.ui.tile.ProxyTileServerRpc;
 import org.vaadin.maps.shared.ui.tile.ProxyTileState;
 
-import com.vaadin.event.MouseEvents.ClickEvent;
-import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.shared.EventId;
 import com.vaadin.shared.MouseEventDetails;
-import com.vaadin.ui.Component;
 import com.vaadin.util.ReflectTools;
 
 /**
@@ -25,30 +24,24 @@ import com.vaadin.util.ReflectTools;
 @SuppressWarnings("serial")
 public abstract class AbstractProxyTile<T extends TileResource> extends AbstractTile {
 
-	private static Logger log = Logger.getLogger(AbstractProxyTile.class);
-
 	protected ProxyTileServerRpc rpc = new ProxyTileServerRpc() {
 		@Override
-		public void load() {
-			log.debug("ProxyTileServerRpc: load()");
-			fireEvent(new LoadEvent(AbstractProxyTile.this));
+		public void load(long timestamp) {
+			fireEvent(new LoadEvent(timestamp, AbstractProxyTile.this));
 		}
 
 		@Override
-		public void error() {
-			log.debug("ProxyTileServerRpc: error()");
-			fireEvent(new ErrorEvent(AbstractProxyTile.this));
+		public void error(long timestamp) {
+			fireEvent(new ErrorEvent(timestamp, AbstractProxyTile.this));
 		}
 
 		@Override
-		public void click(MouseEventDetails mouseDetails) {
-			log.debug("ProxyTileServerRpc: click()");
-			fireEvent(new ClickEvent(AbstractProxyTile.this, mouseDetails));
+		public void click(long timestamp, MouseEventDetails mouseDetails) {
+			fireEvent(new ClickEvent(timestamp, AbstractProxyTile.this, mouseDetails));
 		}
 
 		@Override
 		public void updateClippedSize(int width, int height) {
-			log.debug("ProxyTileServerRpc: updateClippedSize()");
 			int oldWidth = AbstractProxyTile.this.clippedWidth;
 			int oldHeight = AbstractProxyTile.this.clippedHeight;
 			AbstractProxyTile.this.clippedWidth = width;
@@ -119,7 +112,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	 * Load event. This event is thrown, when the tile is loaded.
 	 * 
 	 */
-	public static class LoadEvent extends Component.Event {
+	public static class LoadEvent extends ComponentEvent {
 		
 		/**
 		 * New instance of tile load event.
@@ -127,8 +120,8 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 		 * @param source
 		 *            the Source of the event.
 		 */
-		public LoadEvent(AbstractProxyTile<?> source) {
-			super(source);
+		public LoadEvent(long timestamp, AbstractProxyTile<?> source) {
+			super(timestamp, source);
 		}
 
 		/**
@@ -167,7 +160,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	 * Error event. This event is thrown, when the tile loading failed.
 	 * 
 	 */
-	public static class ErrorEvent extends Component.Event {
+	public static class ErrorEvent extends ComponentEvent {
 		
 		/**
 		 * New instance of tile error event.
@@ -175,8 +168,8 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 		 * @param source
 		 *            the Source of the event.
 		 */
-		public ErrorEvent(AbstractProxyTile<?> source) {
-			super(source);
+		public ErrorEvent(long timestamp, AbstractProxyTile<?> source) {
+			super(timestamp, source);
 		}
 
 		/**

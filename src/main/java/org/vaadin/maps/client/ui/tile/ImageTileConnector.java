@@ -3,6 +3,7 @@
  */
 package org.vaadin.maps.client.ui.tile;
 
+import org.vaadin.maps.client.DateUtility;
 import org.vaadin.maps.client.ui.Tile.SizeChangeHandler;
 import org.vaadin.maps.client.ui.Tile.TileLoadHandler;
 import org.vaadin.maps.client.ui.VImageTile;
@@ -58,7 +59,7 @@ public class ImageTileConnector extends ProxyTileConnector implements LoadHandle
 	@Override
 	public void onError(ErrorEvent event) {
         getWidget().setVisible(true);
-        getRpcProxy(ProxyTileServerRpc.class).error();
+        getRpcProxy(ProxyTileServerRpc.class).error(DateUtility.getTimestamp());
 	}
 
 	public void setSizeChangeHandler(SizeChangeHandler sizeChangeHandler) {
@@ -85,7 +86,7 @@ public class ImageTileConnector extends ProxyTileConnector implements LoadHandle
         
         getWidget().setVisible(true);
         getRpcProxy(ProxyTileServerRpc.class).updateClippedSize(newWidth, newHeight);
-        getRpcProxy(ProxyTileServerRpc.class).load();
+        getRpcProxy(ProxyTileServerRpc.class).load(DateUtility.getTimestamp());
 	}
 	
 }

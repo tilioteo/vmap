@@ -6,6 +6,7 @@ package org.vaadin.maps.client.ui.featurecontainer;
 import java.util.List;
 
 import org.vaadin.gwtgraphics.client.AbstractDrawing;
+import org.vaadin.maps.client.DateUtility;
 import org.vaadin.maps.client.ui.VVectorFeatureContainer;
 import org.vaadin.maps.shared.ui.featurecontainer.VectorFeatureContainerServerRpc;
 
@@ -88,7 +89,7 @@ public class VectorFeatureContainerConnector extends AbstractFeatureContainerCon
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
 		if (!mouseMoved) {
-			getRpcProxy(VectorFeatureContainerServerRpc.class).click(mouseEventDetails);
+			getRpcProxy(VectorFeatureContainerServerRpc.class).click(DateUtility.getTimestamp(), mouseEventDetails);
 		} else {
 			mouseMoved = false;
 		}

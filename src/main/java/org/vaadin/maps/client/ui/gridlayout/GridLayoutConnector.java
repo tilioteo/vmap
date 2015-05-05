@@ -4,36 +4,35 @@
 package org.vaadin.maps.client.ui.gridlayout;
 
 import org.vaadin.maps.client.ui.AbstractLayoutConnector;
+import org.vaadin.maps.client.ui.LayoutClickEventHandler;
 import org.vaadin.maps.client.ui.Tile;
 import org.vaadin.maps.client.ui.Tile.SizeChangeHandler;
 import org.vaadin.maps.client.ui.Tile.TileLoadHandler;
 import org.vaadin.maps.client.ui.VGridLayout;
 import org.vaadin.maps.client.ui.tile.ImageTileConnector;
+import org.vaadin.maps.shared.ui.LayoutClickRpc;
 import org.vaadin.maps.shared.ui.gridlayout.GridLayoutServerRpc;
 import org.vaadin.maps.shared.ui.gridlayout.GridLayoutState;
 import org.vaadin.maps.shared.ui.gridlayout.GridLayoutState.ChildComponentData;
-import org.vaadin.maps.ui.GridLayout;
 
+import com.google.gwt.dom.client.Element;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
 import com.vaadin.client.communication.StateChangeEvent;
-import com.vaadin.client.ui.LayoutClickEventHandler;
 import com.vaadin.shared.ui.Connect;
-import com.vaadin.shared.ui.LayoutClickRpc;
 
 /**
  * @author morong
  *
  */
 @SuppressWarnings("serial")
-@Connect(GridLayout.class)
+@Connect(org.vaadin.maps.ui.GridLayout.class)
 public class GridLayoutConnector extends AbstractLayoutConnector {
 	
-    private LayoutClickEventHandler clickEventHandler = new LayoutClickEventHandler(
-            this) {
+    private LayoutClickEventHandler clickEventHandler = new LayoutClickEventHandler(this) {
 
 		@Override
-        protected ComponentConnector getChildComponent(com.google.gwt.user.client.Element element) {
+        protected ComponentConnector getChildComponent(Element element) {
             return getWidget().getComponent(element);
         }
 

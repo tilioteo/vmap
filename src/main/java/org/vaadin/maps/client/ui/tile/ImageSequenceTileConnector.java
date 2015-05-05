@@ -5,6 +5,7 @@ package org.vaadin.maps.client.ui.tile;
 
 import java.util.LinkedList;
 
+import org.vaadin.maps.client.DateUtility;
 import org.vaadin.maps.client.ui.VImageSequenceTile;
 import org.vaadin.maps.client.ui.VImageSequenceTile.SequenceErrorEvent;
 import org.vaadin.maps.client.ui.VImageSequenceTile.SequenceErrorHandler;
@@ -43,9 +44,9 @@ public class ImageSequenceTileConnector extends AbstractComponentConnector imple
     protected final ClickEventHandler clickEventHandler = new ClickEventHandler(
             this) {
         @Override
-        protected void fireClick(NativeEvent event,
-                MouseEventDetails mouseDetails) {
-            getRpcProxy(ImageSequenceTileServerRpc.class).click(mouseDetails, getWidget().getIndex());
+        protected void fireClick(NativeEvent event, MouseEventDetails mouseDetails) {
+            getRpcProxy(ImageSequenceTileServerRpc.class).click(DateUtility.getTimestamp(),
+            		mouseDetails, getWidget().getIndex());
         }
 
     };
@@ -84,17 +85,17 @@ public class ImageSequenceTileConnector extends AbstractComponentConnector imple
 	@Override
 	public void onLoad(LoadEvent event) {
         getLayoutManager().setNeedsMeasure(ImageSequenceTileConnector.this);
-        getRpcProxy(ImageSequenceTileServerRpc.class).changed(getWidget().getIndex());
+        getRpcProxy(ImageSequenceTileServerRpc.class).changed(DateUtility.getTimestamp(), getWidget().getIndex());
 	}
 
 	@Override
 	public void error(SequenceErrorEvent event) {
-        getRpcProxy(ImageSequenceTileServerRpc.class).error();
+        getRpcProxy(ImageSequenceTileServerRpc.class).error(DateUtility.getTimestamp());
 	}
 
 	@Override
 	public void loaded(SequenceLoadedEvent event) {
-        getRpcProxy(ImageSequenceTileServerRpc.class).load();
+        getRpcProxy(ImageSequenceTileServerRpc.class).load(DateUtility.getTimestamp());
 	}
 	
 }

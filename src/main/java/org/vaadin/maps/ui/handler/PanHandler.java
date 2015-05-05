@@ -6,12 +6,12 @@ package org.vaadin.maps.ui.handler;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
+import org.vaadin.maps.event.ComponentEvent;
 import org.vaadin.maps.shared.ui.handler.PanHandlerRpc;
 import org.vaadin.maps.shared.ui.handler.PanHandlerState;
 import org.vaadin.maps.ui.LayerLayout;
 import org.vaadin.maps.ui.control.Control;
 
-import com.vaadin.ui.Component;
 import com.vaadin.util.ReflectTools;
 
 /**
@@ -25,13 +25,13 @@ public class PanHandler extends NavigateHandler {
 	
 	private PanHandlerRpc rpc = new PanHandlerRpc() {
 		@Override
-		public void panStart(int x, int y) {
-			fireEvent(new PanStartEvent(PanHandler.this, x, y));
+		public void panStart(long timestamp, int x, int y) {
+			fireEvent(new PanStartEvent(timestamp, PanHandler.this, x, y));
 		}
 		
 		@Override
-		public void panEnd(int deltaX, int deltaY) {
-			fireEvent(new PanEndEvent(PanHandler.this, deltaX, deltaY));
+		public void panEnd(long timestamp, int deltaX, int deltaY) {
+			fireEvent(new PanEndEvent(timestamp, PanHandler.this, deltaX, deltaY));
 		}
 	};
 	
@@ -56,13 +56,13 @@ public class PanHandler extends NavigateHandler {
 	 * This event is thrown, when the panning started.
 	 * 
 	 */
-	public class PanStartEvent extends Component.Event {
+	public class PanStartEvent extends ComponentEvent {
 		
 		private int x;
 		private int y;
 		
-		public PanStartEvent(PanHandler source, int x, int y) {
-			super(source);
+		public PanStartEvent(long timestamp, PanHandler source, int x, int y) {
+			super(timestamp, source);
 			this.x = x;
 			this.y = y;
 		}
@@ -100,13 +100,13 @@ public class PanHandler extends NavigateHandler {
 	 * This event is thrown, when the panning ended.
 	 * 
 	 */
-	public class PanEndEvent extends Component.Event {
+	public class PanEndEvent extends ComponentEvent {
 		
 		private int dX;
 		private int dY;
 		
-		public PanEndEvent(PanHandler source, int deltaX, int deltaY) {
-			super(source);
+		public PanEndEvent(long timestamp, PanHandler source, int deltaX, int deltaY) {
+			super(timestamp, source);
 			this.dX = deltaX;
 			this.dY = deltaY;
 		}

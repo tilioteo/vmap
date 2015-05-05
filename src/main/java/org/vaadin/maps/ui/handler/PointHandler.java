@@ -6,7 +6,7 @@ package org.vaadin.maps.ui.handler;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
-import org.apache.log4j.Logger;
+import org.vaadin.maps.event.ComponentEvent;
 import org.vaadin.maps.geometry.Utils;
 import org.vaadin.maps.shared.ui.handler.PointHandlerServerRpc;
 import org.vaadin.maps.shared.ui.handler.PointHandlerState;
@@ -27,27 +27,24 @@ import com.vividsolutions.jts.io.ParseException;
 @SuppressWarnings("serial")
 public class PointHandler extends FeatureHandler {
 
-	private static Logger log = Logger.getLogger(PointHandler.class);
-
 	private PointHandlerServerRpc rpc = new PointHandlerServerRpc() {
 
 		@Override
-		public void click(double x, double y, String buttonName, boolean altKey, boolean ctrlKey,
-				boolean metaKey, boolean shiftKey, boolean doubleClick) {
-			log.debug("PointHandlerServerRpc: click()");
-			fireEvent(new ClickEvent(PointHandler.this, new Coordinate(x, y), buttonName, altKey,
+		public void click(long timestamp, double x, double y, String buttonName,
+				boolean altKey, boolean ctrlKey, boolean metaKey, boolean shiftKey, boolean doubleClick) {
+			fireEvent(new ClickEvent(timestamp, PointHandler.this, new Coordinate(x, y), buttonName, altKey,
 					ctrlKey, metaKey, shiftKey, doubleClick));
 		}
 
 		@Override
-		public void geometry(String wkb) {
+		public void geometry(long timestamp, String wkb) {
 			try {
 				Geometry geometry = Utils.wkbHexToGeometry(wkb);
 				if (layer != null && layer.getForLayer() != null) {
 					Utils.transformViewToWorld(geometry, layer.getForLayer().getViewWorldTransform());
 				}
 				VectorFeature feature = addNewFeature(geometry);
-				fireEvent(new DrawFeatureEvent(PointHandler.this, feature));
+				fireEvent(new DrawFeatureEvent(timestamp, PointHandler.this, feature));
 				
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -110,7 +107,7 @@ public class PointHandler extends FeatureHandler {
 	 * Click event. This event is thrown, when the drawing layer is clicked.
 	 * 
 	 */
-	public class ClickEvent extends Component.Event {
+	public class ClickEvent extends ComponentEvent {
 		
 		private Coordinate coordinate;
 		private String buttonName;
@@ -126,8 +123,9 @@ public class PointHandler extends FeatureHandler {
 		 * @param source
 		 *            The source where the click took place
 		 */
-		public ClickEvent(Component source, Coordinate coordinate, String buttonName, boolean altKey, boolean ctrlKey, boolean metaKey, boolean shiftKey, boolean doubleClick) {
-			super(source);
+		public ClickEvent(long timestamp, Component source, Coordinate coordinate, String buttonName,
+				boolean altKey, boolean ctrlKey, boolean metaKey, boolean shiftKey, boolean doubleClick) {
+			super(timestamp, source);
 			this.coordinate = coordinate;
 			this.buttonName = buttonName;
 			this.altKey = altKey;

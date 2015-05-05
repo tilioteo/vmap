@@ -3,6 +3,7 @@
  */
 package org.vaadin.maps.client.ui.handler;
 
+import org.vaadin.maps.client.DateUtility;
 import org.vaadin.maps.client.drawing.Utils;
 import org.vaadin.maps.client.geometry.Coordinate;
 import org.vaadin.maps.client.ui.VPointHandler;
@@ -71,14 +72,14 @@ public class PointHandlerConnector extends AbstractHandlerConnector implements S
 	@Override
 	public void syntheticClick(MouseEventDetails details, Element relativeElement) {
 		Coordinate coordinate = getWidget().createCoordinate(VPointHandler.getMouseEventXY(details, relativeElement));
-		getRpcProxy(PointHandlerServerRpc.class).click(coordinate.x, coordinate.y,
+		getRpcProxy(PointHandlerServerRpc.class).click(DateUtility.getTimestamp(), coordinate.x, coordinate.y,
 				details.getButtonName(), details.isAltKey(), details.isCtrlKey(),
 				details.isMetaKey(), details.isShiftKey(), details.isDoubleClick());
 	}
 
 	@Override
 	public void geometry(GeometryEvent event) {
-		getRpcProxy(PointHandlerServerRpc.class).geometry(Utils.GeometryToWKBHex(event.getGeometry()));
+		getRpcProxy(PointHandlerServerRpc.class).geometry(DateUtility.getTimestamp(), Utils.GeometryToWKBHex(event.getGeometry()));
 	}
 
 }

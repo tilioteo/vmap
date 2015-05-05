@@ -7,11 +7,12 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 
 import org.vaadin.maps.event.LayoutEvents.LayoutClickEvent;
+import org.vaadin.maps.event.MouseEvents.ClickEvent;
 import org.vaadin.maps.ui.ComponentContainer;
 
 
+
 import com.vaadin.event.ConnectorEventListener;
-import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.shared.Connector;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Component;
@@ -26,8 +27,7 @@ public interface LayoutEvents<C extends Component> {
     public interface LayoutClickListener<C extends Component> extends ConnectorEventListener {
 
         public static final Method clickMethod = ReflectTools.findMethod(
-                LayoutClickListener.class, "layoutClick",
-                LayoutClickEvent.class);
+                LayoutClickListener.class, "layoutClick", LayoutClickEvent.class);
 
         /**
          * Layout has been clicked
@@ -98,8 +98,8 @@ public interface LayoutEvents<C extends Component> {
         private final C childComponent;
         private MouseEventDetails details;
 
-        public LayoutClickEvent(C source, MouseEventDetails mouseEventDetails, C clickedComponent, C childComponent) {
-            super(source, mouseEventDetails);
+        public LayoutClickEvent(long timestamp, C source, MouseEventDetails mouseEventDetails, C clickedComponent, C childComponent) {
+            super(timestamp, source, mouseEventDetails);
             this.clickedComponent = clickedComponent;
             this.childComponent = childComponent;
             details = mouseEventDetails;
@@ -133,8 +133,8 @@ public interface LayoutEvents<C extends Component> {
         }
 
         @SuppressWarnings("unchecked")
-		public static <C extends Component> LayoutClickEvent<C> createEvent(ComponentContainer<C> layout,
-                MouseEventDetails mouseDetails, Connector clickedConnector) {
+		public static <C extends Component> LayoutClickEvent<C> createEvent(long timestamp,
+				ComponentContainer<C> layout, MouseEventDetails mouseDetails, Connector clickedConnector) {
             C clickedComponent = (C) clickedConnector;
             C childComponent = clickedComponent;
             while (childComponent != null
@@ -142,12 +142,12 @@ public interface LayoutEvents<C extends Component> {
                 childComponent = (C) childComponent.getParent();
             }
 
-            return new LayoutClickEvent<C>((C) layout, mouseDetails, clickedComponent,
-                    childComponent);
+            return new LayoutClickEvent<C>(timestamp, (C) layout, mouseDetails, clickedComponent, childComponent);
         }
         
-        public static <C extends Component> ClickEvent createClickEvent(Component source, LayoutClickEvent<C> layoutClickEvent) {
-        	return new ClickEvent(source, layoutClickEvent.details);
+        public static <C extends Component> ClickEvent createClickEvent(Component source,
+        		LayoutClickEvent<C> layoutClickEvent) {
+        	return new ClickEvent(layoutClickEvent.getTimestamp(), source, layoutClickEvent.details);
         }
     }
 }

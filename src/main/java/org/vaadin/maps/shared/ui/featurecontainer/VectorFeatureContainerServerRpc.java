@@ -3,15 +3,12 @@
  */
 package org.vaadin.maps.shared.ui.featurecontainer;
 
-import com.vaadin.shared.MouseEventDetails;
+import org.vaadin.maps.shared.ui.ClickRpc;
 
 /**
  * @author kamil
  *
  */
-public interface VectorFeatureContainerServerRpc extends
-		AbstractFeatureContainerServerRpc {
+public interface VectorFeatureContainerServerRpc extends AbstractFeatureContainerServerRpc, ClickRpc {
 
-	public void click(MouseEventDetails mouseDetails);
-	
 }
