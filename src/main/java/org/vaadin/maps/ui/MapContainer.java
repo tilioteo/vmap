@@ -31,7 +31,7 @@ public class MapContainer extends LayerLayout implements ForLayer {
 	/**
 	 * initial bounds
 	 */
-	private Bounds bounds = new Bounds();
+	private Bounds bounds = null;
 	
 	private ViewWorldTransform transform = new ViewWorldTransform();
 	
@@ -114,9 +114,11 @@ public class MapContainer extends LayerLayout implements ForLayer {
 	public void setBounds(Bounds bounds) {
 		if (bounds != null) {
 			this.bounds = bounds;
-		} else {
-			this.bounds = new Bounds(0, -getMeasuredHeight(), getMeasuredWidth(), 0);
-		}
+		} /*else {
+			int w = getMeasuredWidth();
+			int h = getMeasuredHeight();
+			this.bounds = new Bounds(0, h > 0 ? -h : 0, w > 0 ? w : 0, 0);
+		}*/
 		
 		transform.fitWorldToView(this.bounds);
 	}
@@ -134,10 +136,10 @@ public class MapContainer extends LayerLayout implements ForLayer {
 		}
 		transform.resizeView(newWidth, newHeight);
 
-		if (!bounds.isValid()) {
+		/*if (!bounds.isValid()) {
 			bounds = new Bounds(0, -newHeight, newWidth, 0);
 			fit = true;
-		}
+		}*/
 		
 		if (fit) {
 			transform.fitWorldToView(bounds);

@@ -60,7 +60,8 @@ public class ViewWorldTransform {
 				setViewWorldRatio(newRatio);
 
 			} else {
-				this.world = new Bounds();
+				//this.world = new Bounds();
+				
 				setViewWorldRatio(0.0);
 			}
 		}
@@ -141,7 +142,7 @@ public class ViewWorldTransform {
 					(int)Math.round((lon - topLeft.getLon()) * viewWorldRatio),
 					(int)Math.round((topLeft.getLat() - lat) * viewWorldRatio));
 		}
-		return null;
+		return new Pixel((int)Math.round((lon)), (int)Math.round(lat));
 	}
 
 	/**
@@ -168,7 +169,7 @@ public class ViewWorldTransform {
 		if (world.isValid() && viewWorldRatio != 0) {
 			return world.getTopLeft().add(x / viewWorldRatio, - y / viewWorldRatio);
 		}
-		return null;
+		return new LonLat(x, y);
 	}
 	
 	/**

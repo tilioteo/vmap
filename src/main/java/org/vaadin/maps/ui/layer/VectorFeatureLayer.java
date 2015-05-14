@@ -280,7 +280,14 @@ public class VectorFeatureLayer extends AbstractLayer<VectorFeatureContainer> im
 	public void setForLayer(ForLayer forLayer) {
     	super.setForLayer(forLayer);
     	
-    	
+    	if (forLayer != null) {
+	    	// update previously created childs
+	    	Iterator<VectorFeature> features = featureIterator();
+	    	while (features.hasNext()) {
+	    		VectorFeature feature = features.next();
+	    		feature.transformToView(forLayer.getViewWorldTransform());
+	    	}
+    	}
     }
     
 }
