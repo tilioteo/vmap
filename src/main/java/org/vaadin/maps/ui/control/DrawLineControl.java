@@ -6,8 +6,7 @@ package org.vaadin.maps.ui.control;
 import org.vaadin.maps.shared.ui.Style;
 import org.vaadin.maps.shared.ui.control.DrawPathControlState;
 import org.vaadin.maps.ui.StyleUtility;
-import org.vaadin.maps.ui.handler.PathHandler;
-import org.vaadin.maps.ui.handler.PathHandler.FinishStrategy;
+import org.vaadin.maps.ui.handler.LineHandler;
 import org.vaadin.maps.ui.layer.VectorFeatureLayer;
 
 /**
@@ -15,18 +14,16 @@ import org.vaadin.maps.ui.layer.VectorFeatureLayer;
  *
  */
 @SuppressWarnings("serial")
-public class DrawPathControl extends DrawFeatureControl<PathHandler> {
-	
+public class DrawLineControl extends DrawFeatureControl<LineHandler> {
+
 	private Style startPointStyle = null;
 	private Style lineStyle = null;
-	private Style vertexStyle = null;
 
-	public DrawPathControl(VectorFeatureLayer layer) {
+	public DrawLineControl(VectorFeatureLayer layer) {
 		super(layer);
-		
+
 		setStartPointStyle(Style.DEFAULT_DRAW_START_POINT);
 		setLineStyle(Style.DEFAULT_DRAW_LINE);
-		setVertexStyle(Style.DEFAULT_DRAW_VERTEX);
 	}
 
 	@Override
@@ -54,23 +51,4 @@ public class DrawPathControl extends DrawFeatureControl<PathHandler> {
 		markAsDirty();
 	}
 	
-	public Style getVertexStyle() {
-		return vertexStyle;
-	}
-	
-	public void setVertexStyle(Style style) {
-		this.vertexStyle = style;
-		getState().vertexStyle = StyleUtility.getStyleMap(style);
-		markAsDirty();
-	}
-	
-	public FinishStrategy getStrategy() {
-		return getHandler() != null ? getHandler().getStrategy() : null;
-	}
-	
-	public void setStrategy(FinishStrategy finishStrategy) {
-		if (getHandler() != null) {
-			getHandler().setStrategy(finishStrategy);
-		}
-	}
 }
