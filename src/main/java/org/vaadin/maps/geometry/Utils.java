@@ -12,6 +12,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKBWriter;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * @author Kamil Morong - Hypothesis
@@ -60,6 +61,17 @@ public class Utils {
 			byte[] bs = WKBReader.hexToBytes(wkb);
 			
 			return reader.read(bs);
+		}
+		
+		return null;
+	}
+
+	public static Geometry wktToGeometry(String wkt) throws ParseException {
+		if (wkt != null) {
+			WKTReader reader = new WKTReader();
+			
+			Geometry geom = /*return*/ reader.read(wkt);
+			return geom;
 		}
 		
 		return null;
