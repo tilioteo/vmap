@@ -11,7 +11,5 @@ import org.vaadin.maps.shared.ui.AbstractComponentContainerState;
  */
 @SuppressWarnings("serial")
 public class AbstractFeatureContainerState extends AbstractComponentContainerState {
-	
-	public boolean captureClick = true;
 
 }

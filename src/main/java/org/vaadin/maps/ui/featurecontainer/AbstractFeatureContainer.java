@@ -6,7 +6,6 @@ package org.vaadin.maps.ui.featurecontainer;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.vaadin.maps.shared.ui.featurecontainer.AbstractFeatureContainerState;
 import org.vaadin.maps.ui.AbstractComponentContainer;
 import org.vaadin.maps.ui.feature.Feature;
 
@@ -178,17 +177,5 @@ public abstract class AbstractFeatureContainer<F extends Feature> extends Abstra
         return components.get(index);
     }
 
-    @Override
-    protected AbstractFeatureContainerState getState() {
-    	return (AbstractFeatureContainerState) super.getState();
-    }
-    
-    public boolean getCaptureClick() {
-    	return getState().captureClick;
-    }
-    
-    public void setCaptureClick(boolean captureClick) {
-    	getState().captureClick = captureClick;
-    }
-    
+
 }
