@@ -12,12 +12,11 @@ import com.gwtent.reflection.client.Field;
 import com.gwtent.reflection.client.TypeOracle;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class MapUtility {
 
-	
 	public static final Style getStyleFromMap(Map<String, String> map, Style defaultStyle) {
 		if (map != null && !map.isEmpty()) {
 			Style style = new Style();
@@ -38,7 +37,8 @@ public class MapUtility {
 							if (!value.isEmpty()) {
 								try {
 									intValue = Integer.parseInt(value);
-								} catch (NumberFormatException e) {}
+								} catch (NumberFormatException e) {
+								}
 							}
 							field.setFieldValue(style, intValue);
 						} else if (typeName.contains("double")) {
@@ -46,7 +46,8 @@ public class MapUtility {
 							if (!value.isEmpty()) {
 								try {
 									doubleValue = Double.parseDouble(value);
-								} catch (NumberFormatException e) {}
+								} catch (NumberFormatException e) {
+								}
 							}
 							field.setFieldValue(style, doubleValue);
 						}
@@ -60,5 +61,5 @@ public class MapUtility {
 			return defaultStyle;
 		}
 	}
-	
+
 }

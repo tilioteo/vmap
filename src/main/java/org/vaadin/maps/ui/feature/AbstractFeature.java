@@ -8,7 +8,7 @@ import org.vaadin.maps.shared.ui.feature.AbstractFeatureState;
 import com.vaadin.ui.AbstractComponent;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

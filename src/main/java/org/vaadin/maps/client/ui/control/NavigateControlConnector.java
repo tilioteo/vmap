@@ -13,7 +13,7 @@ import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.shared.Connector;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -22,7 +22,7 @@ public class NavigateControlConnector extends AbstractControlConnector {
 	@Override
 	protected void init() {
 		super.init();
-		
+
 	}
 
 	@Override
@@ -38,12 +38,12 @@ public class NavigateControlConnector extends AbstractControlConnector {
 	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
-		
+
 		if (stateChangeEvent.hasPropertyChanged("layout")) {
 			Connector connector = getState().layout;
 			if (connector != null) {
 				if (connector instanceof LayerLayoutConnector)
-					getWidget().setLayout(((LayerLayoutConnector)connector).getWidget());
+					getWidget().setLayout(((LayerLayoutConnector) connector).getWidget());
 			} else
 				getWidget().setLayout(null);
 		}
@@ -51,11 +51,11 @@ public class NavigateControlConnector extends AbstractControlConnector {
 
 	@Override
 	public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
-        // We always have 1 child, unless the child is hidden
-        Widget content = getContentWidget();
-        if (content != null) {
-        	getWidget().setWidget(content);
-        }
+		// We always have 1 child, unless the child is hidden
+		Widget content = getContentWidget();
+		if (content != null) {
+			getWidget().setWidget(content);
+		}
 	}
 
 }

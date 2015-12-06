@@ -6,14 +6,14 @@ package org.vaadin.maps.shared.ui.control;
 import org.vaadin.maps.shared.ui.AbstractComponentContainerState;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public abstract class AbstractControlState extends AbstractComponentContainerState {
-    {
-        primaryStyleName = "v-control";
-    }
+	{
+		primaryStyleName = "v-control";
+	}
 
 	public boolean active = false;
 

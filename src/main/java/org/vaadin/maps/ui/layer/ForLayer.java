@@ -8,17 +8,19 @@ import org.vaadin.maps.server.ViewWorldTransform;
 import org.vaadin.maps.server.ViewWorldTransform.TransformChangeListener;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public interface ForLayer {
 
 	public String getCRS();
+
 	public Bounds getExtent();
-	
+
 	public ViewWorldTransform getViewWorldTransform();
-	
+
 	public void addTransformChangeListener(TransformChangeListener listener);
+
 	public void removeTransformChangeListener(TransformChangeListener listener);
 
 }

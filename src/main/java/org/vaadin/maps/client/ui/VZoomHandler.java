@@ -12,15 +12,15 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VZoomHandler extends AbstractNavigateHandler implements HasLayerLayout, MouseWheelHandler {
 
 	public static final String CLASSNAME = "v-zoomhandler";
-	
+
 	protected VLayerLayout layout = null;
-	
+
 	protected HandlerRegistration mouseWheelHandler = null;
 
 	private HashMap<ZoomEventHandler, HandlerRegistration> zoomHandlerMap = new HashMap<ZoomEventHandler, HandlerRegistration>();
@@ -29,24 +29,24 @@ public class VZoomHandler extends AbstractNavigateHandler implements HasLayerLay
 		super();
 		setStyleName(CLASSNAME);
 	}
-	
+
 	@Override
 	public void setLayout(VLayerLayout layout) {
 		if (this.layout == layout) {
 			return;
 		}
-		
+
 		finalize();
 		this.layout = layout;
 		initialize();
 	}
-	
+
 	@Override
 	public void onMouseWheel(MouseWheelEvent event) {
 		if (!active) {
 			return;
 		}
-		
+
 		double zoom = 1.0;
 		int deltaY = event.getDeltaY();
 		if (deltaY < 0) {
@@ -54,11 +54,11 @@ public class VZoomHandler extends AbstractNavigateHandler implements HasLayerLay
 		} else if (deltaY > 0) {
 			zoom = 1.25;
 		}
-		
+
 		if (zoom != 1 && layout != null) {
 			layout.onZoom(zoom);
 		}
-		
+
 		event.preventDefault();
 	}
 
@@ -84,14 +84,14 @@ public class VZoomHandler extends AbstractNavigateHandler implements HasLayerLay
 	public static class ZoomEvent extends GwtEvent<ZoomEventHandler> {
 
 		public static final Type<ZoomEventHandler> TYPE = new Type<ZoomEventHandler>();
-		
+
 		private double zoom;
-		
+
 		public ZoomEvent(VZoomHandler source, double zoom) {
 			setSource(source);
 			this.zoom = zoom;
 		}
-		
+
 		public double getZoom() {
 			return zoom;
 		}

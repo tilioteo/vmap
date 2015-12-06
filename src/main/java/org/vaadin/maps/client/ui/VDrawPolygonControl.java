@@ -6,13 +6,13 @@ package org.vaadin.maps.client.ui;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VDrawPolygonControl extends VDrawPathControl {
 
 	public static final String CLASSNAME = "v-drawpolygoncontrol";
-	
+
 	public VDrawPolygonControl() {
 		super();
 		setStyleName(CLASSNAME);
@@ -24,10 +24,10 @@ public class VDrawPolygonControl extends VDrawPathControl {
 			super.setWidget(widget);
 		}
 	}
-	
+
 	@Override
 	public VPolygonHandler getHandler() {
 		return (VPolygonHandler) handler;
 	}
-	
+
 }

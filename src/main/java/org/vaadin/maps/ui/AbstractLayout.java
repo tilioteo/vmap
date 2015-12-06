@@ -7,9 +7,8 @@ import org.vaadin.maps.shared.ui.AbstractLayoutState;
 
 import com.vaadin.ui.Component;
 
-
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -21,4 +20,3 @@ public abstract class AbstractLayout<C extends Component> extends AbstractCompon
 	}
 
 }
-

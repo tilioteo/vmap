@@ -6,7 +6,7 @@ package org.vaadin.maps.shared.ui.tile;
 import org.vaadin.maps.shared.ui.AbstractTileState;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

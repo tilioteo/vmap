@@ -21,11 +21,11 @@ package org.vaadin.gwt.i18n.client.impl;
  */
 public class NumberFormatImplPercent extends NumberFormatImplNumber {
 
-  protected NumberFormatImplPercent() {
-    super();
-    String suffix = String.valueOf(getDecimalFormatSymbols().getPercent());
-    setPositiveSuffix(suffix);
-    setNegativeSuffix(suffix);
-    setMultiplier(100);
-  }
+	protected NumberFormatImplPercent() {
+		super();
+		String suffix = String.valueOf(getDecimalFormatSymbols().getPercent());
+		setPositiveSuffix(suffix);
+		setNegativeSuffix(suffix);
+		setMultiplier(100);
+	}
 }

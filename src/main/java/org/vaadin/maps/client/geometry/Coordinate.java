@@ -105,7 +105,7 @@ public class Coordinate {
 			return x;
 		case Coordinate.Y:
 			return y;
-			// case Coordinate.Z: return z;
+		// case Coordinate.Z: return z;
 		}
 		return Double.NaN;
 	}
@@ -122,7 +122,7 @@ public class Coordinate {
 
 	public void setXY(double x, double y) {
 		this.x = x;
-		this.y = y;		
+		this.y = y;
 	}
 
 	/**

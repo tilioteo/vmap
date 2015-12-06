@@ -46,11 +46,11 @@ public class LinearRing extends LineString {
 	public LinearRing(Coordinate... coordinates) {
 		this(coordinates, 0);
 	}
-	
+
 	public LinearRing(Coordinate[] coordinates, int SRID) {
 		this(new CoordinateSequence(coordinates), SRID);
 	}
-	
+
 	/**
 	 * @param coordinates
 	 *            contains the single coordinate on which to base this
@@ -69,20 +69,17 @@ public class LinearRing extends LineString {
 	public LinearRing(LineString lineString) {
 		this(lineString.getClosed().coordinates, lineString.SRID);
 	}
-	
+
 	public LinearRing(LinearRing linearRing) {
 		this(linearRing.coordinates, linearRing.SRID);
 	}
 
 	private void validateConstruction() {
 		if (!isEmpty() && !super.isClosed()) {
-			throw new IllegalArgumentException(
-					"points must form a closed linestring");
+			throw new IllegalArgumentException("points must form a closed linestring");
 		}
-		if (getCoordinateSequence().size() >= 1
-				&& getCoordinateSequence().size() <= 3) {
-			throw new IllegalArgumentException(
-					"Number of points must be 0 or >3");
+		if (getCoordinateSequence().size() >= 1 && getCoordinateSequence().size() <= 3) {
+			throw new IllegalArgumentException("Number of points must be 0 or >3");
 		}
 	}
 

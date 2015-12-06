@@ -15,7 +15,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.util.ReflectTools;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -31,9 +31,10 @@ public class VectorFeatureContainer extends AbstractFeatureContainer<VectorFeatu
 	public VectorFeatureContainer() {
 		registerRpc(rpc);
 	}
-	
+
 	/**
-	 * Click event. This event is thrown, when the vector feature container is clicked.
+	 * Click event. This event is thrown, when the vector feature container is
+	 * clicked.
 	 * 
 	 */
 	public class ClickEvent extends ComponentEvent {
@@ -195,13 +196,13 @@ public class VectorFeatureContainer extends AbstractFeatureContainer<VectorFeatu
 	 */
 	public interface ClickListener extends Serializable {
 
-		public static final Method CONTAINER_CLICK_METHOD = ReflectTools
-				.findMethod(ClickListener.class, "click",
-						ClickEvent.class);
+		public static final Method CONTAINER_CLICK_METHOD = ReflectTools.findMethod(ClickListener.class, "click",
+				ClickEvent.class);
 
 		/**
-		 * Called when a {@link VectorFeatureContainer} has been clicked. A reference to the
-		 * container is given by {@link ClickEvent#getContainer()}.
+		 * Called when a {@link VectorFeatureContainer} has been clicked. A
+		 * reference to the container is given by
+		 * {@link ClickEvent#getContainer()}.
 		 * 
 		 * @param event
 		 *            An event containing information about the click.
@@ -217,8 +218,7 @@ public class VectorFeatureContainer extends AbstractFeatureContainer<VectorFeatu
 	 *            the Listener to be added.
 	 */
 	public void addClickListener(ClickListener listener) {
-		addListener(ClickEvent.class, listener,
-				ClickListener.CONTAINER_CLICK_METHOD);
+		addListener(ClickEvent.class, listener, ClickListener.CONTAINER_CLICK_METHOD);
 	}
 
 	/**
@@ -228,8 +228,7 @@ public class VectorFeatureContainer extends AbstractFeatureContainer<VectorFeatu
 	 *            the Listener to be removed.
 	 */
 	public void removeClickListener(ClickListener listener) {
-		removeListener(ClickEvent.class, listener,
-				ClickListener.CONTAINER_CLICK_METHOD);
+		removeListener(ClickEvent.class, listener, ClickListener.CONTAINER_CLICK_METHOD);
 	}
 
 }

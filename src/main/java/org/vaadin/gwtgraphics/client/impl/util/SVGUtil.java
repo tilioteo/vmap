@@ -45,8 +45,7 @@ public abstract class SVGUtil {
 		setAttributeNS(null, elem, attr, value);
 	}
 
-	public static native void setAttributeNS(String uri, Element elem,
-			String attr, String value) /*-{
+	public static native void setAttributeNS(String uri, Element elem, String attr, String value) /*-{
 		elem.setAttributeNS(uri, attr, value);
 	}-*/;
 
@@ -54,7 +53,7 @@ public abstract class SVGUtil {
 		// See http://newsgroups.cryer.info/mozilla/dev.tech.svg/200803/080318666.html
 		element.className.baseVal = name;
 	}-*/;
-	
+
 	public static native String getClassName(Element element) /*-{
 		return element.className.baseVal;
 	}-*/;
@@ -68,7 +67,7 @@ public abstract class SVGUtil {
 				removeClassName(element, style);
 			}
 		}
-    }
+	}
 
 	/**
 	 * Returns the index of the first occurrence of name in a space-separated
@@ -87,8 +86,7 @@ public abstract class SVGUtil {
 			if (idx == 0 || nameList.charAt(idx - 1) == ' ') {
 				int last = idx + name.length();
 				int lastPos = nameList.length();
-				if ((last == lastPos)
-						|| ((last < lastPos) && (nameList.charAt(last) == ' '))) {
+				if ((last == lastPos) || ((last < lastPos) && (nameList.charAt(last) == ' '))) {
 					break;
 				}
 			}
@@ -115,7 +113,7 @@ public abstract class SVGUtil {
 				return true;
 			}
 		}
-	    return false;
+		return false;
 	}
 
 	private static boolean removeClassName(Element element, String className) {
@@ -148,8 +146,7 @@ public abstract class SVGUtil {
 		return false;
 	}
 
-	public static native SVGBBox getBBBox(Element element, boolean attached)
-	/*-{
+	public static native SVGBBox getBBBox(Element element, boolean attached) /*-{
 		var bbox = null;
 		if (attached) {
 			bbox = element.getBBox();

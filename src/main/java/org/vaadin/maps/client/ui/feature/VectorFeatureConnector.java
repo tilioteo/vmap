@@ -23,7 +23,7 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -33,11 +33,12 @@ public class VectorFeatureConnector extends AbstractComponentConnector {
 	@Override
 	protected void init() {
 		super.init();
-		
+
 		getWidget().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				MouseEventDetails mouseDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(), getWidget().getElement());
+				MouseEventDetails mouseDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(),
+						getWidget().getElement());
 				getRpcProxy(FeatureServerRpc.class).click(DateUtility.getTimestamp(), mouseDetails);
 			}
 		});
@@ -45,12 +46,13 @@ public class VectorFeatureConnector extends AbstractComponentConnector {
 		getWidget().addDoubleClickHandler(new DoubleClickHandler() {
 			@Override
 			public void onDoubleClick(DoubleClickEvent event) {
-				MouseEventDetails mouseDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(), getWidget().getElement());
+				MouseEventDetails mouseDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(),
+						getWidget().getElement());
 				getRpcProxy(FeatureServerRpc.class).doubleClick(DateUtility.getTimestamp(), mouseDetails);
 			}
 		});
-}
-	
+	}
+
 	@Override
 	public VVectorFeature getWidget() {
 		return (VVectorFeature) super.getWidget();
@@ -64,7 +66,7 @@ public class VectorFeatureConnector extends AbstractComponentConnector {
 	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
-		
+
 		if (stateChangeEvent.hasPropertyChanged("style")) {
 			getWidget().setStyle(MapUtility.getStyleFromMap(getState().style, Style.DEFAULT));
 		}
@@ -81,12 +83,10 @@ public class VectorFeatureConnector extends AbstractComponentConnector {
 				e.printStackTrace();
 			}
 		}
-		if (stateChangeEvent.hasPropertyChanged("centroidX") ||
-				stateChangeEvent.hasPropertyChanged("centroidY")) {
+		if (stateChangeEvent.hasPropertyChanged("centroidX") || stateChangeEvent.hasPropertyChanged("centroidY")) {
 			getWidget().setCentroid(getState().centroidX, getState().centroidY);
 		}
-		if (stateChangeEvent.hasPropertyChanged("offsetX") ||
-				stateChangeEvent.hasPropertyChanged("offsetY")) {
+		if (stateChangeEvent.hasPropertyChanged("offsetX") || stateChangeEvent.hasPropertyChanged("offsetY")) {
 			getWidget().setTextOffset(getState().offsetX, getState().offsetY);
 		}
 		if (stateChangeEvent.hasPropertyChanged("text")) {

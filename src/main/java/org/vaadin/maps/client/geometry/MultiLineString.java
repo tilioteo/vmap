@@ -77,6 +77,7 @@ public class MultiLineString extends GeometryCollection {
 		}
 	}
 
+	@Override
 	public String getGeometryType() {
 		return "MultiLineString";
 	}

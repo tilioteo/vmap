@@ -14,7 +14,7 @@ import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.shared.Connector;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -23,7 +23,7 @@ public class DrawFeatureControlConnector extends AbstractControlConnector {
 	@Override
 	protected void init() {
 		super.init();
-		
+
 	}
 
 	@Override
@@ -39,12 +39,12 @@ public class DrawFeatureControlConnector extends AbstractControlConnector {
 	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
-		
+
 		if (stateChangeEvent.hasPropertyChanged("layer")) {
 			Connector connector = getState().layer;
 			if (connector != null) {
 				if (connector instanceof VectorFeatureLayerConnector)
-					getWidget().setLayer(((VectorFeatureLayerConnector)connector).getWidget());
+					getWidget().setLayer(((VectorFeatureLayerConnector) connector).getWidget());
 			} else
 				getWidget().setLayer(null);
 		}
@@ -54,13 +54,12 @@ public class DrawFeatureControlConnector extends AbstractControlConnector {
 	}
 
 	@Override
-	public void onConnectorHierarchyChange(
-			ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
-        // We always have 1 child, unless the child is hidden
-        Widget content = getContentWidget();
-        if (content != null) {
-        	getWidget().setWidget(content);
-        }
+	public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
+		// We always have 1 child, unless the child is hidden
+		Widget content = getContentWidget();
+		if (content != null) {
+			getWidget().setWidget(content);
+		}
 	}
 
 }

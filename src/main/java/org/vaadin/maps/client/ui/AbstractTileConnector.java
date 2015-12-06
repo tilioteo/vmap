@@ -6,7 +6,7 @@ package org.vaadin.maps.client.ui;
 import com.vaadin.client.ui.AbstractComponentConnector;
 
 /**
- * @author morong
+ * @author Kamil Morong
  * 
  */
 @SuppressWarnings("serial")

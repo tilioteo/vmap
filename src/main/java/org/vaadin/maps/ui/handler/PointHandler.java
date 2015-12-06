@@ -21,7 +21,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 
 /**
- * @author Kamil Morong - Hypothesis
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -30,10 +30,10 @@ public class PointHandler extends FeatureHandler {
 	private PointHandlerServerRpc rpc = new PointHandlerServerRpc() {
 
 		@Override
-		public void click(long timestamp, double x, double y, String buttonName,
-				boolean altKey, boolean ctrlKey, boolean metaKey, boolean shiftKey, boolean doubleClick) {
-			fireEvent(new ClickEvent(timestamp, PointHandler.this, new Coordinate(x, y), buttonName, altKey,
-					ctrlKey, metaKey, shiftKey, doubleClick));
+		public void click(long timestamp, double x, double y, String buttonName, boolean altKey, boolean ctrlKey,
+				boolean metaKey, boolean shiftKey, boolean doubleClick) {
+			fireEvent(new ClickEvent(timestamp, PointHandler.this, new Coordinate(x, y), buttonName, altKey, ctrlKey,
+					metaKey, shiftKey, doubleClick));
 		}
 
 		@Override
@@ -45,28 +45,28 @@ public class PointHandler extends FeatureHandler {
 				}
 				VectorFeature feature = addNewFeature(geometry);
 				fireEvent(new DrawFeatureEvent(timestamp, PointHandler.this, feature));
-				
+
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		}
 	};
-	
+
 	/**
 	 * The last drawn feature
 	 */
 	protected VectorFeature feature = null;
-	
+
 	/**
 	 * The drawing layer
 	 */
 	protected VectorFeatureLayer layer = null;
-	
+
 	public PointHandler(Control control) {
 		super(control);
 		registerRpc(rpc);
 	}
-	
+
 	protected VectorFeature addNewFeature(Geometry geometry) {
 		if (geometry != null) {
 			feature = new VectorFeature(geometry);
@@ -87,28 +87,28 @@ public class PointHandler extends FeatureHandler {
 		this.layer = layer;
 		getState().layer = layer;
 	}
-	
+
 	@Override
 	public boolean deactivate() {
 		if (!super.deactivate())
 			return false;
-		
+
 		cancel();
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public void cancel() {
 		super.cancel();
 	}
-	
+
 	/**
 	 * Click event. This event is thrown, when the drawing layer is clicked.
 	 * 
 	 */
 	public class ClickEvent extends ComponentEvent {
-		
+
 		private Coordinate coordinate;
 		private String buttonName;
 		private boolean altKey;
@@ -123,8 +123,8 @@ public class PointHandler extends FeatureHandler {
 		 * @param source
 		 *            The source where the click took place
 		 */
-		public ClickEvent(long timestamp, Component source, Coordinate coordinate, String buttonName,
-				boolean altKey, boolean ctrlKey, boolean metaKey, boolean shiftKey, boolean doubleClick) {
+		public ClickEvent(long timestamp, Component source, Coordinate coordinate, String buttonName, boolean altKey,
+				boolean ctrlKey, boolean metaKey, boolean shiftKey, boolean doubleClick) {
 			super(timestamp, source);
 			this.coordinate = coordinate;
 			this.buttonName = buttonName;
@@ -136,15 +136,15 @@ public class PointHandler extends FeatureHandler {
 		}
 
 		/**
-		 * Returns the coordinate when the click took place.
-		 * The position is in coordinating system of layer.
+		 * Returns the coordinate when the click took place. The position is in
+		 * coordinating system of layer.
 		 * 
 		 * @return The position coordinate
 		 */
 		public Coordinate getCoordinate() {
 			return coordinate;
 		}
-		
+
 		public String getButtonName() {
 			return buttonName;
 		}
@@ -188,7 +188,7 @@ public class PointHandler extends FeatureHandler {
 		public boolean isShiftKey() {
 			return shiftKey;
 		}
-		
+
 		public boolean isDoubleClick() {
 			return doubleClick;
 		}
@@ -201,9 +201,8 @@ public class PointHandler extends FeatureHandler {
 	 */
 	public interface ClickListener extends Serializable {
 
-		public static final Method CLICK_METHOD = ReflectTools
-				.findMethod(ClickListener.class, "click",
-						ClickEvent.class);
+		public static final Method CLICK_METHOD = ReflectTools.findMethod(ClickListener.class, "click",
+				ClickEvent.class);
 
 		/**
 		 * Called when a drawing layer has been clicked.
@@ -214,7 +213,7 @@ public class PointHandler extends FeatureHandler {
 		public void click(ClickEvent event);
 
 	}
-	
+
 	/**
 	 * Adds the click listener.
 	 * 
@@ -222,8 +221,7 @@ public class PointHandler extends FeatureHandler {
 	 *            the Listener to be added.
 	 */
 	public void addClickListener(ClickListener listener) {
-		addListener(ClickEvent.class, listener,
-				ClickListener.CLICK_METHOD);
+		addListener(ClickEvent.class, listener, ClickListener.CLICK_METHOD);
 	}
 
 	/**
@@ -233,9 +231,7 @@ public class PointHandler extends FeatureHandler {
 	 *            the Listener to be removed.
 	 */
 	public void removeClickListener(ClickListener listener) {
-		removeListener(ClickEvent.class, listener,
-				ClickListener.CLICK_METHOD);
+		removeListener(ClickEvent.class, listener, ClickListener.CLICK_METHOD);
 	}
 
 }
-                

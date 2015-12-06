@@ -6,7 +6,7 @@ package org.vaadin.maps.exception;
 import org.vaadin.maps.ui.GridLayout;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

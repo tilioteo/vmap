@@ -13,26 +13,25 @@ import com.vaadin.client.ui.ClickEventHandler;
 import com.vaadin.shared.MouseEventDetails;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public abstract class ProxyTileConnector extends AbstractComponentConnector {
 
-    protected final ClickEventHandler clickEventHandler = new ClickEventHandler(
-            this) {
-        @Override
-        protected void fireClick(NativeEvent event, MouseEventDetails mouseDetails) {
-            getRpcProxy(ProxyTileServerRpc.class).click(DateUtility.getTimestamp(), mouseDetails);
-        }
+	protected final ClickEventHandler clickEventHandler = new ClickEventHandler(this) {
+		@Override
+		protected void fireClick(NativeEvent event, MouseEventDetails mouseDetails) {
+			getRpcProxy(ProxyTileServerRpc.class).click(DateUtility.getTimestamp(), mouseDetails);
+		}
 
-    };
+	};
 
-    @Override
+	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
 
-        clickEventHandler.handleEventHandlerRegistration();
+		clickEventHandler.handleEventHandlerRegistration();
 	}
 
 }

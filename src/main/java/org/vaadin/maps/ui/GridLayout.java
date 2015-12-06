@@ -25,7 +25,7 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Component;
 
 /**
- * @author morong
+ * @author Kamil Morong
  * 
  */
 @SuppressWarnings("serial")
@@ -38,7 +38,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 			fireEvent(LayoutClickEvent.createEvent(timestamp, GridLayout.this, mouseDetails, clickedConnector));
 		}
 	};
-	
+
 	/**
 	 * Cursor X position: this is where the next component with unspecified x,y
 	 * is inserted
@@ -134,8 +134,8 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 	 * @throws OutOfBoundsException
 	 *             if the cells are outside the grid area.
 	 */
-	public void addComponent(C component, int column1, int row1, int column2,
-			int row2) throws OverlapsException, OutOfBoundsException {
+	public void addComponent(C component, int column1, int row1, int column2, int row2)
+			throws OverlapsException, OutOfBoundsException {
 
 		if (component == null) {
 			throw new NullPointerException("Component must not be null");
@@ -143,8 +143,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 
 		// Checks that the component does not already exist in the container
 		if (components.contains(component)) {
-			throw new IllegalArgumentException(
-					"Component is already in the container");
+			throw new IllegalArgumentException("Component is already in the container");
 		}
 
 		// Creates the area
@@ -152,11 +151,9 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 
 		// Checks the validity of the coordinates
 		if (column2 < column1 || row2 < row1) {
-			throw new IllegalArgumentException(
-					"Illegal coordinates for the component");
+			throw new IllegalArgumentException("Illegal coordinates for the component");
 		}
-		if (column1 < 0 || row1 < 0 || column2 >= getColumns()
-				|| row2 >= getRows()) {
+		if (column1 < 0 || row1 < 0 || column2 >= getColumns() || row2 >= getRows()) {
 			throw new OutOfBoundsException(area);
 		}
 
@@ -172,8 +169,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 		boolean done = false;
 		while (!done && i.hasNext()) {
 			final ChildComponentData existingArea = childDataMap.get(i.next());
-			if ((existingArea.row1 >= row1 && existingArea.column1 > column1)
-					|| existingArea.row1 > row1) {
+			if ((existingArea.row1 >= row1 && existingArea.column1 > column1) || existingArea.row1 > row1) {
 				components.add(index, component);
 				done = true;
 			}
@@ -196,8 +192,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 
 		// update cursor position, if it's within this area; use first position
 		// outside this area, even if it's occupied
-		if (cursorX >= column1 && cursorX <= column2 && cursorY >= row1
-				&& cursorY <= row2) {
+		if (cursorX >= column1 && cursorX <= column2 && cursorY >= row1 && cursorY <= row2) {
 			// cursor within area
 			cursorX = column2 + 1; // one right of area
 			if (cursorX >= getColumns()) {
@@ -224,12 +219,10 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 	 */
 	@SuppressWarnings("unchecked")
 	private void checkExistingOverlaps(Area area) throws OverlapsException {
-		for (Entry<Connector, ChildComponentData> entry : getState().childData
-				.entrySet()) {
+		for (Entry<Connector, ChildComponentData> entry : getState().childData.entrySet()) {
 			if (componentsOverlap(entry.getValue(), area.childData)) {
 				// Component not added, overlaps with existing component
-				throw new OverlapsException(new Area(entry.getValue(),
-						(C) entry.getKey()));
+				throw new OverlapsException(new Area(entry.getValue(), (C) entry.getKey()));
 			}
 		}
 	}
@@ -252,8 +245,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 	 * @throws OutOfBoundsException
 	 *             if the cell is outside the grid area.
 	 */
-	public void addComponent(C component, int column, int row)
-			throws OverlapsException, OutOfBoundsException {
+	public void addComponent(C component, int column, int row) throws OverlapsException, OutOfBoundsException {
 		this.addComponent(component, column, row, column, row);
 	}
 
@@ -362,8 +354,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 		// Finds the area
 		for (final Iterator<C> i = components.iterator(); i.hasNext();) {
 			final C component = i.next();
-			final ChildComponentData childData = getState().childData
-					.get(component);
+			final ChildComponentData childData = getState().childData.get(component);
 			if (childData.column1 == column && childData.row1 == row) {
 				removeComponent(component);
 				return;
@@ -380,8 +371,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<Component> iterator() {
-		return (Iterator<Component>) Collections.unmodifiableCollection(
-				components).iterator();
+		return (Iterator<Component>) Collections.unmodifiableCollection(components).iterator();
 	}
 
 	/**
@@ -425,7 +415,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 	public class Area implements Serializable {
 		private final ChildComponentData childData;
 		private final C component;
-		
+
 		/**
 		 * <p>
 		 * Construct a new area on a grid.
@@ -446,8 +436,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 		 *            The row of the lower right corner cell of the area. The
 		 *            topmost row has index 0.
 		 */
-		public Area(C component, int column1, int row1, int column2,
-				int row2) {
+		public Area(C component, int column1, int row1, int column2, int row2) {
 			this.component = component;
 			childData = new ChildComponentData();
 			childData.column1 = column1;
@@ -525,10 +514,8 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 
 	}
 
-	private static boolean componentsOverlap(ChildComponentData a,
-			ChildComponentData b) {
-		return a.column1 <= b.column2 && a.row1 <= b.row2
-				&& a.column2 >= b.column1 && a.row2 >= b.row1;
+	private static boolean componentsOverlap(ChildComponentData a, ChildComponentData b) {
+		return a.column1 <= b.column2 && a.row1 <= b.row2 && a.column2 >= b.column1 && a.row2 >= b.row1;
 	}
 
 	/**
@@ -543,8 +530,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 
 		// The the param
 		if (columns < 1) {
-			throw new IllegalArgumentException(
-					"The number of columns and rows in the grid must be at least 1");
+			throw new IllegalArgumentException("The number of columns and rows in the grid must be at least 1");
 		}
 
 		// In case of no change
@@ -586,8 +572,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 
 		// The the param
 		if (rows < 1) {
-			throw new IllegalArgumentException(
-					"The number of columns and rows in the grid must be at least 1");
+			throw new IllegalArgumentException("The number of columns and rows in the grid must be at least 1");
 		}
 
 		// In case of no change
@@ -599,8 +584,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 		if (getRows() > rows) {
 			for (Entry<Connector, ChildComponentData> entry : getState().childData.entrySet()) {
 				if (entry.getValue().row2 >= rows) {
-					throw new OutOfBoundsException(new Area(entry.getValue(),
-							(C) entry.getKey()));
+					throw new OutOfBoundsException(new Area(entry.getValue(), (C) entry.getKey()));
 				}
 			}
 		}
@@ -683,8 +667,7 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 			addComponent(newComponent);
 		} else if (newLocation == null) {
 			removeComponent(oldComponent);
-			addComponent(newComponent, oldLocation.column1, oldLocation.row1,
-					oldLocation.column2, oldLocation.row2);
+			addComponent(newComponent, oldLocation.column1, oldLocation.row1, oldLocation.column2, oldLocation.row2);
 		} else {
 			getState().childData.put(newComponent, oldLocation);
 			getState().childData.put(oldComponent, newLocation);
@@ -712,8 +695,8 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 	 */
 	public void insertRow(int row) {
 		if (row > getRows()) {
-			throw new IllegalArgumentException("Cannot insert row at " + row
-					+ " in a gridlayout with height " + getRows());
+			throw new IllegalArgumentException(
+					"Cannot insert row at " + row + " in a gridlayout with height " + getRows());
 		}
 
 		for (ChildComponentData existingArea : getState().childData.values()) {
@@ -756,8 +739,8 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 	 */
 	public void removeRow(int row) {
 		if (row >= getRows()) {
-			throw new IllegalArgumentException("Cannot delete row " + row
-					+ " from a gridlayout with height " + getRows());
+			throw new IllegalArgumentException(
+					"Cannot delete row " + row + " from a gridlayout with height " + getRows());
 		}
 
 		// Remove all components in row
@@ -805,11 +788,9 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 	 * @return Component in given cell or null if empty
 	 */
 	public Component getComponent(int x, int y) {
-		for (Entry<Connector, ChildComponentData> entry : getState().childData
-				.entrySet()) {
+		for (Entry<Connector, ChildComponentData> entry : getState().childData.entrySet()) {
 			ChildComponentData childData = entry.getValue();
-			if (childData.column1 <= x && x <= childData.column2
-					&& childData.row1 <= y && y <= childData.row2) {
+			if (childData.column1 <= x && x <= childData.column2 && childData.row1 <= y && y <= childData.row2) {
 				return (Component) entry.getKey();
 			}
 		}
@@ -836,15 +817,13 @@ public class GridLayout<C extends Component> extends AbstractLayout<C> implement
 
 	@Override
 	public void addLayoutClickListener(LayoutClickListener<C> listener) {
-		addListener(EventId.LAYOUT_CLICK_EVENT_IDENTIFIER,
-				LayoutClickEvent.class, listener,
+		addListener(EventId.LAYOUT_CLICK_EVENT_IDENTIFIER, LayoutClickEvent.class, listener,
 				LayoutClickListener.clickMethod);
 	}
 
 	@Override
 	public void removeLayoutClickListener(LayoutClickListener<C> listener) {
-		removeListener(EventId.LAYOUT_CLICK_EVENT_IDENTIFIER,
-				LayoutClickEvent.class, listener);
+		removeListener(EventId.LAYOUT_CLICK_EVENT_IDENTIFIER, LayoutClickEvent.class, listener);
 	}
 
 }

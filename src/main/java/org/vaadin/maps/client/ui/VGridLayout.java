@@ -22,7 +22,7 @@ import com.vaadin.client.StyleConstants;
 import com.vaadin.client.Util;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 public class VGridLayout extends ComplexPanel implements CanShift {
@@ -30,16 +30,16 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 	/** Class name, prefix in styling */
 	public static final String CLASSNAME = "v-gridlayout";
 
-    /** For internal use only. May be removed or replaced in the future. */
-    public ApplicationConnection client;
+	/** For internal use only. May be removed or replaced in the future. */
+	public ApplicationConnection client;
 
 	protected final Element container = Document.get().createDivElement();
-	
+
 	protected Map<Widget, GridWrapper> widgetGridWrappers = new HashMap<Widget, GridWrapper>();
-	
+
 	private int shiftX = 0;
 	private int shiftY = 0;
-	
+
 	private int measuredWidth = 0;
 	private int measuredHeight = 0;
 
@@ -66,28 +66,14 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 		style.setPosition(Position.ABSOLUTE);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.user.client.ui.Panel#add(com.google.gwt.user.client.ui
-	 * .Widget)
-	 */
 	@Override
 	public void add(Widget child) {
 		GridWrapper wrapper = new GridWrapper(child);
-		//wrapper.updateStyleNames();
+		// wrapper.updateStyleNames();
 		widgetGridWrappers.put(child, wrapper);
 		super.add(wrapper.getWidget(), container);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.user.client.ui.ComplexPanel#remove(com.google.gwt.user
-	 * .client.ui.Widget)
-	 */
 	@Override
 	public boolean remove(Widget w) {
 		GridWrapper wrapper = getChildWrapper(w);
@@ -109,11 +95,6 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 		return getChildWrapper(widget) != null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.google.gwt.user.client.ui.ComplexPanel#getWidget(int)
-	 */
 	@Override
 	public Widget getWidget(int index) {
 		for (int i = 0, j = 0; i < super.getWidgetCount(); i++) {
@@ -129,11 +110,6 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.google.gwt.user.client.ui.ComplexPanel#getWidgetCount()
-	 */
 	@Override
 	public int getWidgetCount() {
 		int counter = 0;
@@ -145,13 +121,6 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 		return counter;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.user.client.ui.ComplexPanel#getWidgetIndex(com.google.
-	 * gwt.user.client.ui.Widget)
-	 */
 	@Override
 	public int getWidgetIndex(Widget child) {
 		for (int i = 0, j = 0; i < super.getWidgetCount(); i++) {
@@ -182,7 +151,7 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 			wrapper.setPosition(left, top);
 		}
 	}
-	
+
 	/**
 	 * Get the wrapper for a widget
 	 * 
@@ -197,24 +166,11 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.user.client.ui.UIObject#setStylePrimaryName(java.lang.
-	 * String)
-	 */
 	@Override
 	public void setStylePrimaryName(String style) {
 		updateStylenames(style);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.user.client.ui.UIObject#setStyleName(java.lang.String)
-	 */
 	@Override
 	public void setStyleName(String style) {
 		super.setStyleName(style);
@@ -231,10 +187,6 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 	protected void updateStylenames(String primaryStyleName) {
 		super.setStylePrimaryName(primaryStyleName);
 		container.setClassName(getStylePrimaryName() + "-container");
-
-		/*for (GridWrapper wrapper : widgetGridWrappers.values()) {
-			wrapper.updateStyleNames();
-		}*/
 	}
 
 	/**
@@ -259,7 +211,7 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 			widgetGridWrappers.remove(w);
 		}
 	}
-	
+
 	public int getMeasuredWidth() {
 		return measuredWidth;
 	}
@@ -273,10 +225,12 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 		this.measuredHeight = height;
 	}
 
+	@Override
 	public int getShiftX() {
 		return shiftX;
 	}
 
+	@Override
 	public int getShiftY() {
 		return shiftY;
 	}
@@ -285,65 +239,58 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 	public void setShift(int x, int y) {
 		shiftX = x;
 		shiftY = y;
-		
+
 		Style style = getElement().getStyle();
 		style.setLeft(x, Unit.PX);
 		style.setTop(y, Unit.PX);
 	}
 
-    /**
-     * Returns the deepest nested child component which contains "element". The
-     * child component is also returned if "element" is part of its caption.
-     * <p>
-     * For internal use only. May be removed or replaced in the future.
-     * 
-     * @param element
-     *            An element that is a nested sub element of the root element in
-     *            this layout
-     * @return The Paintable which the element is a part of. Null if the element
-     *         belongs to the layout and not to a child.
-     * @deprecated As of 7.2, call or override {@link #getComponent(Element)}
-     *             instead
-     */
-    @Deprecated
-    public ComponentConnector getComponent(com.google.gwt.user.client.Element element) {
-        return Util.getConnectorForElement(client, this, element);
+	/**
+	 * Returns the deepest nested child component which contains "element". The
+	 * child component is also returned if "element" is part of its caption.
+	 * <p>
+	 * For internal use only. May be removed or replaced in the future.
+	 * 
+	 * @param element
+	 *            An element that is a nested sub element of the root element in
+	 *            this layout
+	 * @return The Paintable which the element is a part of. Null if the element
+	 *         belongs to the layout and not to a child.
+	 * @deprecated As of 7.2, call or override {@link #getComponent(Element)}
+	 *             instead
+	 */
+	@Deprecated
+	public ComponentConnector getComponent(com.google.gwt.user.client.Element element) {
+		return Util.getConnectorForElement(client, this, element);
 
-    }
+	}
 
-    /**
-     * Returns the deepest nested child component which contains "element". The
-     * child component is also returned if "element" is part of its caption.
-     * <p>
-     * For internal use only. May be removed or replaced in the future.
-     * 
-     * @param element
-     *            An element that is a nested sub element of the root element in
-     *            this layout
-     * @return The Paintable which the element is a part of. Null if the element
-     *         belongs to the layout and not to a child.
-     * 
-     * @since 7.2
-     */
-    public ComponentConnector getComponent(Element element) {
-        return getComponent(DOM.asOld(element));
-    }
+	/**
+	 * Returns the deepest nested child component which contains "element". The
+	 * child component is also returned if "element" is part of its caption.
+	 * <p>
+	 * For internal use only. May be removed or replaced in the future.
+	 * 
+	 * @param element
+	 *            An element that is a nested sub element of the root element in
+	 *            this layout
+	 * @return The Paintable which the element is a part of. Null if the element
+	 *         belongs to the layout and not to a child.
+	 * 
+	 * @since 7.2
+	 */
+	public ComponentConnector getComponent(Element element) {
+		return getComponent(DOM.asOld(element));
+	}
 
-	
 	/**
 	 * Internal wrapper for wrapping widgets in the Grid layout
 	 */
 	protected class GridWrapper {
 		private Widget widget;
-		
+
 		private int left;
 		private int top;
-
-		/*private String css;
-		private String left;
-		private String top;
-
-		private String[] extraStyleNames;*/
 
 		/**
 		 * Constructor
@@ -353,7 +300,7 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 		 */
 		public GridWrapper(Widget child) {
 			setWidget(child);
-			
+
 			left = 0;
 			top = 0;
 		}
@@ -378,32 +325,6 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 		 *            The position string
 		 */
 		public void setPosition(int left, int top) {
-			/*if (css == null || !css.equals(position)) {
-				css = position;
-				top = left = null;
-				if (!css.equals("")) {
-					String[] properties = css.split(";");
-					for (int i = 0; i < properties.length; i++) {
-						String[] keyValue = properties[i].split(":");
-						if (keyValue[0].equals("left")) {
-							left = keyValue[1];
-						} else if (keyValue[0].equals("top")) {
-							top = keyValue[1];
-						}
-					}
-				}
-				// ensure new values
-				Style style = widget.getElement().getStyle();
-				style.setProperty("top", top);
-				style.setProperty("left", left);
-
-				// tiles must be positioned absolutely
-				style.setPosition(Position.ABSOLUTE);
-				// width and height by tile size
-				//style.setWidth(100, Unit.PCT);
-				//style.setHeight(100, Unit.PCT);
-			}*/
-			
 			this.left = left;
 			this.top = top;
 			// ensure new values
@@ -422,28 +343,5 @@ public class VGridLayout extends ComplexPanel implements CanShift {
 		public int getTop() {
 			return top;
 		}
-
-
-		/*/**
-		 * Sets the style names of the wrapper.
-		 * 
-		 * @param stylenames
-		 *            The wrapper style names
-		 */
-		/*public void setWrapperStyleNames(String... stylenames) {
-			extraStyleNames = stylenames;
-			updateStyleNames();
-		}*/
-
-		/*/**
-		 * Updates the style names using the primary style name as prefix
-		 */
-		/*protected void updateStyleNames() {
-			if (extraStyleNames != null) {
-				for (String stylename : extraStyleNames) {
-					widget.addStyleDependentName(stylename);
-				}
-			}
-		}*/
 	}
 }

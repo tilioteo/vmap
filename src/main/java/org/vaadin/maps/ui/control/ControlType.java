@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Kamil Morong - Hypothesis
+ * @author Kamil Morong
  *
  */
 public enum ControlType {
 	BUTTON(1), TOGGLE(2), TOOL(3);
-	
+
 	private static final Map<Integer, ControlType> lookup = new HashMap<Integer, ControlType>();
 
 	static {

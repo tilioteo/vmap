@@ -7,13 +7,13 @@ import com.google.gwt.dom.client.Element;
 import com.vaadin.shared.MouseEventDetails;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VLineHandler extends VPathHandler {
-	
+
 	public static final String CLASSNAME = "v-linehandler";
-	
+
 	public VLineHandler() {
 		super();
 		setStyleName(CLASSNAME);
@@ -24,7 +24,7 @@ public class VLineHandler extends VPathHandler {
 		if (!active) {
 			return;
 		}
-		
+
 		int[] xy = getMouseEventXY(details, relativeElement);
 
 		// first click

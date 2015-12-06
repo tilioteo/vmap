@@ -18,24 +18,23 @@ package org.vaadin.maps.client.emul.io;
 import java.io.IOException;
 
 public abstract class OutputStream {
-  
-  // not abstact because of some gwt strangeness
-  public void write(int b) throws IOException {
-  }
-  
-  public void write(byte[] ba) throws IOException {
-    write(ba, 0, ba.length);
-  }
-  
-  public void write(byte[] ba, int start, int len) throws IOException {
-    int end = start + len;
-    for (int i = start; i < end; i++) {
-      write(ba[i]);
-    }
-  }
-  
-  public void close() throws IOException {
-  }
 
-  
+	// not abstact because of some gwt strangeness
+	public void write(int b) throws IOException {
+	}
+
+	public void write(byte[] ba) throws IOException {
+		write(ba, 0, ba.length);
+	}
+
+	public void write(byte[] ba, int start, int len) throws IOException {
+		int end = start + len;
+		for (int i = start; i < end; i++) {
+			write(ba[i]);
+		}
+	}
+
+	public void close() throws IOException {
+	}
+
 }

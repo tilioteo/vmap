@@ -16,25 +16,25 @@ import org.vaadin.maps.ui.layer.ControlLayer;
 import org.vaadin.maps.ui.layer.ForLayer;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public class MapContainer extends LayerLayout implements ForLayer {
 
 	private HashMap<String, Style> styles = new HashMap<String, Style>();
-	
+
 	private ControlLayer controlLayer = null;
-	
+
 	private String crs = null;
-	
+
 	/**
 	 * initial bounds
 	 */
 	private Bounds bounds = null;
-	
+
 	private ViewWorldTransform transform = new ViewWorldTransform();
-	
+
 	private MapContainerRpc rpc = new MapContainerRpc() {
 		@Override
 		public void panEnd(int shiftX, int shiftY) {
@@ -46,31 +46,31 @@ public class MapContainer extends LayerLayout implements ForLayer {
 			transform.scaleWorld(zoom);
 		}
 	};
-	
+
 	public MapContainer() {
 		super();
-		
+
 		registerRpc(rpc);
 		// Add default control layer
 		controlLayer = new ControlLayer();
 		addComponent(controlLayer);
 	}
-	
+
 	public void addStyle(String id, Style style) {
 		if (id != null && style != null) {
 			styles.put(id, style);
 		}
 	}
-	
+
 	public void removeStyle(String id) {
 		styles.remove(id);
-		//TODO remove styling from objects
+		// TODO remove styling from objects
 	}
-	
+
 	public Style getStyle(String id) {
 		return styles.get(id);
 	}
-	
+
 	public void addLayer(AbstractLayer<?> layer) {
 		if (layer != null) {
 			addComponent(layer);
@@ -88,11 +88,10 @@ public class MapContainer extends LayerLayout implements ForLayer {
 	public void addControl(AbstractControl control) {
 		controlLayer.addComponent(control);
 	}
-	
+
 	public void removeControl(AbstractControl control) {
 		controlLayer.removeComponent(control);
 	}
-
 
 	@Override
 	public String getCRS() {
@@ -114,12 +113,8 @@ public class MapContainer extends LayerLayout implements ForLayer {
 	public void setBounds(Bounds bounds) {
 		if (bounds != null) {
 			this.bounds = bounds;
-		} /*else {
-			int w = getMeasuredWidth();
-			int h = getMeasuredHeight();
-			this.bounds = new Bounds(0, h > 0 ? -h : 0, w > 0 ? w : 0, 0);
-		}*/
-		
+		}
+
 		transform.fitWorldToView(this.bounds);
 	}
 
@@ -136,15 +131,10 @@ public class MapContainer extends LayerLayout implements ForLayer {
 		}
 		transform.resizeView(newWidth, newHeight);
 
-		/*if (!bounds.isValid()) {
-			bounds = new Bounds(0, -newHeight, newWidth, 0);
-			fit = true;
-		}*/
-		
 		if (fit) {
 			transform.fitWorldToView(bounds);
 		}
-		
+
 		super.updateMeasuredSize(newWidth, newHeight);
 	}
 

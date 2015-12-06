@@ -11,7 +11,7 @@ import org.vaadin.maps.shared.ui.AbstractTileState;
 import com.vaadin.shared.communication.URLReference;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -22,7 +22,7 @@ public class ImageSequenceTileState extends AbstractTileState {
 
 	public List<URLReference> sources = new ArrayList<URLReference>();
 	public List<String> sourceTypes = new ArrayList<String>();
-	
+
 	public int index = 0;
 
 }

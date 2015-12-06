@@ -10,7 +10,7 @@ import java.util.HashMap;
 import org.vaadin.maps.shared.ui.Style;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class StyleUtility {
@@ -18,7 +18,7 @@ public class StyleUtility {
 	public static HashMap<String, String> getStyleMap(Style style) {
 		if (style != null) {
 			HashMap<String, String> map = new HashMap<String, String>();
-			
+
 			Field[] fields = style.getClass().getDeclaredFields();
 			for (Field field : fields) {
 				if ((field.getModifiers() & Modifier.STATIC) != Modifier.STATIC) {
@@ -30,7 +30,7 @@ public class StyleUtility {
 					}
 				}
 			}
-			
+
 			return map;
 		}
 		return null;

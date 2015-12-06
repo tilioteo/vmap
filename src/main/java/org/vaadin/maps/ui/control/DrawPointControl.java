@@ -8,7 +8,7 @@ import org.vaadin.maps.ui.handler.PointHandler;
 import org.vaadin.maps.ui.layer.VectorFeatureLayer;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

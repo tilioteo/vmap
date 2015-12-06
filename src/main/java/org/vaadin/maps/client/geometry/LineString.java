@@ -43,11 +43,11 @@ public class LineString extends Point {
 	public LineString(Coordinate... coordinates) {
 		this(coordinates, 0);
 	}
-	
+
 	public LineString(Coordinate[] coordinates, int SRID) {
 		this(new CoordinateSequence(coordinates), SRID);
 	}
-	
+
 	public LineString(CoordinateSequence coordinates) {
 		this(coordinates, 0);
 	}
@@ -63,7 +63,7 @@ public class LineString extends Point {
 		}
 	}
 
-public LineString(LineString lineString) {
+	public LineString(LineString lineString) {
 		this(lineString.coordinates, lineString.SRID);
 	}
 
@@ -96,6 +96,7 @@ public LineString(LineString lineString) {
 		return getCoordinate(0).equals(getCoordinate(getNumPoints() - 1));
 	}
 
+	@Override
 	public String getGeometryType() {
 		return "LineString";
 	}

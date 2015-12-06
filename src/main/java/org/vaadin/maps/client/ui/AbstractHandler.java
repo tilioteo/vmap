@@ -8,15 +8,15 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public abstract class AbstractHandler extends Widget {
 
 	public static final String CLASSNAME = "v-handler";
-	
+
 	protected boolean active = false;
-	
+
 	// parent control
 	protected AbstractControl control = null;
 
@@ -26,7 +26,7 @@ public abstract class AbstractHandler extends Widget {
 		setStyleName(CLASSNAME);
 		setVisible(false);
 	}
-	
+
 	public AbstractControl getControl() {
 		return control;
 	}
@@ -35,8 +35,8 @@ public abstract class AbstractHandler extends Widget {
 		if (this.control == control) {
 			return;
 		}
-		
-		this.control = control;		
+
+		this.control = control;
 	}
 
 	public boolean isActive() {
@@ -46,19 +46,19 @@ public abstract class AbstractHandler extends Widget {
 	public void activate() {
 		active = true;
 	}
-	
+
 	public void deactivate() {
 		active = false;
 	}
-	
+
 	public void cancel() {
-		
+
 	}
-	
+
 	public void clear() {
 		finalize();
 	}
-	
+
 	protected final void removeEventHandler(HandlerRegistration handler) {
 		if (handler != null) {
 			handler.removeHandler();
@@ -67,5 +67,6 @@ public abstract class AbstractHandler extends Widget {
 	}
 
 	protected abstract void initialize();
+
 	protected abstract void finalize();
 }

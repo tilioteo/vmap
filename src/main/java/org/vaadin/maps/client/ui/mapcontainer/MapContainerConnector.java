@@ -14,7 +14,7 @@ import org.vaadin.maps.shared.ui.mapcontainer.MapContainerRpc;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -23,13 +23,13 @@ public class MapContainerConnector extends LayerLayoutConnector implements PanEv
 
 	@Override
 	public VMapContainer getWidget() {
-		return (VMapContainer)super.getWidget();
+		return (VMapContainer) super.getWidget();
 	}
 
 	@Override
 	protected void init() {
 		super.init();
-		
+
 		getWidget().addPanEventHandler(this);
 		getWidget().addZoomEventHandler(this);
 	}

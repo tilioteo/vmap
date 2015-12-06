@@ -6,7 +6,7 @@ package org.vaadin.maps.shared.ui.feature;
 import java.util.Map;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -21,5 +21,5 @@ public class VectorFeatureState extends AbstractFeatureState {
 	public double offsetX = 0.0;
 	public double offsetY = 0.0;
 	public boolean hidden = false;
-	
+
 }

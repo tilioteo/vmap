@@ -6,11 +6,11 @@ package org.vaadin.maps.client.ui;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VPanControl extends VNavigateControl {
-	
+
 	public static final String CLASSNAME = "v-pancontrol";
 
 	public VPanControl() {
@@ -24,10 +24,10 @@ public class VPanControl extends VNavigateControl {
 			super.setWidget(widget);
 		}
 	}
-	
+
 	@Override
 	public VPanHandler getHandler() {
 		return (VPanHandler) handler;
 	}
-	
+
 }

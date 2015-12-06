@@ -8,7 +8,7 @@ import org.vaadin.maps.ui.CanUndoRedo;
 import org.vaadin.maps.ui.control.Control;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -17,7 +17,7 @@ public class LineHandler extends PointHandler implements CanUndoRedo {
 	public LineHandler(Control control) {
 		super(control);
 	}
-	
+
 	@Override
 	protected LineHandlerState getState() {
 		return (LineHandlerState) super.getState();
@@ -27,7 +27,7 @@ public class LineHandler extends PointHandler implements CanUndoRedo {
 	public boolean undo() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean redo() {
 		return false;

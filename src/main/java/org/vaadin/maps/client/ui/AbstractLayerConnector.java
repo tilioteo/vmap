@@ -6,19 +6,17 @@ package org.vaadin.maps.client.ui;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ui.AbstractSingleComponentContainerConnector;
 
-
 /**
- * @author morong
+ * @author Kamil Morong
  * 
  */
 @SuppressWarnings("serial")
-public abstract class AbstractLayerConnector extends
-		AbstractSingleComponentContainerConnector {
+public abstract class AbstractLayerConnector extends AbstractSingleComponentContainerConnector {
 
-    @Override
-    public boolean delegateCaptionHandling() {
-        return false;
-    }
+	@Override
+	public boolean delegateCaptionHandling() {
+		return false;
+	}
 
 	@Override
 	public void updateCaption(ComponentConnector connector) {

@@ -6,14 +6,14 @@ package org.vaadin.maps.shared.ui.handler;
 import com.vaadin.shared.Connector;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public class PointHandlerState extends AbstractHandlerState {
-    {
-        primaryStyleName = "v-pointhandler";
-    }
+	{
+		primaryStyleName = "v-pointhandler";
+	}
 
-    public Connector layer = null;
+	public Connector layer = null;
 }

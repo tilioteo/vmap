@@ -9,7 +9,7 @@ import org.vaadin.maps.shared.ui.handler.PolygonHandlerState;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -23,7 +23,7 @@ public class PolygonHandlerConnector extends PathHandlerConnector {
 
 	@Override
 	public VPolygonHandler getWidget() {
-		return (VPolygonHandler)super.getWidget();
+		return (VPolygonHandler) super.getWidget();
 	}
 
 	@Override

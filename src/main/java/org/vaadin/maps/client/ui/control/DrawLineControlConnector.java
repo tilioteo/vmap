@@ -8,7 +8,7 @@ import org.vaadin.maps.client.ui.VDrawLineControl;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

@@ -6,7 +6,7 @@ package org.vaadin.maps.shared.ui.featurecontainer;
 import org.vaadin.maps.shared.ui.AbstractComponentContainerState;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

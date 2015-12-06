@@ -18,7 +18,7 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.util.ReflectTools;
 
 /**
- * @author morong
+ * @author Kamil Morong
  * 
  */
 @SuppressWarnings("serial")
@@ -49,7 +49,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 			clippedSizeChanged(oldWidth, oldHeight, width, height);
 		}
 	};
-	
+
 	private int clippedWidth = 0;
 	private int clippedHeight = 0;
 
@@ -105,7 +105,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	protected int getClippedHeight() {
 		return clippedHeight;
 	}
-	
+
 	protected abstract void clippedSizeChanged(int oldWidth, int oldHeight, int newWidth, int newHeight);
 
 	/**
@@ -113,7 +113,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	 * 
 	 */
 	public static class LoadEvent extends ComponentEvent {
-		
+
 		/**
 		 * New instance of tile load event.
 		 * 
@@ -142,12 +142,12 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	 */
 	public interface LoadListener extends Serializable {
 
-		public static final Method TILE_LOAD_METHOD = ReflectTools
-				.findMethod(LoadListener.class, "load",	LoadEvent.class);
+		public static final Method TILE_LOAD_METHOD = ReflectTools.findMethod(LoadListener.class, "load",
+				LoadEvent.class);
 
 		/**
-		 * Called when a {@link AbstractTile} has been loaded. A reference to the
-		 * tile is given by {@link LoadEvent#getTile()}.
+		 * Called when a {@link AbstractTile} has been loaded. A reference to
+		 * the tile is given by {@link LoadEvent#getTile()}.
 		 * 
 		 * @param event
 		 *            An event containing information about the click.
@@ -155,13 +155,13 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 		public void load(LoadEvent event);
 
 	}
-	
+
 	/**
 	 * Error event. This event is thrown, when the tile loading failed.
 	 * 
 	 */
 	public static class ErrorEvent extends ComponentEvent {
-		
+
 		/**
 		 * New instance of tile error event.
 		 * 
@@ -190,12 +190,12 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	 */
 	public interface ErrorListener extends Serializable {
 
-		public static final Method TILE_ERROR_METHOD = ReflectTools
-				.findMethod(ErrorListener.class, "error", ErrorEvent.class);
+		public static final Method TILE_ERROR_METHOD = ReflectTools.findMethod(ErrorListener.class, "error",
+				ErrorEvent.class);
 
 		/**
-		 * Called when a {@link AbstractProxyTile} loading failed. A reference to the
-		 * tile is given by {@link ErrorEvent#getTile()}.
+		 * Called when a {@link AbstractProxyTile} loading failed. A reference
+		 * to the tile is given by {@link ErrorEvent#getTile()}.
 		 * 
 		 * @param event
 		 *            An event containing information about the error.
@@ -203,7 +203,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 		public void error(ErrorEvent event);
 
 	}
-	
+
 	/**
 	 * Adds the tile load listener.
 	 * 
@@ -211,8 +211,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	 *            the Listener to be added.
 	 */
 	public void addLoadListener(LoadListener listener) {
-		addListener(LoadEvent.class, listener,
-				LoadListener.TILE_LOAD_METHOD);
+		addListener(LoadEvent.class, listener, LoadListener.TILE_LOAD_METHOD);
 	}
 
 	/**
@@ -222,8 +221,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	 *            the Listener to be removed.
 	 */
 	public void removeLoadListener(LoadListener listener) {
-		removeListener(LoadEvent.class, listener,
-				LoadListener.TILE_LOAD_METHOD);
+		removeListener(LoadEvent.class, listener, LoadListener.TILE_LOAD_METHOD);
 	}
 
 	/**
@@ -233,8 +231,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	 *            the Listener to be added.
 	 */
 	public void addErrorListener(ErrorListener listener) {
-		addListener(ErrorEvent.class, listener,
-				ErrorListener.TILE_ERROR_METHOD);
+		addListener(ErrorEvent.class, listener, ErrorListener.TILE_ERROR_METHOD);
 	}
 
 	/**
@@ -244,8 +241,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	 *            the Listener to be removed.
 	 */
 	public void removeErrorListener(ErrorListener listener) {
-		removeListener(ErrorEvent.class, listener,
-				ErrorListener.TILE_ERROR_METHOD);
+		removeListener(ErrorEvent.class, listener, ErrorListener.TILE_ERROR_METHOD);
 	}
 
 	/**
@@ -259,8 +255,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	 *            The listener to add
 	 */
 	public void addClickListener(ClickListener listener) {
-		addListener(EventId.CLICK_EVENT_IDENTIFIER, ClickEvent.class, listener,
-				ClickListener.clickMethod);
+		addListener(EventId.CLICK_EVENT_IDENTIFIER, ClickEvent.class, listener, ClickListener.clickMethod);
 	}
 
 	/**
@@ -271,8 +266,7 @@ public abstract class AbstractProxyTile<T extends TileResource> extends Abstract
 	 *            The listener to remove
 	 */
 	public void removeClickListener(ClickListener listener) {
-		removeListener(EventId.CLICK_EVENT_IDENTIFIER, ClickEvent.class,
-				listener);
+		removeListener(EventId.CLICK_EVENT_IDENTIFIER, ClickEvent.class, listener);
 	}
 
 }

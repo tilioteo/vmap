@@ -45,7 +45,7 @@ public class Point extends Geometry {
 	 * The <code>Coordinate</code> wrapped by this <code>Point</code>.
 	 */
 	protected CoordinateSequence coordinates;
-	
+
 	protected Point(int SRID) {
 		this.SRID = SRID;
 	}
@@ -73,7 +73,7 @@ public class Point extends Geometry {
 	 */
 	public Point(Coordinate coordinate, int SRID) {
 		this(SRID);
-		
+
 		if (coordinate != null) {
 			coordinates = new CoordinateSequence(coordinate);
 		}
@@ -101,19 +101,22 @@ public class Point extends Geometry {
 
 	private void init(CoordinateSequence coordinates) {
 		if (coordinates != null) {
-		    Assert.isTrue(coordinates.size() <= 1);
+			Assert.isTrue(coordinates.size() <= 1);
 			this.coordinates = new CoordinateSequence(coordinates);
 		}
 	}
 
+	@Override
 	public Coordinate[] getCoordinates() {
 		return isEmpty() ? new Coordinate[] {} : coordinates.toArray();
 	}
 
+	@Override
 	public int getNumPoints() {
 		return coordinates.size();
 	}
 
+	@Override
 	public boolean isEmpty() {
 		return coordinates.size() == 0;
 	}
@@ -132,6 +135,7 @@ public class Point extends Geometry {
 		return getCoordinate().y;
 	}
 
+	@Override
 	public Coordinate getCoordinate() {
 		if (isEmpty()) {
 			return null;
@@ -140,6 +144,7 @@ public class Point extends Geometry {
 		return coordinates.get(0);
 	}
 
+	@Override
 	public String getGeometryType() {
 		return "Point";
 	}

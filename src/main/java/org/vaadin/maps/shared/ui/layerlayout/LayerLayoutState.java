@@ -9,15 +9,15 @@ import java.util.Map;
 import org.vaadin.maps.shared.ui.AbstractLayoutState;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public class LayerLayoutState extends AbstractLayoutState {
-    {
-        primaryStyleName = "v-layerlayout";
-    }
+	{
+		primaryStyleName = "v-layerlayout";
+	}
 
-    // Maps each component to a position
-    public Map<String, String> connectorToCssPosition = new HashMap<String, String>();
+	// Maps each component to a position
+	public Map<String, String> connectorToCssPosition = new HashMap<String, String>();
 }

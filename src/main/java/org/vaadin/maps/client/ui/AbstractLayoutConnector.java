@@ -7,14 +7,12 @@ import org.vaadin.maps.shared.ui.AbstractLayoutState;
 
 import com.vaadin.client.ui.AbstractComponentContainerConnector;
 
-
 /**
- * @author morong
+ * @author Kamil Morong
  * 
  */
 @SuppressWarnings("serial")
-public abstract class AbstractLayoutConnector extends
-		AbstractComponentContainerConnector {
+public abstract class AbstractLayoutConnector extends AbstractComponentContainerConnector {
 
 	@Override
 	public AbstractLayoutState getState() {

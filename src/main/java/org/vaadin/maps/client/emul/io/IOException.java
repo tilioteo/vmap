@@ -18,11 +18,11 @@ package org.vaadin.maps.client.emul.io;
 @SuppressWarnings("serial")
 public class IOException extends Exception {
 
-  public IOException() {
-    super();
-  }
+	public IOException() {
+		super();
+	}
 
-  public IOException(String s) {
-    super(s);
-  }
+	public IOException(String s) {
+		super(s);
+	}
 }

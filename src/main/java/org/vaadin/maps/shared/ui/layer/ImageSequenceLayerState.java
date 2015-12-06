@@ -6,15 +6,15 @@ package org.vaadin.maps.shared.ui.layer;
 import org.vaadin.maps.shared.ui.AbstractLayerState;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public class ImageSequenceLayerState extends AbstractLayerState {
-    {
-        primaryStyleName = "v-imagesequencelayer";
-    }
-    
-    public int tabIndex;
+	{
+		primaryStyleName = "v-imagesequencelayer";
+	}
+
+	public int tabIndex;
 
 }

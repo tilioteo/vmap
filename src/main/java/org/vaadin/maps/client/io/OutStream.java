@@ -34,6 +34,8 @@ package org.vaadin.maps.client.io;
 
 import java.io.IOException;
 
+import org.vaadin.maps.client.emul.io.OutputStream;
+
 /**
  * A interface for classes providing an output stream of bytes. This interface
  * is similar to the Java {@link OutputStream}, but with a narrower interface to

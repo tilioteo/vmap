@@ -8,7 +8,7 @@ import org.vaadin.maps.shared.ui.LayoutClickRpc;
 import com.vaadin.shared.communication.ServerRpc;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 public interface GridLayoutServerRpc extends LayoutClickRpc, ServerRpc {

@@ -54,21 +54,19 @@ public class DoubleUtils {
 	// 2^-1022 (smallest double non-denorm)
 	private static final double POWER_MINUS_1022 = 2.2250738585072014E-308;
 
-	private static final double[] powers = { POWER_512, POWER_256, POWER_128,
-			POWER_64, POWER_32, POWER_16, POWER_8, POWER_4, POWER_2, POWER_1 };
+	private static final double[] powers = { POWER_512, POWER_256, POWER_128, POWER_64, POWER_32, POWER_16, POWER_8,
+			POWER_4, POWER_2, POWER_1 };
 
-	private static final double[] invPowers = { POWER_MINUS_512,
-			POWER_MINUS_256, POWER_MINUS_128, POWER_MINUS_64, POWER_MINUS_32,
-			POWER_MINUS_16, POWER_MINUS_8, POWER_MINUS_4, POWER_MINUS_2,
-			POWER_MINUS_1 };
+	private static final double[] invPowers = { POWER_MINUS_512, POWER_MINUS_256, POWER_MINUS_128, POWER_MINUS_64,
+			POWER_MINUS_32, POWER_MINUS_16, POWER_MINUS_8, POWER_MINUS_4, POWER_MINUS_2, POWER_MINUS_1 };
 
 	public static native boolean isInfinite(double x) /*-{
-														return !isFinite(x);
-														}-*/;
+		return !isFinite(x);
+	}-*/;
 
 	public static native boolean isNaN(double x) /*-{
-													return isNaN(x);
-													}-*/;
+		return isNaN(x);
+	}-*/;
 
 	public static double longBitsToDouble(long bits) {
 		long ihi = (long) (bits >> 32);
@@ -90,8 +88,7 @@ public class DoubleUtils {
 			return negative ? (d == 0.0 ? -0.0 : -d) : d;
 		} else if (exp == 0x7ff) {
 			if (ihi == 0 && ilo == 0) {
-				return negative ? Double.NEGATIVE_INFINITY
-						: Double.POSITIVE_INFINITY;
+				return negative ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
 			} else {
 				return Double.NaN;
 			}

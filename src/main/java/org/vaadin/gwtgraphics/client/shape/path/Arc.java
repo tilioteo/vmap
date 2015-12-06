@@ -33,8 +33,8 @@ public class Arc extends LineTo {
 
 	private boolean sweep;
 
-	public Arc(boolean relativeCoords, int rx, int ry, int xAxisRotation,
-			boolean largeArc, boolean sweep, int x, int y) {
+	public Arc(boolean relativeCoords, int rx, int ry, int xAxisRotation, boolean largeArc, boolean sweep, int x,
+			int y) {
 		super(relativeCoords, x, y);
 		this.rx = rx;
 		this.ry = ry;
@@ -86,8 +86,8 @@ public class Arc extends LineTo {
 
 	@Override
 	public String getSVGString() {
-		return isRelativeCoords() ? "a" : "A" + getRx() + "," + getRy() + " "
-				+ getxAxisRotation() + " " + (isLargeArc() ? "1" : "0") + ","
-				+ (isSweep() ? "1" : "0") + " " + getX() + "," + getY();
+		return isRelativeCoords() ? "a"
+				: "A" + getRx() + "," + getRy() + " " + getxAxisRotation() + " " + (isLargeArc() ? "1" : "0") + ","
+						+ (isSweep() ? "1" : "0") + " " + getX() + "," + getY();
 	}
 }

@@ -39,6 +39,7 @@ import org.vaadin.maps.client.geometry.CoordinateSequence;
 import org.vaadin.maps.client.geometry.Geometry;
 import org.vaadin.maps.client.geometry.GeometryCollection;
 import org.vaadin.maps.client.geometry.LineString;
+import org.vaadin.maps.client.geometry.LinearRing;
 import org.vaadin.maps.client.geometry.MultiLineString;
 import org.vaadin.maps.client.geometry.MultiPoint;
 import org.vaadin.maps.client.geometry.MultiPolygon;
@@ -82,8 +83,7 @@ public class WKBWriter {
 
 	private static char toHexDigit(int n) {
 		if (n < 0 || n > 15)
-			throw new IllegalArgumentException("Nibble value out of range: "
-					+ n);
+			throw new IllegalArgumentException("Nibble value out of range: " + n);
 		if (n <= 9)
 			return (char) ('0' + n);
 		return (char) ('A' + (n - 10));
@@ -92,8 +92,7 @@ public class WKBWriter {
 	private int outputDimension = 2;
 	private int byteOrder;
 	private ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
-	private OutStream byteArrayOutStream = new OutputStreamOutStream(
-			byteArrayOS);
+	private OutStream byteArrayOutStream = new OutputStreamOutStream(byteArrayOS);
 	// holds output data values
 	private byte[] buf = new byte[8];
 
@@ -130,8 +129,7 @@ public class WKBWriter {
 		this.byteOrder = byteOrder;
 
 		if (outputDimension < 2 || outputDimension > 3)
-			throw new IllegalArgumentException(
-					"Output dimension must be 2 or 3");
+			throw new IllegalArgumentException("Output dimension must be 2 or 3");
 	}
 
 	/**
@@ -146,8 +144,7 @@ public class WKBWriter {
 			byteArrayOS.reset();
 			write(geom, byteArrayOutStream);
 		} catch (IOException ex) {
-			throw new RuntimeException("Unexpected IO exception: "
-					+ ex.getMessage());
+			throw new RuntimeException("Unexpected IO exception: " + ex.getMessage());
 		}
 		return byteArrayOS.toByteArray();
 	}
@@ -171,17 +168,13 @@ public class WKBWriter {
 		} else if (geom instanceof Polygon) {
 			writePolygon((Polygon) geom, os);
 		} else if (geom instanceof MultiPoint) {
-			writeGeometryCollection(WKBConstants.wkbMultiPoint,
-					(MultiPoint) geom, os);
+			writeGeometryCollection(WKBConstants.wkbMultiPoint, (MultiPoint) geom, os);
 		} else if (geom instanceof MultiLineString) {
-			writeGeometryCollection(WKBConstants.wkbMultiLineString,
-					(MultiLineString) geom, os);
+			writeGeometryCollection(WKBConstants.wkbMultiLineString, (MultiLineString) geom, os);
 		} else if (geom instanceof MultiPolygon) {
-			writeGeometryCollection(WKBConstants.wkbMultiPolygon,
-					(MultiPolygon) geom, os);
+			writeGeometryCollection(WKBConstants.wkbMultiPolygon, (MultiPolygon) geom, os);
 		} else if (geom instanceof GeometryCollection) {
-			writeGeometryCollection(WKBConstants.wkbGeometryCollection,
-					(GeometryCollection) geom, os);
+			writeGeometryCollection(WKBConstants.wkbGeometryCollection, (GeometryCollection) geom, os);
 		} else {
 			Assert.shouldNeverReachHere("Unknown Geometry type");
 		}
@@ -189,15 +182,13 @@ public class WKBWriter {
 
 	private void writePoint(Point pt, OutStream os) throws IOException {
 		if (pt.getCoordinateSequence().size() == 0)
-			throw new IllegalArgumentException(
-					"Empty Points cannot be represented in WKB");
+			throw new IllegalArgumentException("Empty Points cannot be represented in WKB");
 		writeByteOrder(os);
 		writeGeometryType(WKBConstants.wkbPoint, os);
 		writeCoordinateSequence(pt.getCoordinateSequence(), false, os);
 	}
 
-	private void writeLineString(LineString line, OutStream os)
-			throws IOException {
+	private void writeLineString(LineString line, OutStream os) throws IOException {
 		writeByteOrder(os);
 		writeGeometryType(WKBConstants.wkbLineString, os);
 		writeCoordinateSequence(line.getCoordinateSequence(), true, os);
@@ -207,16 +198,13 @@ public class WKBWriter {
 		writeByteOrder(os);
 		writeGeometryType(WKBConstants.wkbPolygon, os);
 		writeInt(poly.getNumHoles() + 1, os);
-		writeCoordinateSequence(poly.getShell().getCoordinateSequence(), true,
-				os);
+		writeCoordinateSequence(poly.getShell().getCoordinateSequence(), true, os);
 		for (int i = 0; i < poly.getNumHoles(); i++) {
-			writeCoordinateSequence(poly.getHole(i).getCoordinateSequence(),
-					true, os);
+			writeCoordinateSequence(poly.getHole(i).getCoordinateSequence(), true, os);
 		}
 	}
 
-	private void writeGeometryCollection(int geometryType,
-			GeometryCollection gc, OutStream os) throws IOException {
+	private void writeGeometryCollection(int geometryType, GeometryCollection gc, OutStream os) throws IOException {
 		writeByteOrder(os);
 		writeGeometryType(geometryType, os);
 		writeInt(gc.getNumGeometries(), os);
@@ -233,8 +221,7 @@ public class WKBWriter {
 		os.write(buf, 1);
 	}
 
-	private void writeGeometryType(int geometryType, OutStream os)
-			throws IOException {
+	private void writeGeometryType(int geometryType, OutStream os) throws IOException {
 		int flag3D = (outputDimension == 3) ? 0x80000000 : 0;
 		int typeInt = geometryType | flag3D;
 		writeInt(typeInt, os);
@@ -245,8 +232,7 @@ public class WKBWriter {
 		os.write(buf, 4);
 	}
 
-	private void writeCoordinateSequence(CoordinateSequence seq,
-			boolean writeSize, OutStream os) throws IOException {
+	private void writeCoordinateSequence(CoordinateSequence seq, boolean writeSize, OutStream os) throws IOException {
 		if (writeSize)
 			writeInt(seq.size(), os);
 
@@ -259,15 +245,13 @@ public class WKBWriter {
 		}
 	}
 
-	private void writeCoordinate(CoordinateSequence seq, int index,
-			boolean output3D, OutStream os) throws IOException {
+	private void writeCoordinate(CoordinateSequence seq, int index, boolean output3D, OutStream os) throws IOException {
 		ByteOrderValues.putDouble(seq.getX(index), buf, byteOrder);
 		os.write(buf, 8);
 		ByteOrderValues.putDouble(seq.getY(index), buf, byteOrder);
 		os.write(buf, 8);
 		if (output3D) {
-			ByteOrderValues
-					.putDouble(seq.getOrdinate(index, 2), buf, byteOrder);
+			ByteOrderValues.putDouble(seq.getOrdinate(index, 2), buf, byteOrder);
 			os.write(buf, 8);
 		}
 	}

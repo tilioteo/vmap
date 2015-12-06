@@ -47,13 +47,11 @@ public class ByteOrderValues {
 
 	public static int getInt(byte[] buf, int byteOrder) {
 		if (byteOrder == BIG_ENDIAN) {
-			return ((int) (buf[0] & 0xff) << 24)
-					| ((int) (buf[1] & 0xff) << 16)
-					| ((int) (buf[2] & 0xff) << 8) | ((int) (buf[3] & 0xff));
+			return ((int) (buf[0] & 0xff) << 24) | ((int) (buf[1] & 0xff) << 16) | ((int) (buf[2] & 0xff) << 8)
+					| ((int) (buf[3] & 0xff));
 		} else {// LITTLE_ENDIAN
-			return ((int) (buf[3] & 0xff) << 24)
-					| ((int) (buf[2] & 0xff) << 16)
-					| ((int) (buf[1] & 0xff) << 8) | ((int) (buf[0] & 0xff));
+			return ((int) (buf[3] & 0xff) << 24) | ((int) (buf[2] & 0xff) << 16) | ((int) (buf[1] & 0xff) << 8)
+					| ((int) (buf[0] & 0xff));
 		}
 	}
 
@@ -73,18 +71,12 @@ public class ByteOrderValues {
 
 	public static long getLong(byte[] buf, int byteOrder) {
 		if (byteOrder == BIG_ENDIAN) {
-			return (long) (buf[0] & 0xff) << 56 | (long) (buf[1] & 0xff) << 48
-					| (long) (buf[2] & 0xff) << 40
-					| (long) (buf[3] & 0xff) << 32
-					| (long) (buf[4] & 0xff) << 24
-					| (long) (buf[5] & 0xff) << 16
+			return (long) (buf[0] & 0xff) << 56 | (long) (buf[1] & 0xff) << 48 | (long) (buf[2] & 0xff) << 40
+					| (long) (buf[3] & 0xff) << 32 | (long) (buf[4] & 0xff) << 24 | (long) (buf[5] & 0xff) << 16
 					| (long) (buf[6] & 0xff) << 8 | (long) (buf[7] & 0xff);
 		} else {// LITTLE_ENDIAN
-			return (long) (buf[7] & 0xff) << 56 | (long) (buf[6] & 0xff) << 48
-					| (long) (buf[5] & 0xff) << 40
-					| (long) (buf[4] & 0xff) << 32
-					| (long) (buf[3] & 0xff) << 24
-					| (long) (buf[2] & 0xff) << 16
+			return (long) (buf[7] & 0xff) << 56 | (long) (buf[6] & 0xff) << 48 | (long) (buf[5] & 0xff) << 40
+					| (long) (buf[4] & 0xff) << 32 | (long) (buf[3] & 0xff) << 24 | (long) (buf[2] & 0xff) << 16
 					| (long) (buf[1] & 0xff) << 8 | (long) (buf[0] & 0xff);
 		}
 	}

@@ -8,32 +8,33 @@ import org.vaadin.maps.ui.CanUndoRedo;
 import org.vaadin.maps.ui.control.Control;
 
 /**
- * @author Kamil Morong - Hypothesis
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public class PathHandler extends PointHandler implements CanUndoRedo {
-	
+
 	public enum FinishStrategy {
-		AltClick,
-		DoubleClick
+		AltClick, DoubleClick
 	}
-	
+
 	protected FinishStrategy strategy = FinishStrategy.AltClick;
-	
+
 	public PathHandler(Control control) {
 		super(control);
 	}
-	
+
 	@Override
 	protected PathHandlerState getState() {
 		return (PathHandlerState) super.getState();
 	}
 
+	@Override
 	public boolean undo() {
 		return false;
 	}
-	
+
+	@Override
 	public boolean redo() {
 		return false;
 	}
@@ -46,7 +47,5 @@ public class PathHandler extends PointHandler implements CanUndoRedo {
 		this.strategy = strategy;
 		getState().strategy = strategy.ordinal();
 	}
-	
-	
-	
+
 }

@@ -40,9 +40,9 @@ import org.vaadin.maps.client.geometry.wkt.WKTWriter;
  * The base class for all geometric objects.
  * <P>
  * 
- * <H3>Binary Predicates</H3>
- * Because it is not clear at this time what semantics for spatial analysis
- * methods involving <code>GeometryCollection</code>s would be useful,
+ * <H3>Binary Predicates</H3> Because it is not clear at this time what
+ * semantics for spatial analysis methods involving
+ * <code>GeometryCollection</code>s would be useful,
  * <code>GeometryCollection</code>s are not supported as arguments to binary
  * predicates (other than <code>convexHull</code>) or the <code>relate</code>
  * method.
@@ -121,13 +121,6 @@ import org.vaadin.maps.client.geometry.wkt.WKTWriter;
 @SuppressWarnings("serial")
 public abstract class Geometry implements Serializable {
 
-	/*
-	 * @SuppressWarnings("rawtypes") private final static Class[] sortedClasses
-	 * = new Class[] { Point.class, MultiPoint.class, LineString.class,
-	 * LinearRing.class, MultiLineString.class, Polygon.class,
-	 * MultiPolygon.class, GeometryCollection.class };
-	 */
-
 	/**
 	 * The ID of the Spatial Reference System used by this <code>Geometry</code>
 	 */
@@ -140,19 +133,19 @@ public abstract class Geometry implements Serializable {
 	 */
 	public Geometry() {
 	}
-	
+
 	public static final Geometry clone(Geometry geometry) {
 		// respect this serie of class checking LinearRing->LineString->Point
 		if (geometry instanceof LinearRing)
-			return new LinearRing((LinearRing)geometry);
+			return new LinearRing((LinearRing) geometry);
 		else if (geometry instanceof LineString)
-			return new LineString((LineString)geometry);
+			return new LineString((LineString) geometry);
 		else if (geometry instanceof Point)
-			return new Point((Point)geometry);
+			return new Point((Point) geometry);
 		else if (geometry instanceof Polygon)
-			return new Polygon((Polygon)geometry);
+			return new Polygon((Polygon) geometry);
 		else if (geometry instanceof GeometryCollection)
-			return GeometryCollection.clone((GeometryCollection)geometry);
+			return GeometryCollection.clone((GeometryCollection) geometry);
 		else
 			return null; // should not occur
 	}
@@ -339,44 +332,10 @@ public abstract class Geometry implements Serializable {
 	 */
 	protected void checkNotGeometryCollection(Geometry g) {
 		// Don't use instanceof because we want to allow subclasses
-		if (g.getClass()
-				.getName()
+		if (g.getClass().getName()
 				.equals(GeometryCollection.class.getName() /* "com.vividsolutions.jts.geom.GeometryCollection" */)) {
-			throw new IllegalArgumentException(
-					"This method does not support GeometryCollection arguments");
+			throw new IllegalArgumentException("This method does not support GeometryCollection arguments");
 		}
 	}
-
-	/**
-	 * Returns the first non-zero result of <code>compareTo</code> encountered
-	 * as the two <code>Collection</code>s are iterated over. If, by the time
-	 * one of the iterations is complete, no non-zero result has been
-	 * encountered, returns 0 if the other iteration is also complete. If
-	 * <code>b</code> completes before <code>a</code>, a positive number is
-	 * returned; if a before b, a negative number.
-	 * 
-	 * @param a
-	 *            a <code>Collection</code> of <code>Comparable</code>s
-	 * @param b
-	 *            a <code>Collection</code> of <code>Comparable</code>s
-	 * @return the first non-zero <code>compareTo</code> result, if any;
-	 *         otherwise, zero
-	 */
-	/*
-	 * protected int compare(Collection a, Collection b) { Iterator i =
-	 * a.iterator(); Iterator j = b.iterator(); while (i.hasNext() &&
-	 * j.hasNext()) { Comparable aElement = (Comparable) i.next(); Comparable
-	 * bElement = (Comparable) j.next(); int comparison =
-	 * aElement.compareTo(bElement); if (comparison != 0) { return comparison; }
-	 * } if (i.hasNext()) { return 1; } if (j.hasNext()) { return -1; } return
-	 * 0; }
-	 */
-
-	/*
-	 * private int getClassSortIndex() { for (int i = 0; i <
-	 * sortedClasses.length; i++) { if (sortedClasses[i].isInstance(this)) {
-	 * return i; } } // Assert.shouldNeverReachHere("Class not supported: " + //
-	 * this.getClass()); return -1; }
-	 */
 
 }

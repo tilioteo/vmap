@@ -33,8 +33,7 @@ public class CurveTo extends LineTo {
 
 	private int y2;
 
-	public CurveTo(boolean relativeCoords, int x1, int y1, int x2, int y2,
-			int x, int y) {
+	public CurveTo(boolean relativeCoords, int x1, int y1, int x2, int y2, int x, int y) {
 		super(relativeCoords, x, y);
 		this.x1 = x1;
 		this.y1 = y1;
@@ -84,7 +83,7 @@ public class CurveTo extends LineTo {
 
 	@Override
 	public String getSVGString() {
-		return isRelativeCoords() ? "c" : "C" + getX1() + " " + getY1() + " "
-				+ getX2() + " " + getY2() + " " + getX() + " " + getY();
+		return isRelativeCoords() ? "c"
+				: "C" + getX1() + " " + getY1() + " " + getX2() + " " + getY2() + " " + getX() + " " + getY();
 	}
 }

@@ -12,25 +12,26 @@ import org.vaadin.maps.shared.ui.AbstractLayoutState;
 import com.vaadin.shared.Connector;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public class GridLayoutState extends AbstractLayoutState {
-    {
-        primaryStyleName = "v-gridlayout";
-    }
-    public int rows = 0;
-    public int columns = 0;
-    public Map<Connector, ChildComponentData> childData = new HashMap<Connector, GridLayoutState.ChildComponentData>();
+	{
+		primaryStyleName = "v-gridlayout";
+	}
 
-    public static class ChildComponentData implements Serializable {
-        public int column1;
-        public int row1;
-        public int column2;
-        public int row2;
-        
-        public int left = 0;
-        public int top = 0;
-    }
+	public int rows = 0;
+	public int columns = 0;
+	public Map<Connector, ChildComponentData> childData = new HashMap<Connector, GridLayoutState.ChildComponentData>();
+
+	public static class ChildComponentData implements Serializable {
+		public int column1;
+		public int row1;
+		public int column2;
+		public int row2;
+
+		public int left = 0;
+		public int top = 0;
+	}
 }

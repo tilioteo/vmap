@@ -9,7 +9,7 @@ import org.vaadin.maps.shared.ui.control.ZoomControlState;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

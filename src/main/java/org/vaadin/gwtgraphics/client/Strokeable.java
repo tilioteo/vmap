@@ -26,7 +26,7 @@ public interface Strokeable {
 	/**
 	 * Returns the stroke color.
 	 */
-	public abstract String getStrokeColor();
+	public String getStrokeColor();
 
 	/**
 	 * Sets stroke color. The color value is specified using one of the CSS2
@@ -39,19 +39,19 @@ public interface Strokeable {
 	 * <li>rgb(100%, 0%, 0%)
 	 * </ul>
 	 * 
-	 * @see <a
-	 *      href="http://www.w3.org/TR/CSS2/syndata.html#value-def-color">http://www.w3.org/TR/CSS2/syndata.html#value-def-color</a>
+	 * @see <a href="http://www.w3.org/TR/CSS2/syndata.html#value-def-color">
+	 *      http://www.w3.org/TR/CSS2/syndata.html#value-def-color</a>
 	 * @param color
 	 *            the new stroke color
 	 */
-	public abstract void setStrokeColor(String color);
+	public void setStrokeColor(String color);
 
 	/**
 	 * Returns the stroke width in pixels.
 	 * 
 	 * @return the stroke width in pixels
 	 */
-	public abstract int getStrokeWidth();
+	public int getStrokeWidth();
 
 	/**
 	 * Sets the stroke width in pixels.
@@ -59,14 +59,14 @@ public interface Strokeable {
 	 * @param width
 	 *            the stroke width in pixels
 	 */
-	public abstract void setStrokeWidth(int width);
+	public void setStrokeWidth(int width);
 
 	/**
 	 * Returns the stroke opacity of the element.
 	 * 
 	 * @return the current stroke opacity
 	 */
-	public abstract double getStrokeOpacity();
+	public double getStrokeOpacity();
 
 	/**
 	 * Sets the stroke opacity of the element. The initial value 1.0 means fully
@@ -76,6 +76,6 @@ public interface Strokeable {
 	 * @param opacity
 	 *            the new stroke opacity
 	 */
-	public abstract void setStrokeOpacity(double opacity);
+	public void setStrokeOpacity(double opacity);
 
 }

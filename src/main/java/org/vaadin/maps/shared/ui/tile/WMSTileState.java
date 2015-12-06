@@ -4,7 +4,7 @@
 package org.vaadin.maps.shared.ui.tile;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

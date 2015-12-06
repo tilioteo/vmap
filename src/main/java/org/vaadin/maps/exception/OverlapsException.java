@@ -8,7 +8,7 @@ import org.vaadin.maps.ui.GridLayout;
 import com.vaadin.ui.Component;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -60,4 +60,3 @@ public class OverlapsException extends java.lang.RuntimeException {
 		return existingArea;
 	}
 }
-

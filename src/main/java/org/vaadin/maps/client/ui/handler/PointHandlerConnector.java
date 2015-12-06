@@ -21,17 +21,18 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 @Connect(org.vaadin.maps.ui.handler.PointHandler.class)
-public class PointHandlerConnector extends AbstractHandlerConnector implements SyntheticClickHandler, GeometryEventHandler {
+public class PointHandlerConnector extends AbstractHandlerConnector
+		implements SyntheticClickHandler, GeometryEventHandler {
 
 	@Override
 	protected void init() {
 		super.init();
-		
+
 		getWidget().clickHandlerSlave = this;
 		getWidget().addGeometryEventHandler(this);
 	}
@@ -49,37 +50,29 @@ public class PointHandlerConnector extends AbstractHandlerConnector implements S
 	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
-		
+
 		if (stateChangeEvent.hasPropertyChanged("layer")) {
 			Connector connector = getState().layer;
 			if (connector != null) {
 				if (connector instanceof VectorFeatureLayerConnector)
-					getWidget().setLayer(((VectorFeatureLayerConnector)connector).getWidget());
+					getWidget().setLayer(((VectorFeatureLayerConnector) connector).getWidget());
 			} else
 				getWidget().setLayer(null);
 		}
 	}
 
-	/*@Override
-	public void onClick(ClickEvent event) {
-		Coordinate coordinate = getWidget().createCoordinate(VPointHandler.getMouseEventXY(event));
-		MouseEventDetails mouseDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(), getWidget().getElement());
-		getRpcProxy(PointHandlerServerRpc.class).click(coordinate.x, coordinate.y,
-				mouseDetails.getButtonName(), mouseDetails.isAltKey(), mouseDetails.isCtrlKey(),
-				mouseDetails.isMetaKey(), mouseDetails.isShiftKey(), mouseDetails.isDoubleClick());
-	}*/
-
 	@Override
 	public void syntheticClick(MouseEventDetails details, Element relativeElement) {
 		Coordinate coordinate = getWidget().createCoordinate(VPointHandler.getMouseEventXY(details, relativeElement));
 		getRpcProxy(PointHandlerServerRpc.class).click(DateUtility.getTimestamp(), coordinate.x, coordinate.y,
-				details.getButtonName(), details.isAltKey(), details.isCtrlKey(),
-				details.isMetaKey(), details.isShiftKey(), details.isDoubleClick());
+				details.getButtonName(), details.isAltKey(), details.isCtrlKey(), details.isMetaKey(),
+				details.isShiftKey(), details.isDoubleClick());
 	}
 
 	@Override
 	public void geometry(GeometryEvent event) {
-		getRpcProxy(PointHandlerServerRpc.class).geometry(DateUtility.getTimestamp(), Utils.GeometryToWKBHex(event.getGeometry()));
+		getRpcProxy(PointHandlerServerRpc.class).geometry(DateUtility.getTimestamp(),
+				Utils.GeometryToWKBHex(event.getGeometry()));
 	}
 
 }

@@ -10,7 +10,7 @@ import org.vaadin.maps.ui.handler.PanHandler.PanEndListener;
 import org.vaadin.maps.ui.handler.PanHandler.PanStartListener;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -24,7 +24,7 @@ public class PanControl extends NavigateControl<PanHandler> {
 	protected PanControlState getState() {
 		return (PanControlState) super.getState();
 	}
-	
+
 	public void addPanStartListener(PanStartListener listener) {
 		if (handlerInstance != null) {
 			handlerInstance.addPanStartListener(listener);

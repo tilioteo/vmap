@@ -10,7 +10,7 @@ import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -35,7 +35,7 @@ public class PathHandlerConnector extends PointHandlerConnector {
 	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
-		
+
 		if (stateChangeEvent.hasPropertyChanged("strategy")) {
 			getWidget().setStrategyFromCode(getState().strategy);
 		}

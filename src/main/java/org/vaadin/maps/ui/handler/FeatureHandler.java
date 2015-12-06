@@ -14,13 +14,12 @@ import org.vaadin.maps.ui.feature.VectorFeature;
 import com.vaadin.util.ReflectTools;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
-public abstract class FeatureHandler extends AbstractHandler implements
-		RequiresVectorFeatureLayer {
-	
+public abstract class FeatureHandler extends AbstractHandler implements RequiresVectorFeatureLayer {
+
 	protected Style featureStyle = null;
 
 	protected FeatureHandler(Control control) {
@@ -40,19 +39,19 @@ public abstract class FeatureHandler extends AbstractHandler implements
 	 * 
 	 */
 	public class DrawFeatureEvent extends ComponentEvent {
-		
+
 		public DrawFeatureEvent(long timestamp, PointHandler source, VectorFeature feature) {
 			super(timestamp, source);
 			this.feature = feature;
 		}
 
 		private VectorFeature feature;
-		
+
 		public VectorFeature getFeature() {
 			return feature;
 		}
 	}
-	
+
 	/**
 	 * Interface for listening for a {@link DrawFeatureEvent} fired by a
 	 * {@link PointHandler}.
@@ -60,9 +59,8 @@ public abstract class FeatureHandler extends AbstractHandler implements
 	 */
 	public interface DrawFeatureListener extends Serializable {
 
-		public static final Method DRAW_FEATURE_METHOD = ReflectTools
-				.findMethod(DrawFeatureListener.class, "drawFeature",
-						DrawFeatureEvent.class);
+		public static final Method DRAW_FEATURE_METHOD = ReflectTools.findMethod(DrawFeatureListener.class,
+				"drawFeature", DrawFeatureEvent.class);
 
 		/**
 		 * Called when a feature has been drawn.
@@ -73,7 +71,7 @@ public abstract class FeatureHandler extends AbstractHandler implements
 		public void drawFeature(DrawFeatureEvent event);
 
 	}
-	
+
 	/**
 	 * Adds the draw feature listener.
 	 * 
@@ -81,8 +79,7 @@ public abstract class FeatureHandler extends AbstractHandler implements
 	 *            the Listener to be added.
 	 */
 	public void addDrawFeatureListener(DrawFeatureListener listener) {
-		addListener(DrawFeatureEvent.class, listener,
-				DrawFeatureListener.DRAW_FEATURE_METHOD);
+		addListener(DrawFeatureEvent.class, listener, DrawFeatureListener.DRAW_FEATURE_METHOD);
 	}
 
 	/**
@@ -92,8 +89,7 @@ public abstract class FeatureHandler extends AbstractHandler implements
 	 *            the Listener to be removed.
 	 */
 	public void removeDrawFeatureListener(DrawFeatureListener listener) {
-		removeListener(DrawFeatureEvent.class, listener,
-				DrawFeatureListener.DRAW_FEATURE_METHOD);
+		removeListener(DrawFeatureEvent.class, listener, DrawFeatureListener.DRAW_FEATURE_METHOD);
 	}
 
 }

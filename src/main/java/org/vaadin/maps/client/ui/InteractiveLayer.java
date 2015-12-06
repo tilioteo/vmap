@@ -7,15 +7,15 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public abstract class InteractiveLayer extends AbstractLayer implements PanHandler, ZoomHandler, SizeChangeHandler {
 
 	private int shiftX = 0;
-    private int shiftY = 0;
+	private int shiftY = 0;
 
-    protected boolean fixed = false; 
+	protected boolean fixed = false;
 
 	public boolean isFixed() {
 		return fixed;
@@ -26,7 +26,7 @@ public abstract class InteractiveLayer extends AbstractLayer implements PanHandl
 	}
 
 	@Override
-	public void onSizeChange(int oldWidth, int oldHeight, int newWidth,	int newHeight) {
+	public void onSizeChange(int oldWidth, int oldHeight, int newWidth, int newHeight) {
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public abstract class InteractiveLayer extends AbstractLayer implements PanHandl
 		if (!fixed) {
 			Widget content = getWidget();
 			if (content instanceof CanShift) {
-				((CanShift)content).setShift(shiftX + dX, shiftY + dY);
+				((CanShift) content).setShift(shiftX + dX, shiftY + dY);
 			}
 		}
 	}
@@ -46,7 +46,7 @@ public abstract class InteractiveLayer extends AbstractLayer implements PanHandl
 			shiftY += totalY;
 		}
 	}
-	
+
 	@Override
 	public void onZoom(double zoom) {
 		if (!fixed) {
@@ -65,5 +65,5 @@ public abstract class InteractiveLayer extends AbstractLayer implements PanHandl
 			handler = null;
 		}
 	}
-	
+
 }

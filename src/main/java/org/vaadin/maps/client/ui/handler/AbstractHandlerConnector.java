@@ -10,7 +10,7 @@ import org.vaadin.maps.shared.ui.handler.HandlerClientRpc;
 import com.vaadin.client.ui.AbstractComponentConnector;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -19,13 +19,13 @@ public abstract class AbstractHandlerConnector extends AbstractComponentConnecto
 	@Override
 	protected void init() {
 		super.init();
-		
+
 		registerRpc(HandlerClientRpc.class, new HandlerClientRpc() {
 			@Override
 			public void cancel() {
 				getWidget().cancel();
 			}
-		}); 
+		});
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class GeometryCollection extends Geometry implements Iterable<Geometry> {
 	 * Internal representation of this <code>GeometryCollection</code>.
 	 */
 	protected LinkedList<Geometry> geometries = new LinkedList<Geometry>();
-	
+
 	protected GeometryCollection(int SRID) {
 		this.SRID = SRID;
 	}
@@ -65,12 +65,11 @@ public class GeometryCollection extends Geometry implements Iterable<Geometry> {
 	 */
 	public GeometryCollection(Geometry[] geometries, int SRID) {
 		this(SRID);
-		
+
 		if (geometries != null) {
 
 			if (hasNullElements(geometries)) {
-				throw new IllegalArgumentException(
-						"geometries must not contain null elements");
+				throw new IllegalArgumentException("geometries must not contain null elements");
 			}
 			for (Geometry geometry : geometries) {
 				this.geometries.add(Geometry.clone(geometry));
@@ -80,15 +79,16 @@ public class GeometryCollection extends Geometry implements Iterable<Geometry> {
 
 	public static final GeometryCollection clone(GeometryCollection geometryCollection) {
 		if (geometryCollection instanceof MultiPoint)
-			return new MultiPoint((MultiPoint)geometryCollection);
+			return new MultiPoint((MultiPoint) geometryCollection);
 		else if (geometryCollection instanceof MultiLineString)
-			return new MultiLineString((MultiLineString)geometryCollection);
+			return new MultiLineString((MultiLineString) geometryCollection);
 		else if (geometryCollection instanceof MultiPolygon)
-			return new MultiPolygon((MultiPolygon)geometryCollection);
+			return new MultiPolygon((MultiPolygon) geometryCollection);
 		else
-			return new GeometryCollection(geometryCollection.geometries.toArray(new Geometry[0]), geometryCollection.SRID);
+			return new GeometryCollection(geometryCollection.geometries.toArray(new Geometry[0]),
+					geometryCollection.SRID);
 	}
-	
+
 	@Override
 	public Iterator<Geometry> iterator() {
 		return geometries.iterator();
@@ -111,14 +111,14 @@ public class GeometryCollection extends Geometry implements Iterable<Geometry> {
 	 * container which is not synchronized back.
 	 * 
 	 * @return the collected coordinates
-	 * */
+	 */
 	@Override
 	public Coordinate[] getCoordinates() {
 		Coordinate[] coordinates = new Coordinate[getNumPoints()];
 		int k = -1;
 		for (Geometry geometry : geometries) {
 			for (Coordinate coordinate : geometry.getCoordinates()) {
-				coordinates[++k] = coordinate;//new Coordinate(coordinate);
+				coordinates[++k] = coordinate;
 			}
 		}
 		return coordinates;

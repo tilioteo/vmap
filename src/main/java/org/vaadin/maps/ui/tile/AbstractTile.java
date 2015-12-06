@@ -9,7 +9,7 @@ import org.vaadin.maps.shared.ui.AbstractTileState;
 import com.vaadin.ui.AbstractComponent;
 
 /**
- * @author morong
+ * @author Kamil Morong
  * 
  */
 @SuppressWarnings("serial")

@@ -8,15 +8,15 @@ import java.io.Serializable;
 import com.gwtent.reflection.client.Reflectable;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 @Reflectable
 public class Style implements Serializable {
-	
+
 	public static final Style DEFAULT = new Style();
-	
+
 	public static final Style DEFAULT_DRAW_CURSOR = new Style() {
 		{
 			strokeColor = "blue";
@@ -24,14 +24,14 @@ public class Style implements Serializable {
 			fillOpacity = 0.3;
 		}
 	};
-	
+
 	public static final Style DEFAULT_DRAW_START_POINT = new Style() {
 		{
 			fillColor = "cyan";
 			fillOpacity = 0.3;
 		}
 	};
-	
+
 	public static final Style DEFAULT_DRAW_VERTEX = new Style() {
 		{
 			strokeColor = "blue";
@@ -39,7 +39,7 @@ public class Style implements Serializable {
 			pointRadius = 2;
 		}
 	};
-	
+
 	public static final Style DEFAULT_DRAW_LINE = new Style() {
 		{
 			strokeColor = "cyan";
@@ -47,7 +47,7 @@ public class Style implements Serializable {
 			fillOpacity = 0.0;
 		}
 	};
-	
+
 	public Style() {
 		opacity = 1.0;
 		strokeColor = "black";
@@ -66,7 +66,7 @@ public class Style implements Serializable {
 		pointShape = "Circle";
 		pointShapeScale = 5.0;
 	}
-	
+
 	public double opacity;
 	public String strokeColor;
 	public int strokeWidth;
@@ -83,5 +83,5 @@ public class Style implements Serializable {
 	public double textFillOpacity;
 	public String pointShape;
 	public double pointShapeScale;
-	
+
 }

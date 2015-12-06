@@ -4,7 +4,7 @@
 package org.vaadin.maps.client.ui;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public interface SizeChangeHandler {

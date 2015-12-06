@@ -46,9 +46,9 @@ public class MultiPolygon extends GeometryCollection {
 	 *            or <code>null</code> or an empty array to create the empty
 	 *            geometry. Elements may be empty <code>Polygon</code>s, but not
 	 *            <code>null</code>s. The polygons must conform to the
-	 *            assertions specified in the <A
-	 *            HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple
-	 *            Features Specification for SQL</A>.
+	 *            assertions specified in the
+	 *            <A HREF="http://www.opengis.org/techno/specs.htm">OpenGIS
+	 *            Simple Features Specification for SQL</A>.
 	 */
 	public MultiPolygon(Polygon[] polygons) {
 		this(polygons, 0);
@@ -62,9 +62,9 @@ public class MultiPolygon extends GeometryCollection {
 	 *            or <code>null</code> or an empty array to create the empty
 	 *            geometry. Elements may be empty <code>Polygon</code>s, but not
 	 *            <code>null</code> s. The polygons must conform to the
-	 *            assertions specified in the <A
-	 *            HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple
-	 *            Features Specification for SQL</A> .
+	 *            assertions specified in the
+	 *            <A HREF="http://www.opengis.org/techno/specs.htm">OpenGIS
+	 *            Simple Features Specification for SQL</A> .
 	 * @param precisionModel
 	 *            the specification of the grid of allowable points for this
 	 *            <code>MultiPolygon</code>
@@ -93,8 +93,8 @@ public class MultiPolygon extends GeometryCollection {
 		if (!(other instanceof MultiPolygon)) {
 			return false;
 		}
-		
+
 		return super.equals(other);
 	}
-	
+
 }

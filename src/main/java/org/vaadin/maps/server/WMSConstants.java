@@ -4,10 +4,10 @@
 package org.vaadin.maps.server;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
-public class WMSConstants {
+public interface WMSConstants {
 
 	public static final String PARAM_SERVICE_WMS = "SERVICE=WMS";
 	public static final String PARAM_VERSION = "VERSION";
@@ -27,7 +27,7 @@ public class WMSConstants {
 	public static final String DEFAULT_FORMAT = "image/jpeg";
 	public static final int DEFAULT_WIDTH = 255;
 	public static final int DEFAULT_HEIGHT = 255;
-	
+
 	public static final String GET_CAPABILITIES = "GetCapabilities";
 	public static final String GET_MAP = "GetMap";
 	public static final String GET_FEATURE_INFO = "GetFeatureInfo";

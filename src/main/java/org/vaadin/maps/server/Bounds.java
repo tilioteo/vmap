@@ -4,11 +4,11 @@
 package org.vaadin.maps.server;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class Bounds {
-	
+
 	private static final int DEFAULT_DECIMAL = 6;
 
 	private double left = 0.0;
@@ -18,7 +18,7 @@ public class Bounds {
 
 	public Bounds() {
 	}
-	
+
 	public Bounds(double left, double bottom, double right, double top) {
 		if (left <= right) {
 			this.left = left;
@@ -52,7 +52,7 @@ public class Bounds {
 	public double getTop() {
 		return top;
 	}
-	
+
 	public LonLat getTopLeft() {
 		return new LonLat(left, top);
 	}
@@ -68,17 +68,17 @@ public class Bounds {
 	public LonLat getBottomRight() {
 		return new LonLat(right, bottom);
 	}
-	
+
 	public double getWidth() {
 		return right - left;
 	}
-	
+
 	public void setWidth(double width) {
 		if (width > 0) {
 			right = left + width;
 		}
 	}
-	
+
 	public void setWidthCentered(double width) {
 		if (width > 0) {
 			double add = (width - getWidth()) / 2;
@@ -86,17 +86,17 @@ public class Bounds {
 			right += add;
 		}
 	}
-	
+
 	public double getHeight() {
 		return top - bottom;
 	}
-	
+
 	public void setHeight(double height) {
 		if (height > 0) {
 			bottom = top - height;
 		}
 	}
-	
+
 	public void setHeightCentered(double height) {
 		if (height > 0) {
 			double add = (height - getHeight()) / 2;
@@ -104,42 +104,40 @@ public class Bounds {
 			top += add;
 		}
 	}
-	
+
 	public LonLat getCenter() {
 		return new LonLat((left + right) / 2, (bottom + top) / 2);
 	}
-	
+
 	public Bounds scale(double ratio, LonLat origin) {
 		if (null == origin) {
 			origin = getCenter();
 		}
-		
-		return new Bounds(
-				(left - origin.getLon()) * ratio + origin.getLon(),
+
+		return new Bounds((left - origin.getLon()) * ratio + origin.getLon(),
 				(bottom - origin.getLat()) * ratio + origin.getLat(),
-				(right - origin.getLon()) * ratio + origin.getLon(),
-				(top - origin.getLat()) * ratio + origin.getLat());
+				(right - origin.getLon()) * ratio + origin.getLon(), (top - origin.getLat()) * ratio + origin.getLat());
 	}
-	
+
 	public Bounds scale(double ratio) {
 		return scale(ratio, null);
 	}
-	
+
 	public Bounds add(double x, double y) {
 		return new Bounds(left + x, bottom + y, right + x, top + y);
 	}
-	
+
 	public boolean isValid() {
 		return getWidth() > 0 && getHeight() > 0;
 	}
-	
+
 	public void shift(double x, double y) {
 		left += x;
 		bottom += y;
 		right += x;
 		top += y;
 	}
-	
+
 	public void extend(LonLat lonLat) {
 		if (lonLat != null) {
 			if (lonLat.getLon() < left) {
@@ -156,14 +154,14 @@ public class Bounds {
 			}
 		}
 	}
-	
+
 	public void expand(double x, double y) {
 		left -= x;
 		bottom -= y;
 		right += x;
 		top += y;
 	}
-	
+
 	public void extend(Bounds bounds) {
 		if (bounds != null) {
 			if (bounds.left < left) {
@@ -180,7 +178,7 @@ public class Bounds {
 			}
 		}
 	}
-	
+
 	public String toBBOX(int decimal, boolean reverseAxisOrder) {
 		if (decimal >= 0) {
 			double multi = Math.pow(10, decimal);
@@ -226,12 +224,12 @@ public class Bounds {
 		if (!(obj instanceof Bounds)) {
 			return false;
 		}
-		
+
 		Bounds other = (Bounds) obj;
-		
+
 		return (left == other.left && bottom == other.bottom && right == other.right && top == other.top);
 	}
-	
+
 	@Override
 	public Bounds clone() {
 		return new Bounds(left, bottom, right, top);
@@ -239,9 +237,10 @@ public class Bounds {
 
 	@Override
 	public String toString() {
-		return "left=" + left + ",bottom=" + bottom + ",right=" + right + ",top=" + top + "\nwidth=" + getWidth() + ",height=" + getHeight();
+		return "left=" + left + ",bottom=" + bottom + ",right=" + right + ",top=" + top + "\nwidth=" + getWidth()
+				+ ",height=" + getHeight();
 	}
-	
+
 	public static Bounds fromBBOX(String bbox, boolean reverseAxisOrder) {
 		if (bbox != null && !bbox.trim().isEmpty()) {
 			String[] parts = bbox.split(",");
@@ -254,10 +253,9 @@ public class Bounds {
 						return null;
 					}
 				}
-				
-				return reverseAxisOrder ?
-						new Bounds(box[1], box[0], box[3], box[2]) :
-							new Bounds(box[0], box[1], box[2], box[3]);
+
+				return reverseAxisOrder ? new Bounds(box[1], box[0], box[3], box[2])
+						: new Bounds(box[0], box[1], box[2], box[3]);
 			}
 		}
 		return null;

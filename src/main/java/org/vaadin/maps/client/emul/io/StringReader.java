@@ -59,9 +59,9 @@ public class StringReader extends Reader {
 	 * 
 	 * @return The next character or -1 if end of text is reached.
 	 */
+	@Override
 	public int read() throws IOException {
-		return (this.position == this.text.length()) ? -1 : this.text
-				.charAt(this.position++);
+		return (this.position == this.text.length()) ? -1 : this.text.charAt(this.position++);
 	}
 
 	@Override

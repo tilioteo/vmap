@@ -30,7 +30,7 @@ import com.vaadin.client.LayoutManager;
 import com.vaadin.client.StyleConstants;
 
 /**
- * @author morong
+ * @author Kamil Morong
  * 
  */
 public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandler {
@@ -41,8 +41,8 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 	protected final Element container = Document.get().createDivElement();
 
 	protected Map<Widget, LayoutWrapper> widgetLayoutWrappers = new HashMap<Widget, LayoutWrapper>();
-	
-    private LayoutManager layoutManager;
+
+	private LayoutManager layoutManager;
 
 	/**
 	 * Default constructor
@@ -72,13 +72,6 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 		style.setZIndex(750);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.user.client.ui.Panel#add(com.google.gwt.user.client.ui
-	 * .Widget)
-	 */
 	@Override
 	public void add(Widget child) {
 		LayoutWrapper wrapper = new LayoutWrapper(child);
@@ -87,13 +80,6 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 		super.add(wrapper.getWidget(), container);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.user.client.ui.ComplexPanel#remove(com.google.gwt.user
-	 * .client.ui.Widget)
-	 */
 	@Override
 	public boolean remove(Widget w) {
 		LayoutWrapper wrapper = getChildWrapper(w);
@@ -115,11 +101,6 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 		return getChildWrapper(widget) != null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.google.gwt.user.client.ui.ComplexPanel#getWidget(int)
-	 */
 	@Override
 	public Widget getWidget(int index) {
 		for (int i = 0, j = 0; i < super.getWidgetCount(); i++) {
@@ -135,11 +116,6 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.google.gwt.user.client.ui.ComplexPanel#getWidgetCount()
-	 */
 	@Override
 	public int getWidgetCount() {
 		int counter = 0;
@@ -151,13 +127,6 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 		return counter;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.user.client.ui.ComplexPanel#getWidgetIndex(com.google.
-	 * gwt.user.client.ui.Widget)
-	 */
 	@Override
 	public int getWidgetIndex(Widget child) {
 		for (int i = 0, j = 0; i < super.getWidgetCount(); i++) {
@@ -206,24 +175,11 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.user.client.ui.UIObject#setStylePrimaryName(java.lang.
-	 * String)
-	 */
 	@Override
 	public void setStylePrimaryName(String style) {
 		updateStylenames(style);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.user.client.ui.UIObject#setStyleName(java.lang.String)
-	 */
 	@Override
 	public void setStyleName(String style) {
 		super.setStyleName(style);
@@ -246,24 +202,23 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 		}
 	}
 
-    /**
-     * Set the layout manager for the layout
-     * 
-     * @param manager
-     *            The layout manager to use
-     */
-    public void setLayoutManager(LayoutManager manager) {
-        layoutManager = manager;
-    }
+	/**
+	 * Set the layout manager for the layout
+	 * 
+	 * @param manager
+	 *            The layout manager to use
+	 */
+	public void setLayoutManager(LayoutManager manager) {
+		layoutManager = manager;
+	}
 
-    /**
-     * Get the layout manager used by this layout
-     * 
-     */
-    public LayoutManager getLayoutManager() {
-        return layoutManager;
-    }
-
+	/**
+	 * Get the layout manager used by this layout
+	 * 
+	 */
+	public LayoutManager getLayoutManager() {
+		return layoutManager;
+	}
 
 	/**
 	 * Cleanup old wrappers which have been left empty by other inner layouts
@@ -299,12 +254,11 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 	public void setWidgetWrapperStyleNames(Widget widget, String... stylenames) {
 		LayoutWrapper wrapper = getChildWrapper(widget);
 		if (wrapper == null) {
-			throw new IllegalArgumentException(
-					"No wrapper for widget found, has the widget been added to the layout?");
+			throw new IllegalArgumentException("No wrapper for widget found, has the widget been added to the layout?");
 		}
 		wrapper.setWrapperStyleNames(stylenames);
 	}
-	
+
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 		return addDomHandler(handler, MouseDownEvent.getType());
 	}
@@ -366,7 +320,7 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 		public void setOrder(String order) {
 			if (css == null || !css.equals(order)) {
 				css = order;
-				/*top = right = bottom = left =*/ zIndex = null;
+				/* top = right = bottom = left = */ zIndex = null;
 				if (!css.equals("")) {
 					String[] properties = css.split(";");
 					for (int i = 0; i < properties.length; i++) {
@@ -432,7 +386,7 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 		while (iterator.hasNext()) {
 			Widget widget = iterator.next();
 			if (widget instanceof PanHandler) {
-				((PanHandler)widget).onPanStep(dX, dY);
+				((PanHandler) widget).onPanStep(dX, dY);
 			}
 		}
 	}
@@ -443,7 +397,7 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 		while (iterator.hasNext()) {
 			Widget widget = iterator.next();
 			if (widget instanceof PanHandler) {
-				((PanHandler)widget).onPanEnd(totalX, totalY);
+				((PanHandler) widget).onPanEnd(totalX, totalY);
 			}
 		}
 	}
@@ -454,7 +408,7 @@ public class VLayerLayout extends ComplexPanel implements PanHandler, ZoomHandle
 		while (iterator.hasNext()) {
 			Widget widget = iterator.next();
 			if (widget instanceof ZoomHandler) {
-				((ZoomHandler)widget).onZoom(zoom);
+				((ZoomHandler) widget).onZoom(zoom);
 			}
 		}
 	}

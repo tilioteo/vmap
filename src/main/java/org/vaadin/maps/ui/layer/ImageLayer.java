@@ -10,39 +10,39 @@ import org.vaadin.maps.server.ImageResource;
 import org.vaadin.maps.shared.ui.layer.ImageLayerServerRpc;
 import org.vaadin.maps.shared.ui.layer.ImageLayerState;
 import org.vaadin.maps.ui.MeasuredSizeHandler;
-import org.vaadin.maps.ui.tile.ImageTile;
 import org.vaadin.maps.ui.tile.AbstractProxyTile.ErrorListener;
 import org.vaadin.maps.ui.tile.AbstractProxyTile.LoadListener;
+import org.vaadin.maps.ui.tile.ImageTile;
 
 import com.vaadin.ui.Component.Focusable;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public class ImageLayer extends AbstractLayer<ImageTile> implements Focusable, MeasuredSizeHandler {
-	
+
 	private ImageLayerServerRpc rpc = new ImageLayerServerRpc() {
-		/*@Override
-		public void click(MouseEventDetails mouseDetails) {
-			fireEvent(new ClickEvent(ImageLayer.this, mouseDetails));
-		}*/
+		/*
+		 * @Override public void click(MouseEventDetails mouseDetails) {
+		 * fireEvent(new ClickEvent(ImageLayer.this, mouseDetails)); }
+		 */
 	};
-	
+
 	private ImageTile tile = null;
-	
+
 	public ImageLayer() {
 		registerRpc(rpc);
 		getState().tabIndex = -1;
 		getState().base = true;
-		
+
 		initTile();
 	}
-	
+
 	private void initTile() {
 		tile = new ImageTile();
-		//tile.setSizeFull();
+
 		setContent(tile);
 	}
 
@@ -50,7 +50,7 @@ public class ImageLayer extends AbstractLayer<ImageTile> implements Focusable, M
 		this();
 		setTileUrl(imageURL);
 	}
-	
+
 	public ImageLayer(String imageURL) {
 		this();
 		setTileUrl(imageURL);
@@ -65,7 +65,7 @@ public class ImageLayer extends AbstractLayer<ImageTile> implements Focusable, M
 	public boolean isFixed() {
 		return getState().fixed;
 	}
-	
+
 	public void setFixed(boolean fixed) {
 		getState().fixed = fixed;
 	}
@@ -77,26 +77,26 @@ public class ImageLayer extends AbstractLayer<ImageTile> implements Focusable, M
 
 	@Override
 	public int getTabIndex() {
-        return getState().tabIndex;
+		return getState().tabIndex;
 	}
 
 	@Override
 	public void setTabIndex(int tabIndex) {
-        getState().tabIndex = tabIndex;
+		getState().tabIndex = tabIndex;
 	}
 
-    @Override
-    public void focus() {
-        super.focus();
-    }
-    
-    public void setTileUrl(URL imageURL) {
-    	tile.setSource(new ImageResource(imageURL));
-    }
+	@Override
+	public void focus() {
+		super.focus();
+	}
 
-    public void setTileUrl(String imageURL) {
-    	tile.setSource(new ImageResource(imageURL));
-    }
+	public void setTileUrl(URL imageURL) {
+		tile.setSource(new ImageResource(imageURL));
+	}
+
+	public void setTileUrl(String imageURL) {
+		tile.setSource(new ImageResource(imageURL));
+	}
 
 	/**
 	 * Adds the image tile click listener.
@@ -160,7 +160,7 @@ public class ImageLayer extends AbstractLayer<ImageTile> implements Focusable, M
 
 	@Override
 	public void sizeChanged(int oldWidth, int oldHeight, int newWidth, int newHeight) {
-		
+
 	}
 
 }

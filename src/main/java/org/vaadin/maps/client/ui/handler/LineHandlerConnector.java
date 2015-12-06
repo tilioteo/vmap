@@ -9,7 +9,7 @@ import org.vaadin.maps.shared.ui.handler.LineHandlerState;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

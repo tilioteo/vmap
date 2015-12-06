@@ -8,7 +8,7 @@ import org.vaadin.maps.ui.MapConstants;
 import com.vaadin.server.ExternalResource;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -24,39 +24,26 @@ public class WMSResource extends ExternalResource implements TileResource {
 	private String srs = MapConstants.DEFAULT_CRS;
 	private String bbox = "";
 	private boolean transparent = false;
-	
 
 	public WMSResource(String baseURL) {
 		super(baseURL);
 		this.baseUrl = baseURL;
 	}
-	
-	/*public WMSResource(String baseURL, String version, String format, String srs, String layers, String styles, String bbox, int width, int height) {
-		this(baseURL);
-		setVersion(version);
-		setFormat(format);
-		setSRS(srs);
-		setLayers(layers);
-		setStyles(styles);
-		setBBox(bbox);
-		setWidth(width);
-		setHeight(height);
-	}*/
 
-    /**
-     * Gets the URL of the external resource.
-     * 
-     * @return the URL of the external resource.
-     */
-    public String getURL() {
-        return buildRequest();
-    }
+	/**
+	 * Gets the URL of the external resource.
+	 * 
+	 * @return the URL of the external resource.
+	 */
+	public String getURL() {
+		return buildRequest();
+	}
 
 	@Override
 	public String getMIMEType() {
 		return format;
 	}
-	
+
 	private String buildRequest() {
 		StringBuilder builder = new StringBuilder(baseUrl);
 		if (!baseUrl.endsWith("?")) {
@@ -66,7 +53,7 @@ public class WMSResource extends ExternalResource implements TileResource {
 		builder.append("&" + WMSConstants.PARAM_VERSION + "=" + version);
 		builder.append("&" + WMSConstants.PARAM_LAYERS + "=" + layers);
 		builder.append("&" + WMSConstants.PARAM_REQUEST + "=" + WMSConstants.GET_MAP);
-		
+
 		if (version.startsWith("1.1")) {
 			builder.append("&" + WMSConstants.PARAM_SRS);
 		} else {
@@ -78,11 +65,11 @@ public class WMSResource extends ExternalResource implements TileResource {
 		builder.append("&" + WMSConstants.PARAM_HEIGHT + "=" + height);
 		builder.append("&" + WMSConstants.PARAM_FORMAT + "=" + format);
 		builder.append("&" + WMSConstants.PARAM_STYLES + "=" + styles);
-		
+
 		if (transparent) {
 			builder.append("&" + WMSConstants.PARAM_TRANSPARENT + "=" + "TRUE");
 		}
-		
+
 		return builder.toString();
 	}
 
@@ -209,5 +196,5 @@ public class WMSResource extends ExternalResource implements TileResource {
 	public String getBaseUrl() {
 		return baseUrl;
 	}
-	
+
 }

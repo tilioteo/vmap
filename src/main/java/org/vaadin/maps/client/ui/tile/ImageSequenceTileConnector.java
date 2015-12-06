@@ -25,51 +25,51 @@ import com.vaadin.shared.communication.URLReference;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 @Connect(org.vaadin.maps.ui.tile.ImageSequenceTile.class)
-public class ImageSequenceTileConnector extends AbstractComponentConnector implements SequenceLoadedHandler, SequenceErrorHandler, LoadHandler {
+public class ImageSequenceTileConnector extends AbstractComponentConnector
+		implements SequenceLoadedHandler, SequenceErrorHandler, LoadHandler {
 
 	@Override
-    protected void init() {
-        super.init();
-        
-        getWidget().addSequenceLoadedHandler(this);
-        getWidget().addSequenceErrorHandler(this);
-        getWidget().addHandler(this, LoadEvent.getType());
-    }
+	protected void init() {
+		super.init();
 
-    protected final ClickEventHandler clickEventHandler = new ClickEventHandler(
-            this) {
-        @Override
-        protected void fireClick(NativeEvent event, MouseEventDetails mouseDetails) {
-            getRpcProxy(ImageSequenceTileServerRpc.class).click(DateUtility.getTimestamp(),
-            		mouseDetails, getWidget().getIndex());
-        }
+		getWidget().addSequenceLoadedHandler(this);
+		getWidget().addSequenceErrorHandler(this);
+		getWidget().addHandler(this, LoadEvent.getType());
+	}
 
-    };
-	
+	protected final ClickEventHandler clickEventHandler = new ClickEventHandler(this) {
+		@Override
+		protected void fireClick(NativeEvent event, MouseEventDetails mouseDetails) {
+			getRpcProxy(ImageSequenceTileServerRpc.class).click(DateUtility.getTimestamp(), mouseDetails,
+					getWidget().getIndex());
+		}
+
+	};
+
 	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
 
-        clickEventHandler.handleEventHandlerRegistration();
-        
-        if (stateChangeEvent.hasPropertyChanged("sources")) {
-        	LinkedList<String> urls = new LinkedList<String>();
-        	for (URLReference urlRef : getState().sources) {
-        		if (urlRef != null && urlRef.getURL() != null) {
-        			urls.add(urlRef.getURL());
-        		}
-        	}
-        	getWidget().setUrls(urls);
-        }
-        
-        if (stateChangeEvent.hasPropertyChanged("index")) {
-        	getWidget().setIndex(getState().index);
-        }
+		clickEventHandler.handleEventHandlerRegistration();
+
+		if (stateChangeEvent.hasPropertyChanged("sources")) {
+			LinkedList<String> urls = new LinkedList<String>();
+			for (URLReference urlRef : getState().sources) {
+				if (urlRef != null && urlRef.getURL() != null) {
+					urls.add(urlRef.getURL());
+				}
+			}
+			getWidget().setUrls(urls);
+		}
+
+		if (stateChangeEvent.hasPropertyChanged("index")) {
+			getWidget().setIndex(getState().index);
+		}
 	}
 
 	@Override
@@ -84,18 +84,18 @@ public class ImageSequenceTileConnector extends AbstractComponentConnector imple
 
 	@Override
 	public void onLoad(LoadEvent event) {
-        getLayoutManager().setNeedsMeasure(ImageSequenceTileConnector.this);
-        getRpcProxy(ImageSequenceTileServerRpc.class).changed(DateUtility.getTimestamp(), getWidget().getIndex());
+		getLayoutManager().setNeedsMeasure(ImageSequenceTileConnector.this);
+		getRpcProxy(ImageSequenceTileServerRpc.class).changed(DateUtility.getTimestamp(), getWidget().getIndex());
 	}
 
 	@Override
 	public void error(SequenceErrorEvent event) {
-        getRpcProxy(ImageSequenceTileServerRpc.class).error(DateUtility.getTimestamp());
+		getRpcProxy(ImageSequenceTileServerRpc.class).error(DateUtility.getTimestamp());
 	}
 
 	@Override
 	public void loaded(SequenceLoadedEvent event) {
-        getRpcProxy(ImageSequenceTileServerRpc.class).load(DateUtility.getTimestamp());
+		getRpcProxy(ImageSequenceTileServerRpc.class).load(DateUtility.getTimestamp());
 	}
-	
+
 }

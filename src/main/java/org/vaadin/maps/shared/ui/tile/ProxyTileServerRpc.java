@@ -7,11 +7,11 @@ import org.vaadin.maps.shared.ui.ClickRpc;
 import org.vaadin.maps.shared.ui.LoadRpc;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 public interface ProxyTileServerRpc extends ClickRpc, LoadRpc {
-	
+
 	public void updateClippedSize(int width, int height);
 
 }

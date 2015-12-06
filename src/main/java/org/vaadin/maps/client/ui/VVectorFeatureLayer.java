@@ -6,7 +6,7 @@ package org.vaadin.maps.client.ui;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  * 
  */
 public class VVectorFeatureLayer extends InteractiveLayer {
@@ -27,13 +27,13 @@ public class VVectorFeatureLayer extends InteractiveLayer {
 	@Override
 	public void onZoom(double zoom) {
 		super.onZoom(zoom);
-		
+
 		if (!fixed) {
 			clearShift();
-			
+
 			Widget content = getWidget();
 			if (content instanceof CanShift) {
-				((CanShift)content).setShift(0, 0);
+				((CanShift) content).setShift(0, 0);
 			}
 		}
 	}

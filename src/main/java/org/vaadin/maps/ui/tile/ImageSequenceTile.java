@@ -25,23 +25,23 @@ import com.vaadin.ui.Component;
 import com.vaadin.util.ReflectTools;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public class ImageSequenceTile extends AbstractTile {
-	
+
 	protected ImageSequenceTileServerRpc rpc = new ImageSequenceTileServerRpc() {
 		@Override
 		public void load(long timestamp) {
 			fireEvent(new LoadEvent(timestamp, ImageSequenceTile.this));
 		}
-		
+
 		@Override
 		public void error(long timestamp) {
 			fireEvent(new ErrorEvent(timestamp, ImageSequenceTile.this));
 		}
-		
+
 		@Override
 		public void changed(long timestamp, int index) {
 			fireEvent(new ChangeEvent(timestamp, ImageSequenceTile.this, index));
@@ -54,7 +54,7 @@ public class ImageSequenceTile extends AbstractTile {
 	};
 
 	private LinkedList<Resource> resources = new LinkedList<Resource>();
-	
+
 	public ImageSequenceTile() {
 		registerRpc(rpc);
 	}
@@ -63,40 +63,40 @@ public class ImageSequenceTile extends AbstractTile {
 	protected ImageSequenceTileState getState() {
 		return (ImageSequenceTileState) super.getState();
 	}
-	
+
 	public void addResource(String url) {
 		ExternalResource source = new ExternalResource(url);
 		addSource(source);
 	}
-	
+
 	public void addResource(URL url) {
 		ExternalResource source = new ExternalResource(url);
 		addSource(source);
 	}
-	
+
 	protected void addSource(Resource source) {
 		resources.add(source);
-		
+
 		List<URLReference> sources = getState().sources;
-        sources.add(new ResourceReference(source, this, Integer.toString(sources.size())));
-        getState().sourceTypes.add(source.getMIMEType());
+		sources.add(new ResourceReference(source, this, Integer.toString(sources.size())));
+		getState().sourceTypes.add(source.getMIMEType());
 	}
-	
+
 	public void clear() {
 		resources.clear();
 
 		getState().sources.clear();
-        getState().sourceTypes.clear();
+		getState().sourceTypes.clear();
 	}
-	
+
 	public int getIndex() {
 		return getState().index;
 	}
-	
+
 	public void setIndex(int index) {
 		getState().index = index;
 	}
-	
+
 	public int getTilesCount() {
 		return resources.size();
 	}
@@ -106,7 +106,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 * 
 	 */
 	public static class LoadEvent extends ComponentEvent {
-		
+
 		/**
 		 * New instance of tile load event.
 		 * 
@@ -135,12 +135,12 @@ public class ImageSequenceTile extends AbstractTile {
 	 */
 	public interface LoadListener extends Serializable {
 
-		public static final Method TILE_LOAD_METHOD = ReflectTools
-				.findMethod(LoadListener.class, "load",	LoadEvent.class);
+		public static final Method TILE_LOAD_METHOD = ReflectTools.findMethod(LoadListener.class, "load",
+				LoadEvent.class);
 
 		/**
-		 * Called when a {@link ImageSequenceTile} has been loaded. A reference to the
-		 * tile is given by {@link LoadEvent#getTile()}.
+		 * Called when a {@link ImageSequenceTile} has been loaded. A reference
+		 * to the tile is given by {@link LoadEvent#getTile()}.
 		 * 
 		 * @param event
 		 *            An event containing information about the click.
@@ -148,13 +148,14 @@ public class ImageSequenceTile extends AbstractTile {
 		public void load(LoadEvent event);
 
 	}
-	
+
 	/**
-	 * Error event. This event is thrown, when the image sequence loading failed.
+	 * Error event. This event is thrown, when the image sequence loading
+	 * failed.
 	 * 
 	 */
 	public static class ErrorEvent extends ComponentEvent {
-		
+
 		/**
 		 * New instance of tile error event.
 		 * 
@@ -183,12 +184,12 @@ public class ImageSequenceTile extends AbstractTile {
 	 */
 	public interface ErrorListener extends Serializable {
 
-		public static final Method TILE_ERROR_METHOD = ReflectTools
-				.findMethod(ErrorListener.class, "error", ErrorEvent.class);
+		public static final Method TILE_ERROR_METHOD = ReflectTools.findMethod(ErrorListener.class, "error",
+				ErrorEvent.class);
 
 		/**
-		 * Called when a {@link ImageSequenceTile} loading failed. A reference to the
-		 * tile is given by {@link ErrorEvent#getTile()}.
+		 * Called when a {@link ImageSequenceTile} loading failed. A reference
+		 * to the tile is given by {@link ErrorEvent#getTile()}.
 		 * 
 		 * @param event
 		 *            An event containing information about the error.
@@ -196,15 +197,15 @@ public class ImageSequenceTile extends AbstractTile {
 		public void error(ErrorEvent event);
 
 	}
-	
+
 	/**
 	 * Change event. This event is thrown, when the image has changed.
 	 * 
 	 */
 	public static class ChangeEvent extends ComponentEvent {
-		
+
 		private int index;
-		
+
 		/**
 		 * New instance of tile change event.
 		 * 
@@ -224,7 +225,7 @@ public class ImageSequenceTile extends AbstractTile {
 		public ImageSequenceTile getTile() {
 			return (ImageSequenceTile) getSource();
 		}
-		
+
 		public int getIndex() {
 			return index;
 		}
@@ -238,12 +239,12 @@ public class ImageSequenceTile extends AbstractTile {
 	 */
 	public interface ChangeListener extends Serializable {
 
-		public static final Method TILE_CHANGE_METHOD = ReflectTools
-				.findMethod(ChangeListener.class, "change", ChangeEvent.class);
+		public static final Method TILE_CHANGE_METHOD = ReflectTools.findMethod(ChangeListener.class, "change",
+				ChangeEvent.class);
 
 		/**
-		 * Called when an image of {@link ImageSequenceTile} has been changed. A reference to the
-		 * tile is given by {@link ChangeEvent#getTile()}.
+		 * Called when an image of {@link ImageSequenceTile} has been changed. A
+		 * reference to the tile is given by {@link ChangeEvent#getTile()}.
 		 * 
 		 * @param event
 		 *            An event containing information about the click.
@@ -251,9 +252,9 @@ public class ImageSequenceTile extends AbstractTile {
 		public void change(ChangeEvent event);
 
 	}
-	
+
 	public static class ClickEvent extends MouseEvents.ClickEvent {
-		
+
 		private int index;
 
 		public ClickEvent(long timestamp, ImageSequenceTile source, MouseEventDetails mouseEventDetails, int index) {
@@ -269,28 +270,28 @@ public class ImageSequenceTile extends AbstractTile {
 		public ImageSequenceTile getTile() {
 			return (ImageSequenceTile) getSource();
 		}
-		
+
 		public int getIndex() {
 			return index;
 		}
 
 	}
-	
+
 	public interface ClickListener extends ConnectorEventListener {
 
-        public static final Method clickMethod = ReflectTools.findMethod(
-                ClickListener.class, "click", ClickEvent.class);
+		public static final Method clickMethod = ReflectTools.findMethod(ClickListener.class, "click",
+				ClickEvent.class);
 
-        /**
-         * Called when a {@link Component} has been clicked. A reference to the
-         * component is given by {@link ClickEvent#getComponent()}.
-         * 
-         * @param event
-         *            An event containing information about the click.
-         */
-        public void click(ClickEvent event);
+		/**
+		 * Called when a {@link Component} has been clicked. A reference to the
+		 * component is given by {@link ClickEvent#getComponent()}.
+		 * 
+		 * @param event
+		 *            An event containing information about the click.
+		 */
+		public void click(ClickEvent event);
 	}
-	
+
 	/**
 	 * Adds the tile load listener.
 	 * 
@@ -298,8 +299,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 *            the Listener to be added.
 	 */
 	public void addLoadListener(LoadListener listener) {
-		addListener(LoadEvent.class, listener,
-				LoadListener.TILE_LOAD_METHOD);
+		addListener(LoadEvent.class, listener, LoadListener.TILE_LOAD_METHOD);
 	}
 
 	/**
@@ -309,8 +309,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 *            the Listener to be removed.
 	 */
 	public void removeLoadListener(LoadListener listener) {
-		removeListener(LoadEvent.class, listener,
-				LoadListener.TILE_LOAD_METHOD);
+		removeListener(LoadEvent.class, listener, LoadListener.TILE_LOAD_METHOD);
 	}
 
 	/**
@@ -320,8 +319,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 *            the Listener to be added.
 	 */
 	public void addErrorListener(ErrorListener listener) {
-		addListener(ErrorEvent.class, listener,
-				ErrorListener.TILE_ERROR_METHOD);
+		addListener(ErrorEvent.class, listener, ErrorListener.TILE_ERROR_METHOD);
 	}
 
 	/**
@@ -331,8 +329,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 *            the Listener to be removed.
 	 */
 	public void removeErrorListener(ErrorListener listener) {
-		removeListener(ErrorEvent.class, listener,
-				ErrorListener.TILE_ERROR_METHOD);
+		removeListener(ErrorEvent.class, listener, ErrorListener.TILE_ERROR_METHOD);
 	}
 
 	/**
@@ -342,8 +339,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 *            the Listener to be added.
 	 */
 	public void addChangeListener(ChangeListener listener) {
-		addListener(ChangeEvent.class, listener,
-				ChangeListener.TILE_CHANGE_METHOD);
+		addListener(ChangeEvent.class, listener, ChangeListener.TILE_CHANGE_METHOD);
 	}
 
 	/**
@@ -353,8 +349,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 *            the Listener to be removed.
 	 */
 	public void removeChangeListener(ChangeListener listener) {
-		removeListener(ChangeEvent.class, listener,
-				ChangeListener.TILE_CHANGE_METHOD);
+		removeListener(ChangeEvent.class, listener, ChangeListener.TILE_CHANGE_METHOD);
 	}
 
 	/**
@@ -368,8 +363,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 *            The listener to add
 	 */
 	public void addClickListener(ClickListener listener) {
-		addListener(EventId.CLICK_EVENT_IDENTIFIER, ClickEvent.class, listener,
-				ClickListener.clickMethod);
+		addListener(EventId.CLICK_EVENT_IDENTIFIER, ClickEvent.class, listener, ClickListener.clickMethod);
 	}
 
 	/**
@@ -380,8 +374,7 @@ public class ImageSequenceTile extends AbstractTile {
 	 *            The listener to remove
 	 */
 	public void removeClickListener(ClickListener listener) {
-		removeListener(EventId.CLICK_EVENT_IDENTIFIER, ClickEvent.class,
-				listener);
+		removeListener(EventId.CLICK_EVENT_IDENTIFIER, ClickEvent.class, listener);
 	}
 
 }

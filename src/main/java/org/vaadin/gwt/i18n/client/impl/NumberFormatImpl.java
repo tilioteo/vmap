@@ -24,10 +24,10 @@ import org.vaadin.gwt.i18n.client.DecimalFormatSymbols;
  */
 public class NumberFormatImpl extends DecimalFormat {
 
-  protected NumberFormatImpl() {
-    super();
-    DecimalFormatSymbols dfs = getDecimalFormatSymbols();
-    setDecimalFormatSymbols(dfs);
-  }
+	protected NumberFormatImpl() {
+		super();
+		DecimalFormatSymbols dfs = getDecimalFormatSymbols();
+		setDecimalFormatSymbols(dfs);
+	}
 
 }

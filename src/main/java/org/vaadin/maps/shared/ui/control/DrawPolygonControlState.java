@@ -4,13 +4,13 @@
 package org.vaadin.maps.shared.ui.control;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public class DrawPolygonControlState extends DrawPathControlState {
-    {
-        primaryStyleName = "v-drawpolygoncontrol";
-    }
+	{
+		primaryStyleName = "v-drawpolygoncontrol";
+	}
 
 }

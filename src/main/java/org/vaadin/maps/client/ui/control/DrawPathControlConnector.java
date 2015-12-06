@@ -11,7 +11,7 @@ import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -31,7 +31,7 @@ public class DrawPathControlConnector extends DrawFeatureControlConnector {
 	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
-		
+
 		if (stateChangeEvent.hasPropertyChanged("startPointStyle")) {
 			getWidget().setStartPointStyle(MapUtility.getStyleFromMap(getState().startPointStyle, null));
 		}
@@ -42,5 +42,5 @@ public class DrawPathControlConnector extends DrawFeatureControlConnector {
 			getWidget().setVertexStyle(MapUtility.getStyleFromMap(getState().vertexStyle, null));
 		}
 	}
-		
+
 }

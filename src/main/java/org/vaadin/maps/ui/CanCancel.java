@@ -4,11 +4,11 @@
 package org.vaadin.maps.ui;
 
 /**
- * @author Kamil Morong - Hypothesis
+ * @author Kamil Morong
  *
  */
 public interface CanCancel {
 
-	void cancel();
-	
+	public void cancel();
+
 }

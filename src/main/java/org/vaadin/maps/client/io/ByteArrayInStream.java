@@ -55,6 +55,7 @@ public class ByteArrayInStream implements InStream {
 		bis = new ByteArrayInputStream(byteBuffer);
 	}
 
+	@Override
 	public void read(byte[] buf) throws IOException {
 		bis.read(buf);
 	}

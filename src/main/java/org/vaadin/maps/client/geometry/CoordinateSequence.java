@@ -50,12 +50,6 @@ import java.util.List;
  * parameterized by your CoordinateSequenceFactory, and use this GeometryFactory
  * to create new Geometries. All of these new Geometries will use your
  * CoordinateSequence implementation.
- * <p>
- * For an example, see the code for
- * {@link com.vividsolutions.jtsexample.geom.TwoArrayCoordinateSequenceExample}.
- * 
- * @see DefaultCoordinateSequenceFactory
- * @see TwoArrayCoordinateSequenceFactory
  * 
  * @version 1.7
  */
@@ -82,6 +76,7 @@ public class CoordinateSequence implements Iterable<Coordinate> {
 		}
 	}
 
+	@Override
 	public Iterator<Coordinate> iterator() {
 		return coordinates.iterator();
 	}
@@ -89,10 +84,10 @@ public class CoordinateSequence implements Iterable<Coordinate> {
 	public void add(Coordinate coordinate) {
 		coordinates.add(coordinate);
 	}
-	
+
 	public void removeLast() {
 		if (coordinates.size() > 0) {
-			coordinates.remove(coordinates.size()-1);
+			coordinates.remove(coordinates.size() - 1);
 		}
 	}
 
@@ -196,23 +191,23 @@ public class CoordinateSequence implements Iterable<Coordinate> {
 		}
 		return array;
 	}
-	
+
 	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof CoordinateSequence)) {
 			return false;
 		}
-		
+
 		CoordinateSequence otherSequence = (CoordinateSequence) other;
 		if (size() != otherSequence.size())
 			return false;
-		
+
 		for (int i = 0; i < size(); i++) {
 			if (!coordinates.get(i).equals(otherSequence.coordinates.get(i))) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 

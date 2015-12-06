@@ -8,7 +8,7 @@ import java.util.Date;
 import com.vaadin.ui.Component;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

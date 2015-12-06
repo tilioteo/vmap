@@ -19,43 +19,42 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.vaadin.shared.MouseEventDetails;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VPathHandler extends VPointHandler {
-	
+
 	public enum FinishStrategy {
-		AltClick,
-		DoubleClick
+		AltClick, DoubleClick
 	}
 
 	public static final String CLASSNAME = "v-pathhandler";
-	
+
 	protected static final int DOUBLE_CLICK_THRESHOLD = 400; // milliseconds
-	
+
 	/**
-	 * Representation of line start point, 
+	 * Representation of line start point,
 	 */
 	protected Circle startPoint = null;
 	protected Style startPointStyle = Style.DEFAULT_DRAW_START_POINT;
-	
+
 	/**
 	 * Stack of line vertices, excluding first and last vertex
 	 */
 	protected Stack<Circle> vertices = new Stack<Circle>();
 	protected Style vertexStyle = Style.DEFAULT_DRAW_VERTEX;
-	
+
 	protected Path line = null;
 	protected Style lineStyle = Style.DEFAULT_DRAW_LINE;
-	
+
 	protected FinishStrategy strategy = FinishStrategy.AltClick;
 	protected Duration clickDuration = null;
-	
+
 	/**
 	 * line actually drawn
 	 */
 	protected LineString lineString = null;
-	
+
 	public VPathHandler() {
 		super();
 		setStyleName(CLASSNAME);
@@ -77,7 +76,7 @@ public class VPathHandler extends VPointHandler {
 		container.remove(startPoint);
 		startPoint = null;
 	}
-	
+
 	private void addLine(int x, int y) {
 		line = new Path(x, y);
 		line.setFillAllowed(false);
@@ -85,7 +84,7 @@ public class VPathHandler extends VPointHandler {
 		updateLineStyle();
 		container.add(line);
 	}
-	
+
 	private void updateLineStyle() {
 		if (line != null && lineStyle != null) {
 			Utils.updateDrawingStyle(line, lineStyle);
@@ -97,20 +96,20 @@ public class VPathHandler extends VPointHandler {
 		line = null;
 		removeVertices();
 	}
-	
+
 	private void addVertex(int x, int y) {
 		Circle vertex = new Circle(x, y, 0);
 		updateDrawVertexStyle(vertex);
 		vertices.add(vertex);
 		container.add(vertex);
 	}
-	
+
 	private void updateDrawVertexStyle(Circle vertex) {
 		if (vertex != null && vertexStyle != null) {
 			Utils.updateDrawingStyle(vertex, vertexStyle);
 		}
 	}
-	
+
 	private void updateVerticesStyle() {
 		for (Circle vertex : vertices) {
 			updateDrawVertexStyle(vertex);
@@ -137,10 +136,10 @@ public class VPathHandler extends VPointHandler {
 
 	protected void addLineSegment(int x, int y) {
 		addVertex(x, y);
-		
+
 		line.lineTo(x, y);
 	}
-	
+
 	protected void addLineStringVertex(int[] xy) {
 		lineString.getCoordinateSequence().add(createCoordinate(xy));
 	}
@@ -153,20 +152,16 @@ public class VPathHandler extends VPointHandler {
 			line.issueRedraw(true);
 		}
 	}
-	
+
 	protected void prepareDrawing(int x, int y) {
 		addStartPoint(x, y);
 		addLine(x, y);
 	}
-	
+
 	protected void prepareLineString(int[] xy) {
 		lineString = new LineString(createCoordinate(xy));
 	}
-	
-	/*private void finishLineString(int[] xy) {
-		lineString.getCoordinateSequence().add(createWorldCoordinate(xy));
-	}*/
-	
+
 	protected void closeLineString() {
 		lineString.close();
 	}
@@ -176,135 +171,65 @@ public class VPathHandler extends VPointHandler {
 		removeStartPoint();
 		removeLine();
 	}
-	
+
 	protected void cleanLineString() {
 		lineString = null;
 	}
-	
+
 	public Style getStartPointStyle() {
 		return startPointStyle;
 	}
-	
+
 	public void setStartPointStyle(Style style) {
 		if (style != null) {
 			startPointStyle = style;
 		} else {
 			startPointStyle = Style.DEFAULT_DRAW_CURSOR;
 		}
-		
+
 		updateStartPointStyle();
 	}
 
 	public Style getLineStyle() {
 		return lineStyle;
 	}
-	
+
 	public void setLineStyle(Style style) {
 		if (style != null) {
 			lineStyle = style;
 		} else {
 			lineStyle = Style.DEFAULT_DRAW_LINE;
 		}
-		
+
 		updateLineStyle();
 	}
 
 	public Style getVertexStyle() {
 		return vertexStyle;
 	}
-	
+
 	public void setVertexStyle(Style style) {
 		if (style != null) {
 			vertexStyle = style;
 		} else {
 			vertexStyle = Style.DEFAULT_DRAW_VERTEX;
 		}
-		
+
 		updateVerticesStyle();
 	}
 
-	/*@Override
-	public void onClick(ClickEvent event) {
-		if (!active) {
-			return;
-		}
-		
-		boolean finish = false;
-		boolean isDoubleClick = false;
-		
-		if (null == clickDuration) {
-			clickDuration = new Duration();
-			
-		} else {
-			if (clickDuration.elapsedMillis() <= DOUBLE_CLICK_THRESHOLD) {
-				isDoubleClick = true;
-				clickDuration = null;
-			} else {
-				clickDuration = new Duration();
-			}
-		}
-
-		if (isDoubleClick && !FinishStrategy.DoubleClick.equals(strategy)) {
-			return;
-		}
-		
-		int[] xy = getMouseEventXY(event);
-
-		// first click
-		// add start point and begin line drawing
-		// create and insert start point
-		if (null == startPoint) {
-			prepareDrawing(xy[0], xy[1]);
-			prepareLineString(xy);
-		} else {
-			if (event.isShiftKeyDown() && (FinishStrategy.AltClick.equals(strategy) || isDoubleClick)) {
-				// finish drawing with closing line if shift key has been pressed
-				// and the click is in start point's circle
-				if (isWithinCircle(startPoint.getX(), startPoint.getY(), startPoint.getRadius(), xy[0], xy[1])) {
-					finish = true;
-					if (isDoubleClick) {
-						// remove last vertex from everywhere
-						removeLastLineStringVertex();
-						removeLastVertex();
-					}
-					// close line
-					closeLineString();
-				}
-			} else if ((FinishStrategy.AltClick.equals(strategy) && event.isAltKeyDown())) {
-				// finish drawing when strategy conditions pass
-				finish = true;
-				// append last vertex
-				addLineStringVertex(xy);
-
-			} else if (FinishStrategy.DoubleClick.equals(strategy) && isDoubleClick) {
-				finish = true;
-			}
-			
-			if (finish) {
-				fireEvent(new GeometryEvent(VPathHandler.this, lineString));
-				cleanDrawing();
-				cleanLineString();
-			} else {
-				addLineSegment(xy[0], xy[1]);
-				// append vertex
-				addLineStringVertex(xy);
-			}
-		}
-	}*/
-
-	
 	@Override
 	protected void syntheticClick(MouseEventDetails details, Element relativeElement) {
 		if (!active) {
 			return;
 		}
-		
+
 		boolean finish = false;
 		boolean isDoubleClick = false;
-		
+
 		if (null == clickDuration) {
 			clickDuration = new Duration();
-			
+
 		} else {
 			if (clickDuration.elapsedMillis() <= DOUBLE_CLICK_THRESHOLD) {
 				isDoubleClick = true;
@@ -317,7 +242,7 @@ public class VPathHandler extends VPointHandler {
 		if (isDoubleClick && !FinishStrategy.DoubleClick.equals(strategy)) {
 			return;
 		}
-		
+
 		int[] xy = getMouseEventXY(details, relativeElement);
 
 		// first click
@@ -328,7 +253,8 @@ public class VPathHandler extends VPointHandler {
 			prepareLineString(xy);
 		} else {
 			if (details.isShiftKey() && (FinishStrategy.AltClick.equals(strategy) || isDoubleClick)) {
-				// finish drawing with closing line if shift key has been pressed
+				// finish drawing with closing line if shift key has been
+				// pressed
 				// and the click is in start point's circle
 				if (isWithinCircle(startPoint.getX(), startPoint.getY(), startPoint.getRadius(), xy[0], xy[1])) {
 					finish = true;
@@ -349,7 +275,7 @@ public class VPathHandler extends VPointHandler {
 			} else if (FinishStrategy.DoubleClick.equals(strategy) && isDoubleClick) {
 				finish = true;
 			}
-			
+
 			if (finish) {
 				fireEvent(new GeometryEvent(VPathHandler.this, lineString));
 				cleanDrawing();
@@ -363,22 +289,19 @@ public class VPathHandler extends VPointHandler {
 	}
 
 	protected boolean isWithinCircle(int circleX, int circleY, int radius, int pointX, int pointY) {
-		return Math.sqrt(
-				Math.pow(pointX - circleX, 2) +
-				Math.pow(pointY - circleY, 2)
-				) <= radius;
+		return Math.sqrt(Math.pow(pointX - circleX, 2) + Math.pow(pointY - circleY, 2)) <= radius;
 	}
-	
+
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 		if (!active) {
 			return;
 		}
-		
+
 		super.onMouseMove(event);
-		
+
 		int[] xy = getMouseEventXY(event);
-		
+
 		// update line segment to current position
 		updateLineSegment(xy[0], xy[1]);
 	}
@@ -395,7 +318,7 @@ public class VPathHandler extends VPointHandler {
 
 	@Override
 	protected void updateDrawings(int deltaX, int deltaY) {
-		if (startPoint != null ) {
+		if (startPoint != null) {
 			startPoint.setX(startPoint.getX() + deltaX);
 			startPoint.setY(startPoint.getY() + deltaY);
 		}
@@ -415,6 +338,5 @@ public class VPathHandler extends VPointHandler {
 			}
 		}
 	}
-
 
 }

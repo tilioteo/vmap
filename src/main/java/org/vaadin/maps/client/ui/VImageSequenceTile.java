@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  * 
  */
 public class VImageSequenceTile extends VImageTile {
@@ -27,7 +27,7 @@ public class VImageSequenceTile extends VImageTile {
 
 	private int index = 0;
 	private LinkedList<String> urls = new LinkedList<String>();
-	
+
 	private int loadErrors;
 
 	public VImageSequenceTile() {
@@ -60,7 +60,7 @@ public class VImageSequenceTile extends VImageTile {
 		} else {
 			for (final String url : urlsToLoad) {
 				final Image image = new Image(url);
-				
+
 				image.addLoadHandler(new LoadHandler() {
 					@Override
 					public void onLoad(LoadEvent event) {
@@ -100,24 +100,24 @@ public class VImageSequenceTile extends VImageTile {
 			}
 		}
 	}
-	
+
 	private void updateImage() {
 		setUrl(urls.get(index));
-    	setVisible(true);
+		setVisible(true);
 	}
-	
+
 	public void setIndex(int index) {
 		if (index < urls.size()) {
 			this.index = index;
-		
+
 			updateImage();
 		}
 	}
-	
+
 	public int getIndex() {
 		return index;
 	}
-	
+
 	public interface SequenceLoadedHandler extends EventHandler {
 		void loaded(SequenceLoadedEvent event);
 	}
@@ -150,11 +150,11 @@ public class VImageSequenceTile extends VImageTile {
 		public static final Type<SequenceErrorHandler> TYPE = new Type<SequenceErrorHandler>();
 
 		private int errorCount;
-		
+
 		public SequenceErrorEvent(VImageSequenceTile imageSequenceTile, int errorCount) {
 			setSource(imageSequenceTile);
 		}
-		
+
 		public int getErrorCount() {
 			return errorCount;
 		}
@@ -169,11 +169,11 @@ public class VImageSequenceTile extends VImageTile {
 			handler.error(this);
 		}
 	}
-	
+
 	public HandlerRegistration addSequenceLoadedHandler(SequenceLoadedHandler handler) {
 		return addHandler(handler, SequenceLoadedEvent.TYPE);
 	}
-	
+
 	public HandlerRegistration addSequenceErrorHandler(SequenceErrorHandler handler) {
 		return addHandler(handler, SequenceErrorEvent.TYPE);
 	}

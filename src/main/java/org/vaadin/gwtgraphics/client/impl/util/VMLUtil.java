@@ -33,14 +33,12 @@ public abstract class VMLUtil {
 	public static final String VML_ELEMENT_CLASSNAME = "vml-element";
 
 	public static Element createVMLElement(String name) {
-		Element element = Document.get().createElement(
-				VML_NS_PREFIX + ":" + name);
+		Element element = Document.get().createElement(VML_NS_PREFIX + ":" + name);
 		element.setClassName(VML_ELEMENT_CLASSNAME);
 		return element;
 	}
 
-	public static Element getOrCreateChildElementWithTagName(Element element,
-			String name) {
+	public static Element getOrCreateChildElementWithTagName(Element element, String name) {
 		Element e = getChildElementWithTagName(element, name);
 		if (e != null) {
 			return e;
@@ -48,8 +46,7 @@ public abstract class VMLUtil {
 		return element.appendChild(createVMLElement(name));
 	}
 
-	public static String getPropertyOfFirstChildElementWithTagName(
-			Element element, String name, String attr) {
+	public static String getPropertyOfFirstChildElementWithTagName(Element element, String name, String attr) {
 		Element e = getChildElementWithTagName(element, name);
 		if (e != null) {
 			return e.getPropertyString(attr);
@@ -57,14 +54,12 @@ public abstract class VMLUtil {
 		return "";
 	}
 
-	public static boolean hasChildElementWithTagName(Element element,
-			String name) {
+	public static boolean hasChildElementWithTagName(Element element, String name) {
 		Element e = getChildElementWithTagName(element, name);
 		return e != null;
 	}
 
-	private static Element getChildElementWithTagName(Element element,
-			String name) {
+	private static Element getChildElementWithTagName(Element element, String name) {
 		NodeList<Node> nodes = element.getChildNodes();
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node node = nodes.getItem(i);

@@ -15,17 +15,18 @@ import org.vaadin.maps.shared.ui.handler.PanHandlerState;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 @Connect(org.vaadin.maps.ui.handler.PanHandler.class)
-public class PanHandlerConnector extends LayerLayoutHandlerConnector implements PanStartEventHandler, PanEndEventHandler {
+public class PanHandlerConnector extends LayerLayoutHandlerConnector
+		implements PanStartEventHandler, PanEndEventHandler {
 
 	@Override
 	protected void init() {
 		super.init();
-		
+
 		getWidget().addPanStartEventHandler(this);
 		getWidget().addPanEndEventHandler(this);
 	}

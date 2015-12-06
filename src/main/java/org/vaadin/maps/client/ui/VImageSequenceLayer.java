@@ -4,17 +4,17 @@
 package org.vaadin.maps.client.ui;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VImageSequenceLayer extends AbstractLayer {
 
-    /** Class name, prefix in styling */
-    public static final String CLASSNAME = "v-imagesequencelayer";
+	/** Class name, prefix in styling */
+	public static final String CLASSNAME = "v-imagesequencelayer";
 
-    public VImageSequenceLayer() {
-    	super();
-    	setStylePrimaryName(CLASSNAME);
+	public VImageSequenceLayer() {
+		super();
+		setStylePrimaryName(CLASSNAME);
 	}
 
 }

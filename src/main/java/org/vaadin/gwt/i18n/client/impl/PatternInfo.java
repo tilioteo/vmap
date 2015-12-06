@@ -112,16 +112,14 @@ public class PatternInfo {
 				case PERCENT:
 					if (multiplier != 1) {
 						throw new IllegalArgumentException(
-								"Too many percent/per mille characters in pattern \""
-										+ pattern + '"');
+								"Too many percent/per mille characters in pattern \"" + pattern + '"');
 					}
 					multiplier = 100;
 					break;
 				case PERMILLE:
 					if (multiplier != 1) {
 						throw new IllegalArgumentException(
-								"Too many percent/per mille characters in pattern \""
-										+ pattern + '"');
+								"Too many percent/per mille characters in pattern \"" + pattern + '"');
 					}
 					multiplier = 1000;
 					break;
@@ -166,8 +164,7 @@ public class PatternInfo {
 				break;
 			case PATTERN_ZERO_DIGIT:
 				if (digitRightCount > 0) {
-					throw new IllegalArgumentException(
-							"Unexpected '0' in pattern \"" + pattern + '"');
+					throw new IllegalArgumentException("Unexpected '0' in pattern \"" + pattern + '"');
 				}
 				++zeroDigitCount;
 				if (groupingUsed && decimalPos < 0) {
@@ -180,32 +177,27 @@ public class PatternInfo {
 				break;
 			case PATTERN_DECIMAL_SEPARATOR:
 				if (decimalPos >= 0) {
-					throw new IllegalArgumentException(
-							"Multiple decimal separators in pattern \""
-									+ pattern + '"');
+					throw new IllegalArgumentException("Multiple decimal separators in pattern \"" + pattern + '"');
 				}
 				decimalPos = digitLeftCount + zeroDigitCount + digitRightCount;
 				break;
 			case PATTERN_EXPONENT:
 				if (useExponent) {
-					throw new IllegalArgumentException("Multiple exponential "
-							+ "symbols in pattern \"" + pattern + '"');
+					throw new IllegalArgumentException(
+							"Multiple exponential " + "symbols in pattern \"" + pattern + '"');
 				}
 				useExponent = true;
 				minExponentDigits = 0;
 
 				// Use lookahead to parse out the exponential part
 				// of the pattern, then jump into phase 2.
-				while ((pos + 1) < len
-						&& pattern.charAt(pos + 1) == PATTERN_ZERO_DIGIT) {
+				while ((pos + 1) < len && pattern.charAt(pos + 1) == PATTERN_ZERO_DIGIT) {
 					++pos;
 					++minExponentDigits;
 				}
 
-				if ((digitLeftCount + zeroDigitCount) < 1
-						|| minExponentDigits < 1) {
-					throw new IllegalArgumentException("Malformed exponential "
-							+ "pattern \"" + pattern + '"');
+				if ((digitLeftCount + zeroDigitCount) < 1 || minExponentDigits < 1) {
+					throw new IllegalArgumentException("Malformed exponential " + "pattern \"" + pattern + '"');
 				}
 				loop = false;
 				break;
@@ -231,8 +223,7 @@ public class PatternInfo {
 		if ((decimalPos < 0 && digitRightCount > 0)
 				|| (decimalPos >= 0 && (decimalPos < digitLeftCount || decimalPos > (digitLeftCount + zeroDigitCount)))
 				|| groupingCount == 0) {
-			throw new IllegalArgumentException("Malformed pattern \"" + pattern
-					+ '"');
+			throw new IllegalArgumentException("Malformed pattern \"" + pattern + '"');
 		}
 		int totalDigits = digitLeftCount + zeroDigitCount + digitRightCount;
 
@@ -270,10 +261,8 @@ public class PatternInfo {
 		int len = pattern.length();
 		while (pos < len) {
 			int cp = pattern.codePointAt(pos);
-			if (cp != PATTERN_DIGIT && cp != PATTERN_ZERO_DIGIT
-					&& cp != PATTERN_GROUPING_SEPARATOR
-					&& cp != PATTERN_DECIMAL_SEPARATOR
-					&& cp != PATTERN_EXPONENT) {
+			if (cp != PATTERN_DIGIT && cp != PATTERN_ZERO_DIGIT && cp != PATTERN_GROUPING_SEPARATOR
+					&& cp != PATTERN_DECIMAL_SEPARATOR && cp != PATTERN_EXPONENT) {
 				break;
 			}
 			pos += Character.charCount(cp);

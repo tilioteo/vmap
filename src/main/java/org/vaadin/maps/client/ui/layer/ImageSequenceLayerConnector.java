@@ -12,7 +12,7 @@ import com.vaadin.client.ConnectorHierarchyChangeEvent;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -23,7 +23,7 @@ public class ImageSequenceLayerConnector extends AbstractLayerConnector {
 	protected void init() {
 		super.init();
 	}
-	
+
 	@Override
 	public VImageSequenceLayer getWidget() {
 		return (VImageSequenceLayer) super.getWidget();
@@ -35,13 +35,12 @@ public class ImageSequenceLayerConnector extends AbstractLayerConnector {
 	}
 
 	@Override
-	public void onConnectorHierarchyChange(
-			ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
-        // We always have 1 child, unless the child is hidden
-        Widget content = getContentWidget();
-        if (content != null) {
-        	getWidget().setWidget(content);
-        }
+	public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
+		// We always have 1 child, unless the child is hidden
+		Widget content = getContentWidget();
+		if (content != null) {
+			getWidget().setWidget(content);
+		}
 	}
 
 }

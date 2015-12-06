@@ -4,12 +4,13 @@
 package org.vaadin.maps.ui;
 
 /**
- * @author Kamil Morong - Hypothesis
+ * @author Kamil Morong
  *
  */
 public interface CanUndoRedo {
-	
-	boolean undo();
-	boolean redo();
+
+	public boolean undo();
+
+	public boolean redo();
 
 }

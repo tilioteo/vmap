@@ -17,6 +17,7 @@ package org.vaadin.maps.client.emul.io;
  */
 
 public abstract class InputStream {
+
 	public abstract int read() throws IOException;
 
 	public int read(byte[] buf, int start, int len) throws IOException {

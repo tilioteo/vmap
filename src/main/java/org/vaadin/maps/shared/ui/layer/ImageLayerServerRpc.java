@@ -6,7 +6,7 @@ package org.vaadin.maps.shared.ui.layer;
 import com.vaadin.shared.communication.ServerRpc;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public interface ImageLayerServerRpc extends ServerRpc {

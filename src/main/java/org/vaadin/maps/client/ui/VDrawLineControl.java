@@ -5,15 +5,14 @@ package org.vaadin.maps.client.ui;
 
 import com.google.gwt.user.client.ui.Widget;
 
-
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VDrawLineControl extends VDrawPathControl {
 
 	public static final String CLASSNAME = "v-drawlinecontrol";
-	
+
 	public VDrawLineControl() {
 		super();
 		setStyleName(CLASSNAME);
@@ -25,10 +24,10 @@ public class VDrawLineControl extends VDrawPathControl {
 			super.setWidget(widget);
 		}
 	}
-	
+
 	@Override
 	public VLineHandler getHandler() {
 		return (VLineHandler) handler;
 	}
-	
+
 }

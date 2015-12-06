@@ -7,7 +7,7 @@ import org.vaadin.maps.shared.ui.handler.PolygonHandlerState;
 import org.vaadin.maps.ui.control.Control;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

@@ -17,30 +17,31 @@ import org.vaadin.maps.ui.handler.RequiresVectorFeatureLayer;
 import org.vaadin.maps.ui.layer.VectorFeatureLayer;
 
 /**
- * @author Kamil Morong - Hypothesis
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
-public abstract class DrawFeatureControl<H extends FeatureHandler> extends AbstractControl implements CanUndoRedo, CanCancel {
+public abstract class DrawFeatureControl<H extends FeatureHandler> extends AbstractControl
+		implements CanUndoRedo, CanCancel {
 	private final Class<H> handlerClass;
-	
+
 	protected VectorFeatureLayer layer = null;
 	protected H handlerInstance = null;
-	
+
 	protected Style featureStyle = null;
 	protected Style cursorStyle = null;
-	
+
 	public DrawFeatureControl(VectorFeatureLayer layer) {
 		super();
 		controlType = ControlType.TOOL;
-		
+
 		this.handlerClass = getGenericHandlerTypeClass();
-		
+
 		setLayer(layer);
 		initHandler();
 		setCursorStyle(Style.DEFAULT_DRAW_CURSOR);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private Class<H> getGenericHandlerTypeClass() {
 		return (Class<H>) ClassUtility.getGenericTypeClass(this.getClass(), 0);
@@ -54,23 +55,23 @@ public abstract class DrawFeatureControl<H extends FeatureHandler> extends Abstr
 		provideLayerToHandler();
 		provideFeatureStyleToHandler();
 	}
-	
+
 	private void provideLayerToHandler() {
 		if (handler != null && handler instanceof RequiresVectorFeatureLayer) {
-			((RequiresVectorFeatureLayer)handler).setLayer(layer);
+			((RequiresVectorFeatureLayer) handler).setLayer(layer);
 		}
 	}
 
 	private void provideFeatureStyleToHandler() {
 		if (handler != null && handler instanceof FeatureHandler) {
-			((FeatureHandler)handler).setFeatureStyle(featureStyle);
+			((FeatureHandler) handler).setFeatureStyle(featureStyle);
 		}
 	}
 
 	private H createHandler() {
 		try {
 			return handlerClass.getDeclaredConstructor(Control.class).newInstance(this);
-			
+
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -86,18 +87,18 @@ public abstract class DrawFeatureControl<H extends FeatureHandler> extends Abstr
 		}
 		return null;
 	}
-	
+
 	public void setLayer(VectorFeatureLayer layer) {
 		this.layer = layer;
 		getState().layer = layer;
 		provideLayerToHandler();
 	}
-	
+
 	@Override
 	protected DrawFeatureControlState getState() {
 		return (DrawFeatureControlState) super.getState();
 	}
-	
+
 	public Style getFeatureStyle() {
 		return featureStyle;
 	}
@@ -110,21 +111,21 @@ public abstract class DrawFeatureControl<H extends FeatureHandler> extends Abstr
 	public Style getCursorStyle() {
 		return cursorStyle;
 	}
-	
+
 	public void setCursorStyle(Style style) {
 		this.cursorStyle = style;
 		getState().cursorStyle = StyleUtility.getStyleMap(style);
 		markAsDirty();
 	}
-	
+
 	@Override
 	public boolean undo() {
-		return handler != null && handler instanceof CanUndoRedo && ((CanUndoRedo)handler).undo();
+		return handler != null && handler instanceof CanUndoRedo && ((CanUndoRedo) handler).undo();
 	}
 
 	@Override
 	public boolean redo() {
-		return handler != null && handler instanceof CanUndoRedo && ((CanUndoRedo)handler).redo();
+		return handler != null && handler instanceof CanUndoRedo && ((CanUndoRedo) handler).redo();
 	}
 
 	@Override
@@ -132,19 +133,19 @@ public abstract class DrawFeatureControl<H extends FeatureHandler> extends Abstr
 		if (handler != null)
 			handler.cancel();
 	}
-	
+
 	public void addDrawFeatureListener(DrawFeatureListener listener) {
 		if (handlerInstance != null) {
 			handlerInstance.addDrawFeatureListener(listener);
 		}
 	}
-	
+
 	public void removeDrawFeatureListener(DrawFeatureListener listener) {
 		if (handlerInstance != null) {
 			handlerInstance.removeDrawFeatureListener(listener);
 		}
 	}
-	
+
 	public H getHandler() {
 		return handlerInstance;
 	}

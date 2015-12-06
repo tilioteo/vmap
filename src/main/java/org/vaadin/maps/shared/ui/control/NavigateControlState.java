@@ -6,7 +6,7 @@ package org.vaadin.maps.shared.ui.control;
 import com.vaadin.shared.Connector;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  * 
  */
 @SuppressWarnings("serial")

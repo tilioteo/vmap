@@ -69,7 +69,7 @@ public class MultiPoint extends GeometryCollection {
 	public MultiPoint(Point[] points, int SRID) {
 		super(points, SRID);
 	}
-	
+
 	public MultiPoint(MultiPoint multiPoint) {
 		super(multiPoint.SRID);
 		for (Geometry geometry : multiPoint.geometries) {
@@ -90,5 +90,5 @@ public class MultiPoint extends GeometryCollection {
 
 		return super.equals(other);
 	}
-	
+
 }

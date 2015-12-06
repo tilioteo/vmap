@@ -89,19 +89,19 @@ public class WKBReader {
 		try {
 			return read(new ByteArrayInStream(bytes));
 		} catch (IOException ex) {
-			throw new RuntimeException("Unexpected IOException caught: "
-					+ ex.getMessage());
+			throw new RuntimeException("Unexpected IOException caught: " + ex.getMessage());
 		}
 	}
 
-/**
-	   * Reads a {@link VectorObject} from an {@link InStream).
-	   *
-	   * @param is the stream to read from
-	   * @return the VectorObject read
-	   * @throws IOException
-	   * @throws ParseException
-	   */
+	/**
+	 * Reads a {@link VectorObject} from an {@link InStream).
+	 *
+	 * @param is
+	 *            the stream to read from
+	 * @return the VectorObject read
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public Geometry read(InStream is) throws IOException, ParseException {
 		dis.setInStream(is);
 		Geometry g = readGeometry();
@@ -194,15 +194,13 @@ public class WKBReader {
 		return new MultiPoint(geoms);
 	}
 
-	private MultiLineString readMultiLineString() throws IOException,
-			ParseException {
+	private MultiLineString readMultiLineString() throws IOException, ParseException {
 		int numGeom = dis.readInt();
 		LineString[] geoms = new LineString[numGeom];
 		for (int i = 0; i < numGeom; i++) {
 			Geometry g = readGeometry();
 			if (!(g instanceof LineString))
-				throw new ParseException(INVALID_GEOM_TYPE_MSG
-						+ "MultiLineString");
+				throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiLineString");
 			geoms[i] = (LineString) g;
 		}
 		return new MultiLineString(geoms);
@@ -220,8 +218,7 @@ public class WKBReader {
 		return new MultiPolygon(geoms);
 	}
 
-	private GeometryCollection readGeometryCollection() throws IOException,
-			ParseException {
+	private GeometryCollection readGeometryCollection() throws IOException, ParseException {
 		int numGeom = dis.readInt();
 		Geometry[] geoms = new Geometry[numGeom];
 		for (int i = 0; i < numGeom; i++) {
@@ -230,8 +227,7 @@ public class WKBReader {
 		return new GeometryCollection(geoms);
 	}
 
-	private CoordinateSequence readCoordinateSequence(int size)
-			throws IOException {
+	private CoordinateSequence readCoordinateSequence(int size) throws IOException {
 		CoordinateSequence seq = new CoordinateSequence(size);
 
 		for (int i = 0; i < size; i++) {

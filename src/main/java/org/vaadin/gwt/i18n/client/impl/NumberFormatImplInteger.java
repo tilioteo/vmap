@@ -21,11 +21,11 @@ package org.vaadin.gwt.i18n.client.impl;
  */
 public class NumberFormatImplInteger extends NumberFormatImpl {
 
-  protected NumberFormatImplInteger() {
-    super();
-    setMinimumFractionDigits(0);
-    setMaximumFractionDigits(0);
-    setGroupingSize(3);
-    setGroupingUsed(true);
-  }
+	protected NumberFormatImplInteger() {
+		super();
+		setMinimumFractionDigits(0);
+		setMaximumFractionDigits(0);
+		setGroupingSize(3);
+		setGroupingUsed(true);
+	}
 }

@@ -6,7 +6,7 @@ package org.vaadin.maps.ui;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public interface HasGeometry {

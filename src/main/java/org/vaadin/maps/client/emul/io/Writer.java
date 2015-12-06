@@ -24,8 +24,7 @@ public abstract class Writer {
 		write(cbuf, 0, cbuf.length);
 	}
 
-	abstract public void write(char cbuf[], int off, int len)
-			throws IOException;
+	abstract public void write(char cbuf[], int off, int len) throws IOException;
 
 	public void write(String str) throws IOException {
 		write(str, 0, str.length());

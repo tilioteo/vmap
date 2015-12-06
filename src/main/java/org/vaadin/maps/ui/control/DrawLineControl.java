@@ -10,7 +10,7 @@ import org.vaadin.maps.ui.handler.LineHandler;
 import org.vaadin.maps.ui.layer.VectorFeatureLayer;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -30,25 +30,25 @@ public class DrawLineControl extends DrawFeatureControl<LineHandler> {
 	protected DrawPathControlState getState() {
 		return (DrawPathControlState) super.getState();
 	}
-	
+
 	public Style getStartPointStyle() {
 		return startPointStyle;
 	}
-	
+
 	public void setStartPointStyle(Style style) {
 		this.startPointStyle = style;
 		getState().startPointStyle = StyleUtility.getStyleMap(style);
 		markAsDirty();
 	}
-	
+
 	public Style getLineStyle() {
 		return lineStyle;
 	}
-	
+
 	public void setLineStyle(Style style) {
 		this.lineStyle = style;
 		getState().lineStyle = StyleUtility.getStyleMap(style);
 		markAsDirty();
 	}
-	
+
 }

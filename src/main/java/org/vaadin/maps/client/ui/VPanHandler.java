@@ -17,22 +17,23 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
-public class VPanHandler extends AbstractNavigateHandler implements HasLayerLayout, MouseDownHandler, MouseMoveHandler, MouseUpHandler {
+public class VPanHandler extends AbstractNavigateHandler
+		implements HasLayerLayout, MouseDownHandler, MouseMoveHandler, MouseUpHandler {
 
 	public static final String CLASSNAME = "v-panhandler";
-	
+
 	protected VLayerLayout layout = null;
-	
+
 	protected HandlerRegistration mouseDownHandler = null;
 	protected HandlerRegistration mouseMoveHandler = null;
 	protected HandlerRegistration mouseUpHandler = null;
-	
+
 	protected boolean panStarted = false;
 	protected boolean panning = false;
-	
+
 	protected int startX;
 	protected int startY;
 	protected int lastX;
@@ -45,30 +46,30 @@ public class VPanHandler extends AbstractNavigateHandler implements HasLayerLayo
 		super();
 		setStyleName(CLASSNAME);
 	}
-	
+
 	@Override
 	public void setLayout(VLayerLayout layout) {
 		if (this.layout == layout) {
 			return;
 		}
-		
+
 		finalize();
 		this.layout = layout;
 		initialize();
 	}
-	
+
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
 		if (!active) {
 			return;
 		}
-		
+
 		if (event.getNativeButton() == NativeEvent.BUTTON_LEFT && !panStarted) {
 			startX = event.getClientX();
 			startY = event.getClientY();
-			
+
 			panStarted = true;
-			
+
 		}
 		event.preventDefault();
 	}
@@ -78,36 +79,36 @@ public class VPanHandler extends AbstractNavigateHandler implements HasLayerLayo
 		if (event.getNativeButton() == NativeEvent.BUTTON_LEFT && panStarted) {
 			lastX = event.getClientX();
 			lastY = event.getClientY();
-			
+
 			int dX = lastX - startX;
 			int dY = lastY - startY;
-			
+
 			if (Math.abs(dX) > 3 || Math.abs(dY) > 3) {
 				if (!panning) {
 					fireEvent(new PanStartEvent(this, startX, startY));
 				}
-				
+
 				panning = true;
-				
+
 				if (layout != null) {
 					layout.onPanStep(dX, dY);
 				}
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
 		if (panStarted && panning) {
-			
+
 			int totalX = event.getClientX() - startX;
 			int totalY = event.getClientY() - startY;
-			
+
 			fireEvent(new PanEndEvent(this, totalX, totalY));
-			
+
 			startX = startY = lastX = lastY = 0;
-			
+
 			if (layout != null) {
 				layout.onPanEnd(totalX, totalY);
 			}
@@ -129,7 +130,7 @@ public class VPanHandler extends AbstractNavigateHandler implements HasLayerLayo
 		mouseMoveHandler = layout.addMouseMoveHandler(this);
 		mouseUpHandler = layout.addMouseUpHandler(this);
 	}
-	
+
 	protected final void removeHandler(HandlerRegistration handler) {
 		if (handler != null) {
 			handler.removeHandler();
@@ -142,7 +143,7 @@ public class VPanHandler extends AbstractNavigateHandler implements HasLayerLayo
 		removeHandler(mouseMoveHandler);
 		removeHandler(mouseUpHandler);
 	}
-	
+
 	@Override
 	protected void finalize() {
 		if (layout != null) {
@@ -157,16 +158,16 @@ public class VPanHandler extends AbstractNavigateHandler implements HasLayerLayo
 	public static class PanStartEvent extends GwtEvent<PanStartEventHandler> {
 
 		public static final Type<PanStartEventHandler> TYPE = new Type<PanStartEventHandler>();
-		
+
 		private int x;
 		private int y;
-		
+
 		public PanStartEvent(VPanHandler source, int x, int y) {
 			setSource(source);
 			this.x = x;
 			this.y = y;
 		}
-		
+
 		public int getX() {
 			return x;
 		}
@@ -193,16 +194,16 @@ public class VPanHandler extends AbstractNavigateHandler implements HasLayerLayo
 	public static class PanEndEvent extends GwtEvent<PanEndEventHandler> {
 
 		public static final Type<PanEndEventHandler> TYPE = new Type<PanEndEventHandler>();
-		
+
 		private int dx;
 		private int dy;
-		
+
 		public PanEndEvent(VPanHandler source, int dx, int dy) {
 			setSource(source);
 			this.dx = dx;
 			this.dy = dy;
 		}
-		
+
 		public int getDeltaX() {
 			return dx;
 		}

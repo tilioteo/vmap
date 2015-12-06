@@ -11,7 +11,7 @@ import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ui.AbstractSingleComponentContainerConnector;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -20,7 +20,7 @@ public abstract class AbstractControlConnector extends AbstractSingleComponentCo
 	@Override
 	protected void init() {
 		super.init();
-		
+
 		registerRpc(ControlClientRpc.class, new ControlClientRpc() {
 			@Override
 			public void activate() {
@@ -43,20 +43,6 @@ public abstract class AbstractControlConnector extends AbstractSingleComponentCo
 	public AbstractControlState getState() {
 		return (AbstractControlState) super.getState();
 	}
-
-	/*@Override
-	public void onStateChanged(StateChangeEvent stateChangeEvent) {
-		super.onStateChanged(stateChangeEvent);
-		
-		if (stateChangeEvent.hasPropertyChanged("handler")) {
-			Connector connector = getState().handler;
-			if (connector != null) {
-				if (connector instanceof AbstractHandlerConnector)
-					getWidget().setHandler(((AbstractHandlerConnector)connector).getWidget());
-			} else
-				getWidget().setHandler(null);
-		}
-	}*/
 
 	@Override
 	public void updateCaption(ComponentConnector connector) {

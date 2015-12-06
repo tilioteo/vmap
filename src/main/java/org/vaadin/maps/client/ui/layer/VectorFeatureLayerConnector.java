@@ -13,7 +13,7 @@ import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -33,20 +33,19 @@ public class VectorFeatureLayerConnector extends AbstractLayerConnector {
 	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
-		
+
 		if (stateChangeEvent.hasPropertyChanged("fixed")) {
 			getWidget().setFixed(getState().fixed);
 		}
 	}
 
 	@Override
-	public void onConnectorHierarchyChange(
-			ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
-        // We always have 1 child, unless the child is hidden
-        Widget content = getContentWidget();
-        if (content != null) {
-        	getWidget().setWidget(content);
-        }
+	public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
+		// We always have 1 child, unless the child is hidden
+		Widget content = getContentWidget();
+		if (content != null) {
+			getWidget().setWidget(content);
+		}
 	}
 
 }

@@ -12,13 +12,14 @@ import com.vaadin.ui.Component;
 import com.vaadin.util.ReflectTools;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public interface MouseEvents {
-	
+
 	public static final String CLICK_EVENT_IDENTIFIER = "click";
 	public static final String DOUBLECLICK_EVENT_IDENTIFIER = "doubleClick";
+
 	/**
 	 * Class for holding information about a mouse click event. A
 	 * {@link ClickEvent} is fired when the user clicks on a
@@ -160,8 +161,8 @@ public interface MouseEvents {
 	 */
 	public interface ClickListener extends ConnectorEventListener {
 
-		public static final Method clickMethod = ReflectTools.findMethod(
-				ClickListener.class, CLICK_EVENT_IDENTIFIER, ClickEvent.class);
+		public static final Method clickMethod = ReflectTools.findMethod(ClickListener.class, CLICK_EVENT_IDENTIFIER,
+				ClickEvent.class);
 
 		/**
 		 * Called when a {@link Component} has been clicked. A reference to the
@@ -191,8 +192,8 @@ public interface MouseEvents {
 	 */
 	public interface DoubleClickListener extends ConnectorEventListener {
 
-		public static final Method doubleClickMethod = ReflectTools.findMethod(
-				DoubleClickListener.class, DOUBLECLICK_EVENT_IDENTIFIER, DoubleClickEvent.class);
+		public static final Method doubleClickMethod = ReflectTools.findMethod(DoubleClickListener.class,
+				DOUBLECLICK_EVENT_IDENTIFIER, DoubleClickEvent.class);
 
 		/**
 		 * Called when a {@link Component} has been double clicked. A reference

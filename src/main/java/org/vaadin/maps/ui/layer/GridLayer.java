@@ -17,32 +17,33 @@ import com.vaadin.shared.EventId;
 import com.vaadin.ui.Component;
 
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
-public abstract class GridLayer<C extends Component> extends AbstractLayer<GridLayout<C>> implements MeasuredSizeHandler {
+public abstract class GridLayer<C extends Component> extends AbstractLayer<GridLayout<C>>
+		implements MeasuredSizeHandler {
 
 	private GridLayout<C> grid = new GridLayout<C>();
-	
+
 	private ArrayList<ClickListener> clickListeners = new ArrayList<ClickListener>();
-	
+
 	private LayoutClickListener<C> layoutClickListener = new LayoutClickListener<C>() {
 		@Override
 		public void layoutClick(LayoutClickEvent<C> event) {
 			fireEvent(LayoutEvents.LayoutClickEvent.createClickEvent(GridLayer.this, event));
 		}
 	};
-	
+
 	@Override
 	public boolean isBase() {
 		return false;
 	}
-	
+
 	public GridLayer() {
 		setContent(grid);
 	}
-	
+
 	protected GridLayout<C> getGrid() {
 		return grid;
 	}
@@ -79,6 +80,5 @@ public abstract class GridLayer<C extends Component> extends AbstractLayer<GridL
 			grid.removeLayoutClickListener(layoutClickListener);
 		}
 	}
-
 
 }

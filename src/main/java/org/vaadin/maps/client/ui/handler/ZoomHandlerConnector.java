@@ -13,7 +13,7 @@ import org.vaadin.maps.shared.ui.handler.ZoomHandlerState;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -23,7 +23,7 @@ public class ZoomHandlerConnector extends LayerLayoutHandlerConnector implements
 	@Override
 	protected void init() {
 		super.init();
-		
+
 		getWidget().addZoomEventHandler(this);
 	}
 

@@ -4,7 +4,7 @@
 package org.vaadin.maps.client.ui;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VControlLayer extends AbstractLayer {
@@ -16,7 +16,6 @@ public class VControlLayer extends AbstractLayer {
 		super();
 		setStylePrimaryName(CLASSNAME);
 		setVisible(false);
-		//setSize("0px", "0px");
 	}
 
 }

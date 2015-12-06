@@ -9,7 +9,7 @@ import org.vaadin.maps.ui.handler.ZoomHandler;
 import org.vaadin.maps.ui.handler.ZoomHandler.ZoomChangeListener;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

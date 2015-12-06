@@ -15,20 +15,20 @@ import org.vaadin.maps.ui.tile.ImageSequenceTile.LoadListener;
 import com.vaadin.ui.Component.Focusable;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public class ImageSequenceLayer extends AbstractLayer<ImageSequenceTile> implements Focusable {
-	
+
 	private ImageSequenceTile tile = null;
 
 	public ImageSequenceLayer() {
-		//registerRpc(rpc);
+		// registerRpc(rpc);
 		getState().tabIndex = -1;
 		initTile();
 	}
-	
+
 	private void initTile() {
 		tile = new ImageSequenceTile();
 		tile.setSizeFull();
@@ -52,58 +52,58 @@ public class ImageSequenceLayer extends AbstractLayer<ImageSequenceTile> impleme
 
 	@Override
 	public int getTabIndex() {
-        return getState().tabIndex;
+		return getState().tabIndex;
 	}
 
 	@Override
 	public void setTabIndex(int tabIndex) {
-        getState().tabIndex = tabIndex;
+		getState().tabIndex = tabIndex;
 	}
 
-    @Override
-    public void focus() {
-        super.focus();
-    }
-    
-    public void addTileUrl(String url) {
-    	tile.addResource(url);
-    }
-    
-    public void addTileUrl(URL url) {
-    	tile.addResource(url);
-    }
-    
-    public void clearTile() {
-    	tile.clear();
-    }
-    
-    public void setTileIndex(int index) {
-    	tile.setIndex(index);
-    }
-    
-    public int getTileIndex() {
-    	return tile.getIndex();
-    }
-    
-    public int getTilesCount() {
-    	return tile.getTilesCount();
-    }
-    
-    public void nextTile() {
-    	int index = getTileIndex();
+	@Override
+	public void focus() {
+		super.focus();
+	}
 
-    	if (index < getTilesCount() - 1) {
-    		setTileIndex(++index);
-    	}
-    }
+	public void addTileUrl(String url) {
+		tile.addResource(url);
+	}
 
-    public void priorTile() {
-    	int index = getTileIndex();
+	public void addTileUrl(URL url) {
+		tile.addResource(url);
+	}
 
-    	if (index > 0) {
-    		setTileIndex(--index);
-    	}
-    }
+	public void clearTile() {
+		tile.clear();
+	}
+
+	public void setTileIndex(int index) {
+		tile.setIndex(index);
+	}
+
+	public int getTileIndex() {
+		return tile.getIndex();
+	}
+
+	public int getTilesCount() {
+		return tile.getTilesCount();
+	}
+
+	public void nextTile() {
+		int index = getTileIndex();
+
+		if (index < getTilesCount() - 1) {
+			setTileIndex(++index);
+		}
+	}
+
+	public void priorTile() {
+		int index = getTileIndex();
+
+		if (index > 0) {
+			setTileIndex(--index);
+		}
+	}
 
 	/**
 	 * Adds the tile load listener.

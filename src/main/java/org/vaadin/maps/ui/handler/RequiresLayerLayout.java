@@ -6,7 +6,7 @@ package org.vaadin.maps.ui.handler;
 import org.vaadin.maps.ui.LayerLayout;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public interface RequiresLayerLayout {

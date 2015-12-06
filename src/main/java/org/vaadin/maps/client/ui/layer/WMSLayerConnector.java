@@ -16,7 +16,7 @@ import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.shared.ui.Connect;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -26,7 +26,7 @@ public class WMSLayerConnector extends AbstractLayerConnector implements Request
 	@Override
 	protected void init() {
 		super.init();
-		
+
 		getWidget().addRequestSingleTileHandler(this);
 	}
 
@@ -40,29 +40,28 @@ public class WMSLayerConnector extends AbstractLayerConnector implements Request
 		return (WMSLayerState) super.getState();
 	}
 
-
 	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
-		
+
 		if (stateChangeEvent.hasPropertyChanged("singleTile")) {
 			getWidget().setSingleTile(getState().singleTile);
 		}
 	}
 
 	@Override
-	public void onConnectorHierarchyChange(
-			ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
-        // We always have 1 child, unless the child is hidden
-        Widget content = getContentWidget();
-        if (content != null) {
-        	getWidget().setWidget(content);
-        }
+	public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
+		// We always have 1 child, unless the child is hidden
+		Widget content = getContentWidget();
+		if (content != null) {
+			getWidget().setWidget(content);
+		}
 	}
 
 	@Override
 	public void requestSingleTile(RequestSingleTileEvent event) {
-		getRpcProxy(WMSLayerServerRpc.class).requestSingleTile(event.getWidth(), event.getHeight(), event.getShiftX(), event.getShiftY());
+		getRpcProxy(WMSLayerServerRpc.class).requestSingleTile(event.getWidth(), event.getHeight(), event.getShiftX(),
+				event.getShiftY());
 	}
 
 }

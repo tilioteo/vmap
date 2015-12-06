@@ -6,7 +6,7 @@ package org.vaadin.maps.client.ui;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VDrawPointControl extends VDrawFeatureControl {
@@ -24,10 +24,10 @@ public class VDrawPointControl extends VDrawFeatureControl {
 			super.setWidget(widget);
 		}
 	}
-	
+
 	@Override
 	public VPointHandler getHandler() {
 		return (VPointHandler) handler;
 	}
-	
+
 }

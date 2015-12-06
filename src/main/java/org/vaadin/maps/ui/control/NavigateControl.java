@@ -13,26 +13,26 @@ import org.vaadin.maps.ui.handler.NavigateHandler;
 import org.vaadin.maps.ui.handler.RequiresLayerLayout;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public abstract class NavigateControl<H extends NavigateHandler> extends AbstractControl implements HasLayerLayout {
 	private final Class<H> handlerClass;
-	
+
 	LayerLayout layout = null;
 	protected H handlerInstance = null;
-	
+
 	public NavigateControl(LayerLayout layout) {
 		super();
 		controlType = ControlType.TOOL;
-		
+
 		this.handlerClass = getGenericHandlerTypeClass();
-		
+
 		setLayout(layout);
 		initHandler();
 	}
-	
+
 	private void initHandler() {
 		handlerInstance = createHandler();
 		if (handlerInstance != null) {
@@ -40,10 +40,10 @@ public abstract class NavigateControl<H extends NavigateHandler> extends Abstrac
 		}
 		provideLayoutToHandler();
 	}
-	
+
 	private void provideLayoutToHandler() {
 		if (handler != null && handler instanceof RequiresLayerLayout) {
-			((RequiresLayerLayout)handler).setLayout(layout);
+			((RequiresLayerLayout) handler).setLayout(layout);
 		}
 	}
 
@@ -55,7 +55,7 @@ public abstract class NavigateControl<H extends NavigateHandler> extends Abstrac
 	private H createHandler() {
 		try {
 			return handlerClass.getDeclaredConstructor(Control.class).newInstance(this);
-			
+
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -71,12 +71,12 @@ public abstract class NavigateControl<H extends NavigateHandler> extends Abstrac
 		}
 		return null;
 	}
-	
+
 	@Override
 	public LayerLayout getLayout() {
 		return layout;
 	}
-	
+
 	@Override
 	public void setLayout(LayerLayout layout) {
 		this.layout = layout;
@@ -86,9 +86,9 @@ public abstract class NavigateControl<H extends NavigateHandler> extends Abstrac
 
 	@Override
 	protected NavigateControlState getState() {
-		return (NavigateControlState)super.getState();
+		return (NavigateControlState) super.getState();
 	}
-	
+
 	public H getHandler() {
 		return handlerInstance;
 	}

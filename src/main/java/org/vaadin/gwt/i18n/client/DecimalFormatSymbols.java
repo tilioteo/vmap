@@ -41,23 +41,17 @@ public class DecimalFormatSymbols {
 
 	public DecimalFormatSymbols() {
 	}
- 
+
 	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof DecimalFormatSymbols)) {
 			return false;
 		}
 		DecimalFormatSymbols dfs = (DecimalFormatSymbols) other;
-		return decimalSeparator == dfs.decimalSeparator
-				&& digit == dfs.digit
-				&& nullEquals(exponentSeparator, dfs.exponentSeparator)
-				&& groupingSeparator == dfs.groupingSeparator
-				&& nullEquals(infinity, dfs.infinity)
-				&& minusSign == dfs.minusSign
-				&& nullEquals(nan, dfs.nan)
-				&& patternSeparator == dfs.patternSeparator
-				&& percent == dfs.percent
-				&& perMill == dfs.perMill
+		return decimalSeparator == dfs.decimalSeparator && digit == dfs.digit
+				&& nullEquals(exponentSeparator, dfs.exponentSeparator) && groupingSeparator == dfs.groupingSeparator
+				&& nullEquals(infinity, dfs.infinity) && minusSign == dfs.minusSign && nullEquals(nan, dfs.nan)
+				&& patternSeparator == dfs.patternSeparator && percent == dfs.percent && perMill == dfs.perMill
 				&& zeroDigit == dfs.zeroDigit;
 	}
 
@@ -140,11 +134,9 @@ public class DecimalFormatSymbols {
 
 	@Override
 	public int hashCode() {
-		return decimalSeparator	* 7 + digit * 11 + nullHash(exponentSeparator) * 13
-				+ groupingSeparator * 17 + nullHash(infinity) * 19 + minusSign
-				* 23 + nullHash(nan) * 31
-				+ patternSeparator * 37 + percent * 41 + perMill * 43
-				+ zeroDigit * 53;
+		return decimalSeparator * 7 + digit * 11 + nullHash(exponentSeparator) * 13 + groupingSeparator * 17
+				+ nullHash(infinity) * 19 + minusSign * 23 + nullHash(nan) * 31 + patternSeparator * 37 + percent * 41
+				+ perMill * 43 + zeroDigit * 53;
 	}
 
 }

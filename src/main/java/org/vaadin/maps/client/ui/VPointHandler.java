@@ -28,76 +28,77 @@ import com.vaadin.client.MouseEventDetailsBuilder;
 import com.vaadin.shared.MouseEventDetails;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
-public class VPointHandler extends AbstractDrawFeatureHandler implements MouseDownHandler, MouseMoveHandler, MouseUpHandler, CanShift {
+public class VPointHandler extends AbstractDrawFeatureHandler
+		implements MouseDownHandler, MouseMoveHandler, MouseUpHandler, CanShift {
 
 	public static final String CLASSNAME = "v-pointhandler";
-	
-	public SyntheticClickHandler clickHandlerSlave; 
-	
+
+	public SyntheticClickHandler clickHandlerSlave;
+
 	protected VVectorFeatureLayer layer = null;
 	protected VVectorFeatureContainer container = null;
-	
+
 	private int lastShiftX = 0;
 	private int lastShiftY = 0;
-	
+
 	/**
-	 * point of mouse cursor position
-	 * TODO make implementation independent
+	 * point of mouse cursor position TODO make implementation independent
 	 */
 	private Circle cursor = null;
-	
+
 	private boolean mouseDown = false;
 	private boolean mouseMoved = false;
 	protected MouseEventDetails mouseEventDetails = null;
 	protected Element eventElement = null;
-	
-	//protected HandlerRegistration clickHandler = null;
+
 	protected HandlerRegistration mouseDownHandler = null;
 	protected HandlerRegistration mouseUpHandler = null;
 	protected HandlerRegistration mouseMoveHandler = null;
-	
+
 	private HashMap<GeometryEventHandler, HandlerRegistration> geometryHandlerMap = new HashMap<GeometryEventHandler, HandlerRegistration>();
 
 	public static int[] getMouseEventXY(MouseEvent<?> event) {
-		return getMouseEventXY(MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(), event.getRelativeElement()), event.getRelativeElement());
+		return getMouseEventXY(
+				MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(), event.getRelativeElement()),
+				event.getRelativeElement());
 	}
-	
+
 	public static int[] getMouseEventXY(MouseEventDetails details, Element relativeElement) {
-		// Firefox encounters some problems with relative position to SVG element
-		// correct xy position is obtained using the parent DIV element of vector layer 
+		// Firefox encounters some problems with relative position to SVG
+		// element
+		// correct xy position is obtained using the parent DIV element of
+		// vector layer
 		if (relativeElement != null) {
 			Element parent = relativeElement.getParentElement();
 			if (parent != null) {
 				return new int[] {
-						details.getClientX() - parent.getAbsoluteLeft() + parent.getScrollLeft() + parent.getOwnerDocument().getScrollLeft(),
-						details.getClientY() - parent.getAbsoluteTop() + parent.getScrollTop() + parent.getOwnerDocument().getScrollTop() };
+						details.getClientX() - parent.getAbsoluteLeft() + parent.getScrollLeft()
+								+ parent.getOwnerDocument().getScrollLeft(),
+						details.getClientY() - parent.getAbsoluteTop() + parent.getScrollTop()
+								+ parent.getOwnerDocument().getScrollTop() };
 			}
 		}
 		return new int[] { details.getClientX(), details.getClientY() };
 	}
-	
 
 	public VPointHandler() {
 		super();
 		setStyleName(CLASSNAME);
 	}
-	
+
 	public void setLayer(VVectorFeatureLayer layer) {
 		if (this.layer == layer) {
 			return;
 		}
-		
+
 		finalize();
 		this.layer = layer;
 		initialize();
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.vaadin.maps.client.ui.AbstractHandler#initialize()
-	 */
+
 	@Override
 	protected void initialize() {
 		if (layer != null && layer.getWidget() != null && layer.getWidget() instanceof VVectorFeatureContainer) {
@@ -109,9 +110,6 @@ public class VPointHandler extends AbstractDrawFeatureHandler implements MouseDo
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.vaadin.maps.client.ui.AbstractHandler#finalize()
-	 */
 	@Override
 	protected void finalize() {
 		if (container != null) {
@@ -122,26 +120,23 @@ public class VPointHandler extends AbstractDrawFeatureHandler implements MouseDo
 	}
 
 	protected void ensureContainerHandlers() {
-		//clickHandler = container.addClickHandler(this);
 		mouseDownHandler = container.addMouseDownHandler(this);
 		mouseUpHandler = container.addMouseUpHandler(this);
 		mouseMoveHandler = container.addMouseMoveHandler(this);
 	}
-	
+
 	protected void removeContainerHandlers() {
-		//removeEventHandler(clickHandler);
 		removeEventHandler(mouseDownHandler);
 		removeEventHandler(mouseUpHandler);
 		removeEventHandler(mouseMoveHandler);
 	}
-	
+
 	private void addCursor() {
-		//cursor = new Donut(0, 0, 0, 0);
 		cursor = new Circle(0, 0, 0);
 		updateCursorStyle();
 		container.add(cursor);
 	}
-	
+
 	private void updateCursorStyle() {
 		if (cursor != null && cursorStyle != null) {
 			Utils.updateDrawingStyle(cursor, cursorStyle);
@@ -152,63 +147,49 @@ public class VPointHandler extends AbstractDrawFeatureHandler implements MouseDo
 		container.remove(cursor);
 		cursor = null;
 	}
-	
+
 	private void updateCursorPosition(int[] xy) {
 		cursor.setX(xy[0]);
 		cursor.setY(xy[1]);
 	}
-	
+
 	@Override
 	public void activate() {
 		super.activate();
-		
+
 		addCursor();
 	}
-	
+
 	/**
-	 * Create a coordinate from array.
-	 * <strong>Note:</strong> World coordinates are recalculated on server side.
+	 * Create a coordinate from array. <strong>Note:</strong> World coordinates
+	 * are recalculated on server side.
+	 * 
 	 * @param xy
-	 * @return  new {@link Coordinate} 
+	 * @return new {@link Coordinate}
 	 */
 	public Coordinate createCoordinate(int[] xy) {
 		return new Coordinate(xy[0], xy[1]);
 	}
-	
+
 	@Override
 	public void deactivate() {
 		removeCursor();
-		
+
 		super.deactivate();
 	}
-	
+
 	@Override
 	public void setCursorStyle(Style style) {
 		super.setCursorStyle(style);
-		
+
 		updateCursorStyle();
 	}
 
-	/*@Override
-	public void onClick(ClickEvent event) {
-		if (!active) {
-			return;
-		}
-		
-		if (clickHandlerSlave != null) {
-			clickHandlerSlave.onClick(event);
-		}
-		
-		int[] xy = getMouseEventXY(event);
-		Point point = new Point(createCoordinate(xy));
-		fireEvent(new GeometryEvent(VPointHandler.this, point));
-  	}*/
-	
 	protected void syntheticClick(MouseEventDetails details, Element relativeElement) {
 		if (clickHandlerSlave != null) {
 			clickHandlerSlave.syntheticClick(details, relativeElement);
 		}
-		
+
 		int[] xy = getMouseEventXY(details, relativeElement);
 		Point point = new Point(createCoordinate(xy));
 		fireEvent(new GeometryEvent(VPointHandler.this, point));
@@ -219,9 +200,10 @@ public class VPointHandler extends AbstractDrawFeatureHandler implements MouseDo
 		if (!active) {
 			return;
 		}
-		
+
 		mouseDown = true;
-		mouseEventDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(), event.getRelativeElement());
+		mouseEventDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(),
+				event.getRelativeElement());
 		mouseEventDetails.setType(Event.getTypeInt("click"));
 		eventElement = event.getRelativeElement();
 	}
@@ -231,7 +213,7 @@ public class VPointHandler extends AbstractDrawFeatureHandler implements MouseDo
 		if (!active) {
 			return;
 		}
-		
+
 		if (!mouseMoved) {
 			syntheticClick(mouseEventDetails, eventElement);
 		} else {
@@ -247,18 +229,18 @@ public class VPointHandler extends AbstractDrawFeatureHandler implements MouseDo
 		if (!active) {
 			return;
 		}
-		
+
 		if (mouseDown) {
 			mouseMoved = true;
 		}
-		
+
 		int[] xy = getMouseEventXY(event);
 
 		// redraw cursor point
 		// TODO make implementation independent
 		updateCursorPosition(xy);
 	}
-	
+
 	public interface GeometryEventHandler extends EventHandler {
 		void geometry(GeometryEvent event);
 	}
@@ -266,18 +248,17 @@ public class VPointHandler extends AbstractDrawFeatureHandler implements MouseDo
 	public static class GeometryEvent extends GwtEvent<GeometryEventHandler> {
 
 		public static final Type<GeometryEventHandler> TYPE = new Type<GeometryEventHandler>();
-		
+
 		private Geometry geometry;
 
 		public GeometryEvent(VPointHandler source, Geometry geometry) {
 			setSource(source);
 			this.geometry = geometry;
 		}
-		
+
 		public Geometry getGeometry() {
 			return geometry;
 		}
-
 
 		@Override
 		public Type<GeometryEventHandler> getAssociatedType() {
@@ -311,7 +292,7 @@ public class VPointHandler extends AbstractDrawFeatureHandler implements MouseDo
 		int deltaY = y - lastShiftY;
 		lastShiftX = x;
 		lastShiftY = y;
-		
+
 		updateDrawings(deltaX, deltaY);
 	}
 

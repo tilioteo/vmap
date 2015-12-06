@@ -42,8 +42,8 @@ import java.util.List;
  * touching holes may split the polygon into two pieces. The orientation of the
  * rings in the polygon does not matter.
  * <p>
- * The shell and holes must conform to the assertions specified in the <A
- * HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
+ * The shell and holes must conform to the assertions specified in the
+ * <A HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
  * Specification for SQL</A> .
  * 
  * @version 1.7
@@ -129,12 +129,10 @@ public class Polygon extends Geometry {
 
 		if (holes != null && holes.length > 0) {
 			if (hasNullElements(holes)) {
-				throw new IllegalArgumentException(
-						"holes must not contain null elements");
+				throw new IllegalArgumentException("holes must not contain null elements");
 			}
 			if (shell.isEmpty() && hasNonEmptyElements(holes)) {
-				throw new IllegalArgumentException(
-						"shell is empty but holes are not");
+				throw new IllegalArgumentException("shell is empty but holes are not");
 			}
 		}
 		this.shell = new LinearRing(shell);
@@ -144,7 +142,7 @@ public class Polygon extends Geometry {
 			}
 		}
 	}
-	
+
 	public Polygon(Polygon polygon) {
 		this(polygon.shell, polygon.holes != null ? polygon.holes.toArray(new LinearRing[0]) : null, polygon.SRID);
 	}
@@ -163,11 +161,11 @@ public class Polygon extends Geometry {
 
 		int k = -1;
 		for (Coordinate coordinate : shell.coordinates) {
-			coordinates[++k] = coordinate;//new Coordinate(coordinate);
+			coordinates[++k] = coordinate;// new Coordinate(coordinate);
 		}
 		for (LinearRing hole : holes) {
 			for (Coordinate coordinate : hole.coordinates) {
-				coordinates[++k] = coordinate;//new Coordinate(coordinate);
+				coordinates[++k] = coordinate;// new Coordinate(coordinate);
 			}
 		}
 
@@ -203,7 +201,7 @@ public class Polygon extends Geometry {
 
 		return holes.get(index);
 	}
-	
+
 	public List<LinearRing> getHoles() {
 		return holes;
 	}

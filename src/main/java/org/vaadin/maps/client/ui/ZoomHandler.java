@@ -4,10 +4,11 @@
 package org.vaadin.maps.client.ui;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public interface ZoomHandler {
 
 	public void onZoom(double zoom);
+
 }

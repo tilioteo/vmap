@@ -6,15 +6,15 @@ package org.vaadin.maps.shared.ui.handler;
 import com.vaadin.shared.AbstractComponentState;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public abstract class AbstractHandlerState extends AbstractComponentState {
-    {
-        primaryStyleName = "v-handler";
-    }
+	{
+		primaryStyleName = "v-handler";
+	}
 
-    public boolean active = false;
+	public boolean active = false;
 
 }

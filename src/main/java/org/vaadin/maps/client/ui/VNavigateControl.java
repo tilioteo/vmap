@@ -6,13 +6,13 @@ package org.vaadin.maps.client.ui;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VNavigateControl extends AbstractControl {
 
 	public static final String CLASSNAME = "v-navigatecontrol";
-	
+
 	private VLayerLayout layout = null;
 
 	public VNavigateControl() {
@@ -23,7 +23,7 @@ public class VNavigateControl extends AbstractControl {
 	@Override
 	public void setWidget(Widget widget) {
 		if (widget != null && widget instanceof AbstractNavigateHandler) {
-			setHandler((AbstractNavigateHandler)widget);
+			setHandler((AbstractNavigateHandler) widget);
 		}
 	}
 
@@ -35,9 +35,8 @@ public class VNavigateControl extends AbstractControl {
 		if (this.layout == layout) {
 			return;
 		}
-		
+
 		this.layout = layout;
 	}
-	
 
 }

@@ -15,8 +15,6 @@
  */
 package org.vaadin.gwtgraphics.client;
 
-import org.vaadin.gwtgraphics.client.animation.Animatable;
-
 /**
  * Shape is an abstract upper-class for VectorObjects that support filling,
  * stroking and positioning.
@@ -24,8 +22,7 @@ import org.vaadin.gwtgraphics.client.animation.Animatable;
  * @author Henri Kerola
  * 
  */
-public abstract class Shape extends AbstractDrawing implements Strokeable,
-		Positionable, Animatable {
+public abstract class Shape extends AbstractDrawing implements Strokeable, Positionable, Animatable {
 
 	/**
 	 * This constructor defines initial fill and stroke properties, which are
@@ -47,33 +44,22 @@ public abstract class Shape extends AbstractDrawing implements Strokeable,
 		setStrokeWidth(1);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Positionable#getX()
-	 */
+	@Override
 	public int getX() {
 		return getImpl().getX(getElement());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Positionable#setX(int)
-	 */
+	@Override
 	public void setX(int x) {
 		getImpl().setX(getElement(), x, isAttached());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Positionable#getY()
-	 */
+	@Override
 	public int getY() {
 		return getImpl().getY(getElement());
 	}
 
+	@Override
 	public void setY(int y) {
 		getImpl().setY(getElement(), y, isAttached());
 	}
@@ -99,8 +85,8 @@ public abstract class Shape extends AbstractDrawing implements Strokeable,
 	 * 
 	 * Setting the color to null disables elements filling.
 	 * 
-	 * @see <a
-	 *      href="http://www.w3.org/TR/CSS2/syndata.html#value-def-color">http://www.w3.org/TR/CSS2/syndata.html#value-def-color</a>
+	 * @see <a href="http://www.w3.org/TR/CSS2/syndata.html#value-def-color">
+	 *      http://www.w3.org/TR/CSS2/syndata.html#value-def-color</a>
 	 * @param color
 	 *            the new fill color
 	 */
@@ -139,9 +125,8 @@ public abstract class Shape extends AbstractDrawing implements Strokeable,
 	}
 
 	/**
-	 * Sets the opacity of the Shape element. The initial value 1.0 means
-	 * fully opaque shape. On the other hand, value 0.0 means fully transparent
-	 * paint.
+	 * Sets the opacity of the Shape element. The initial value 1.0 means fully
+	 * opaque shape. On the other hand, value 0.0 means fully transparent paint.
 	 * 
 	 * @param opacity
 	 *            the new opacity
@@ -150,68 +135,37 @@ public abstract class Shape extends AbstractDrawing implements Strokeable,
 		getImpl().setOpacity(getElement(), opacity);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Strokeable#getStrokeColor()
-	 */
+	@Override
 	public String getStrokeColor() {
 		return getImpl().getStrokeColor(getElement());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.Strokeable#setStrokeColor(java.lang.String)
-	 */
+	@Override
 	public void setStrokeColor(String color) {
 		getImpl().setStrokeColor(getElement(), color);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Strokeable#getStrokeWidth()
-	 */
+	@Override
 	public int getStrokeWidth() {
 		return getImpl().getStrokeWidth(getElement());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Strokeable#setStrokeWidth(int)
-	 */
+	@Override
 	public void setStrokeWidth(int width) {
 		getImpl().setStrokeWidth(getElement(), width, isAttached());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Strokeable#getStrokeOpacity()
-	 */
+	@Override
 	public double getStrokeOpacity() {
 		return getImpl().getStrokeOpacity(getElement());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Strokeable#setStrokeOpacity(double)
-	 */
+	@Override
 	public void setStrokeOpacity(double opacity) {
 		getImpl().setStrokeOpacity(getElement(), opacity);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.animation.Animatable#setPropertyDouble(
-	 * java.lang.String, double)
-	 */
+	@Override
 	public void setPropertyDouble(String property, double value) {
 		property = property.toLowerCase();
 		if ("x".equals(property)) {

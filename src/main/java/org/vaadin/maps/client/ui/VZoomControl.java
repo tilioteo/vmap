@@ -6,7 +6,7 @@ package org.vaadin.maps.client.ui;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VZoomControl extends VNavigateControl {
@@ -24,10 +24,10 @@ public class VZoomControl extends VNavigateControl {
 			super.setWidget(widget);
 		}
 	}
-	
+
 	@Override
 	public VZoomHandler getHandler() {
 		return (VZoomHandler) handler;
 	}
-	
+
 }

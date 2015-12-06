@@ -4,12 +4,13 @@
 package org.vaadin.maps.ui;
 
 /**
- * @author Kamil Morong - Hypothesis
+ * @author Kamil Morong
  *
  */
 public interface CanActivateDeactivate {
 
-	boolean activate();
-	boolean deactivate();
+	public boolean activate();
+
+	public boolean deactivate();
 
 }

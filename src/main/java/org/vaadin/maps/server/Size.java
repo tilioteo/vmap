@@ -4,18 +4,18 @@
 package org.vaadin.maps.server;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class Size {
 
 	int width = 0;
 	int height = 0;
-	
+
 	public Size() {
-		
+
 	}
-	
+
 	public Size(int width, int height) {
 		this.width = Math.abs(width);
 		this.height = Math.abs(height);
@@ -44,15 +44,15 @@ public class Size {
 			this.height = 0;
 		}
 	}
-	
+
 	public boolean isValid() {
 		return width > 0 && height > 0;
 	}
-	
+
 	public void expand(int x, int y) {
 		width += x;
 		height += y;
-		
+
 		if (width < 0) {
 			width = 0;
 		}
@@ -60,7 +60,7 @@ public class Size {
 			height = 0;
 		}
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -72,12 +72,12 @@ public class Size {
 		if (!(obj instanceof Size)) {
 			return false;
 		}
-		
+
 		Size other = (Size) obj;
-		
+
 		return (width == other.width && height == other.height);
 	}
-	
+
 	@Override
 	public Size clone() {
 		return new Size(width, height);

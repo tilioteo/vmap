@@ -49,7 +49,10 @@ import org.vaadin.maps.client.geometry.MultiPolygon;
 import org.vaadin.maps.client.geometry.Point;
 import org.vaadin.maps.client.geometry.Polygon;
 import org.vaadin.maps.client.geometry.util.Assert;
+import org.vaadin.maps.client.geometry.util.AssertionFailedException;
 import org.vaadin.maps.client.io.ParseException;
+
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Converts a geometry in Well-Known Text format to a {@link Geometry}.
@@ -77,10 +80,9 @@ import org.vaadin.maps.client.io.ParseException;
  * floating point literals (including scientific notation).
  * </ul>
  * 
- * <h3>Syntax</h3>
- * The following syntax specification describes the version of Well-Known Text
- * supported by JTS. (The specification uses a syntax language similar to that
- * used in the C and Java language specifications.)
+ * <h3>Syntax</h3> The following syntax specification describes the version of
+ * Well-Known Text supported by JTS. (The specification uses a syntax language
+ * similar to that used in the C and Java language specifications.)
  * <p>
  * 
  * <blockquote>
@@ -231,8 +233,7 @@ public class WKTReader {
 		return (Coordinate[]) coordinates.toArray(array);
 	}
 
-	private Coordinate getPreciseCoordinate() throws IOException,
-			ParseException {
+	private Coordinate getPreciseCoordinate() throws IOException, ParseException {
 		Coordinate coordinate = new Coordinate();
 		coordinate.x = getNextNumber();
 		coordinate.y = getNextNumber();
@@ -391,8 +392,7 @@ public class WKTReader {
 			Assert.shouldNeverReachHere("Unexpected EOL token");
 
 		String tokenStr = tokenString();
-		throw new ParseException("Expected " + expected + " but found "
-				+ tokenStr);
+		throw new ParseException("Expected " + expected + " but found " + tokenStr);
 	}
 
 	/**
@@ -428,8 +428,7 @@ public class WKTReader {
 	 * @throws IOException
 	 *             if an I/O error occurs
 	 */
-	private Geometry readGeometryTaggedText() throws IOException,
-			ParseException {
+	private Geometry readGeometryTaggedText() throws IOException, ParseException {
 		String type = null;
 
 		try {
@@ -606,8 +605,7 @@ public class WKTReader {
 	 * @throws ParseException
 	 *             if an unexpected token was encountered
 	 */
-	private MultiLineString readMultiLineStringText() throws IOException,
-			ParseException {
+	private MultiLineString readMultiLineStringText() throws IOException, ParseException {
 		String nextToken = getNextEmptyOrOpener();
 
 		if (nextToken.equals(EMPTY)) {
@@ -643,8 +641,7 @@ public class WKTReader {
 	 * @throws ParseException
 	 *             if an unexpected token was encountered
 	 */
-	private MultiPolygon readMultiPolygonText() throws IOException,
-			ParseException {
+	private MultiPolygon readMultiPolygonText() throws IOException, ParseException {
 		String nextToken = getNextEmptyOrOpener();
 
 		if (nextToken.equals(EMPTY)) {
@@ -681,8 +678,7 @@ public class WKTReader {
 	 * @throws IOException
 	 *             if an I/O error occurs
 	 */
-	private GeometryCollection readGeometryCollectionText() throws IOException,
-			ParseException {
+	private GeometryCollection readGeometryCollectionText() throws IOException, ParseException {
 		String nextToken = getNextEmptyOrOpener();
 
 		if (nextToken.equals(EMPTY)) {

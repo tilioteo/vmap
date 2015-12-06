@@ -4,11 +4,11 @@
 package org.vaadin.maps.ui;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
-public class MapConstants {
+public interface MapConstants {
 
 	public static final String DEFAULT_CRS = "EPSG:4326";
-	
+
 }

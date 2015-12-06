@@ -15,24 +15,24 @@ import org.vaadin.maps.ui.control.Control;
 import com.vaadin.util.ReflectTools;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
 public class ZoomHandler extends NavigateHandler {
 
 	protected LayerLayout layout = null;
-	
+
 	private ZoomHandlerRpc rpc = new ZoomHandlerRpc() {
 		@Override
 		public void zoomChange(long timestamp, double zoomStep) {
 			fireEvent(new ZoomChangeEvent(timestamp, ZoomHandler.this, zoomStep));
 		}
 	};
-	
+
 	public ZoomHandler(Control control) {
 		super(control);
-		
+
 		registerRpc(rpc);
 	}
 
@@ -52,9 +52,9 @@ public class ZoomHandler extends NavigateHandler {
 	 * 
 	 */
 	public class ZoomChangeEvent extends ComponentEvent {
-		
+
 		private double zoomStep;
-		
+
 		public ZoomChangeEvent(long timestamp, ZoomHandler source, double zoomStep) {
 			super(timestamp, source);
 			this.zoomStep = zoomStep;
@@ -65,7 +65,7 @@ public class ZoomHandler extends NavigateHandler {
 		}
 
 	}
-	
+
 	/**
 	 * Interface for listening for a {@link ZoomChangeEvent} fired by a
 	 * {@link ZoomHandler}.
@@ -73,8 +73,8 @@ public class ZoomHandler extends NavigateHandler {
 	 */
 	public interface ZoomChangeListener extends Serializable {
 
-		public static final Method ZOOM_CHANGE_METHOD =
-				ReflectTools.findMethod(ZoomChangeListener.class, "zoomChange", ZoomChangeEvent.class);
+		public static final Method ZOOM_CHANGE_METHOD = ReflectTools.findMethod(ZoomChangeListener.class, "zoomChange",
+				ZoomChangeEvent.class);
 
 		/**
 		 * Called when zoom changed.
@@ -85,7 +85,7 @@ public class ZoomHandler extends NavigateHandler {
 		public void zoomChange(ZoomChangeEvent event);
 
 	}
-	
+
 	/**
 	 * Adds the zoom change listener.
 	 * 
@@ -93,8 +93,7 @@ public class ZoomHandler extends NavigateHandler {
 	 *            the Listener to be added.
 	 */
 	public void addZoomChangeListener(ZoomChangeListener listener) {
-		addListener(ZoomChangeEvent.class, listener,
-				ZoomChangeListener.ZOOM_CHANGE_METHOD);
+		addListener(ZoomChangeEvent.class, listener, ZoomChangeListener.ZOOM_CHANGE_METHOD);
 	}
 
 	/**
@@ -104,8 +103,7 @@ public class ZoomHandler extends NavigateHandler {
 	 *            the Listener to be removed.
 	 */
 	public void removeZoomChangeListener(ZoomChangeListener listener) {
-		removeListener(ZoomChangeEvent.class, listener,
-				ZoomChangeListener.ZOOM_CHANGE_METHOD);
+		removeListener(ZoomChangeEvent.class, listener, ZoomChangeListener.ZOOM_CHANGE_METHOD);
 	}
 
 }

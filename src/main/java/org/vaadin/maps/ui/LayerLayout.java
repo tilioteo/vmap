@@ -23,17 +23,16 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Component;
 
 /**
- * @author morong
+ * @author Kamil Morong
  * 
  */
 @SuppressWarnings("serial")
-public class LayerLayout extends AbstractLayout<Layer> implements
-		LayoutClickNotifier<Layer> {
+public class LayerLayout extends AbstractLayout<Layer> implements LayoutClickNotifier<Layer> {
 
 	private LayerLayoutServerRpc rpc = new LayerLayoutServerRpc() {
 
 		@Override
-		public void layoutClick(long timestamp, MouseEventDetails mouseDetails,	Connector clickedConnector) {
+		public void layoutClick(long timestamp, MouseEventDetails mouseDetails, Connector clickedConnector) {
 			fireEvent(LayoutClickEvent.createEvent(timestamp, LayerLayout.this, mouseDetails, clickedConnector));
 		}
 
@@ -45,7 +44,7 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 
 	// Maps each layer to a position
 	private LinkedHashMap<Layer, LayerOrder> layerToOrder = new LinkedHashMap<Layer, LayerOrder>();
-	
+
 	private int measuredWidth = -1;
 	private int measuredHeight = -1;
 
@@ -63,18 +62,18 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 	}
 
 	/**
-	 * Gets an iterator for going through all layers enclosed in the
-	 * layer layout.
+	 * Gets an iterator for going through all layers enclosed in the layer
+	 * layout.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<Component> iterator() {
-		return (Iterator<Component>) ((Set<?>)layerToOrder.keySet()).iterator();
+		return (Iterator<Component>) ((Set<?>) layerToOrder.keySet()).iterator();
 	}
 
 	/**
-	 * Gets an iterator for going through all layers enclosed in the
-	 * layer layout.
+	 * Gets an iterator for going through all layers enclosed in the layer
+	 * layout.
 	 */
 	@Override
 	public Iterator<Layer> typedIterator() {
@@ -93,8 +92,8 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 	}
 
 	/**
-	 * Replaces one layer with another one. The new layer inherits the
-	 * old layers position.
+	 * Replaces one layer with another one. The new layer inherits the old
+	 * layers position.
 	 */
 	@Override
 	public void replaceComponent(Layer oldLayer, Layer newLayer) {
@@ -103,12 +102,6 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 		addLayer(newLayer, order);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.vaadin.ui.AbstractComponentContainer<C>#addComponent(C)
-	 */
 	@Override
 	public void addComponent(Layer layer) {
 		layer.setSizeFull();
@@ -116,8 +109,8 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 	}
 
 	/**
-	 * Adds the layer using the given position. Ensures the position is only
-	 * set if the component is added correctly.
+	 * Adds the layer using the given position. Ensures the position is only set
+	 * if the component is added correctly.
 	 * 
 	 * @param layer
 	 *            The layer to add
@@ -126,8 +119,7 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 	 * @throws IllegalArgumentException
 	 *             If adding the component failed
 	 */
-	private void addLayer(Layer layer, LayerOrder order)
-			throws IllegalArgumentException {
+	private void addLayer(Layer layer, LayerOrder order) throws IllegalArgumentException {
 		/*
 		 * Create position instance and add it to layerToCoordinates map. We
 		 * need to do this before we call addComponent so the attachListeners
@@ -144,9 +136,9 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 	}
 
 	/**
-	 * Removes the layer from all internal data structures. Does not
-	 * actually remove the layer from the layout (this is assumed to have
-	 * been done by the caller).
+	 * Removes the layer from all internal data structures. Does not actually
+	 * remove the layer from the layout (this is assumed to have been done by
+	 * the caller).
 	 * 
 	 * @param layer
 	 *            The layer to remove
@@ -172,12 +164,6 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.vaadin.ui.AbstractComponentContainer<C>#removeComponent(C)
-	 */
 	@Override
 	public void removeComponent(Layer layer) {
 		internalRemoveLayer(layer);
@@ -186,19 +172,18 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 	}
 
 	/**
-	 * Gets the position of a layer in the layout. Returns null if layer
-	 * is not attached to the layout.
+	 * Gets the position of a layer in the layout. Returns null if layer is not
+	 * attached to the layout.
 	 * <p>
 	 * Note that you cannot update the position by updating this object. Call
-	 * {@link #setOrder(Layer, LayerOrder)} with the updated
-	 * {@link LayerOrder} object.
+	 * {@link #setOrder(Layer, LayerOrder)} with the updated {@link LayerOrder}
+	 * object.
 	 * </p>
 	 * 
 	 * @param layer
 	 *            The layer which position is needed
 	 * @return An instance of LayerPosition containing the position of the
-	 *         layer, or null if the layer is not enclosed in the
-	 *         layout.
+	 *         layer, or null if the layer is not enclosed in the layout.
 	 */
 	protected LayerOrder getOrder(Layer layer) {
 		return layerToOrder.get(layer);
@@ -212,15 +197,14 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 	 */
 	protected void setOrder(Layer layer, LayerOrder order) {
 		if (!layerToOrder.containsKey(layer)) {
-			throw new IllegalArgumentException(
-					"Layer must be a child of this layout");
+			throw new IllegalArgumentException("Layer must be a child of this layout");
 		}
 		internalSetOrder(layer, order);
 	}
 
 	/**
-	 * Updates the position for a layer. Caller must ensure layer is a
-	 * child of this layout.
+	 * Updates the position for a layer. Caller must ensure layer is a child of
+	 * this layout.
 	 * 
 	 * @param layer
 	 *            The layer. Must be a child for this layout. Not enforced.
@@ -229,24 +213,23 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 	 */
 	private void internalSetOrder(Layer layer, LayerOrder order) {
 		// TODO check layer isBase and set proper z-index
-		
+
 		layerToOrder.put(layer, order);
 		markAsDirty();
 	}
-	
+
 	protected void updateMeasuredSize(int newWidth, int newHeight) {
 		int oldWidth = this.measuredWidth;
 		int oldHeight = this.measuredHeight;
-		
+
 		this.measuredWidth = newWidth;
 		this.measuredHeight = newHeight;
-		
-		
+
 		Iterator<Component> iterator = iterator();
 		while (iterator.hasNext()) {
 			Component layer = iterator.next();
 			if (layer instanceof MeasuredSizeHandler) {
-				((MeasuredSizeHandler)layer).sizeChanged(oldWidth, oldHeight, newWidth, newHeight);
+				((MeasuredSizeHandler) layer).sizeChanged(oldWidth, oldHeight, newWidth, newHeight);
 			}
 		}
 	}
@@ -260,14 +243,14 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 	}
 
 	/**
-	 * The LayerPosition class represents a layer position within the
-	 * layer layout. It contains the attributes for left, right, top and
-	 * bottom and the units used to specify them.
+	 * The LayerPosition class represents a layer position within the layer
+	 * layout. It contains the attributes for left, right, top and bottom and
+	 * the units used to specify them.
 	 */
 	public class LayerOrder implements Serializable {
 
 		private int zIndex = -1;
-		
+
 		public LayerOrder(int zIndex) {
 			this.zIndex = zIndex;
 		}
@@ -279,7 +262,7 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 		 */
 		public String getCSSString() {
 			String s = "";
-			
+
 			s += "position:absolute;top:0px;left:0px";
 			if (zIndex >= 0) {
 				s += "z-index:" + zIndex + ";";
@@ -307,11 +290,6 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 			return zIndex;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Object#toString()
-		 */
 		@Override
 		public String toString() {
 			return getCSSString();
@@ -321,15 +299,13 @@ public class LayerLayout extends AbstractLayout<Layer> implements
 
 	@Override
 	public void addLayoutClickListener(LayoutClickListener<Layer> listener) {
-		addListener(EventId.LAYOUT_CLICK_EVENT_IDENTIFIER,
-				LayoutClickEvent.class, listener,
+		addListener(EventId.LAYOUT_CLICK_EVENT_IDENTIFIER, LayoutClickEvent.class, listener,
 				LayoutClickListener.clickMethod);
 	}
 
 	@Override
 	public void removeLayoutClickListener(LayoutClickListener<Layer> listener) {
-		removeListener(EventId.LAYOUT_CLICK_EVENT_IDENTIFIER,
-				LayoutClickEvent.class, listener);
+		removeListener(EventId.LAYOUT_CLICK_EVENT_IDENTIFIER, LayoutClickEvent.class, listener);
 	}
 
 }

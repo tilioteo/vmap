@@ -6,7 +6,7 @@ package org.vaadin.maps.ui.controlcontainer;
 import org.vaadin.maps.ui.control.AbstractControl;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -17,7 +17,7 @@ public class GeneralControlContainer extends AbstractControlContainer<AbstractCo
 		setWidth("0px");
 		setHeight("0px");
 	}
-	
+
 	public void deactivateAll() {
 		for (AbstractControl control : components) {
 			if (control.isActive()) {

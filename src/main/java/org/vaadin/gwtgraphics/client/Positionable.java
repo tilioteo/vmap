@@ -29,7 +29,7 @@ public interface Positionable {
 	 * 
 	 * @return the x-coordinate position in pixels
 	 */
-	public abstract int getX();
+	public int getX();
 
 	/**
 	 * Sets the x-coordinate position of the element.
@@ -37,14 +37,14 @@ public interface Positionable {
 	 * @param x
 	 *            the new x-coordinate position in pixels
 	 */
-	public abstract void setX(int x);
+	public void setX(int x);
 
 	/**
 	 * Returns the y-coordinate position of the element.
 	 * 
 	 * @return the y-coordinate position in pixels
 	 */
-	public abstract int getY();
+	public int getY();
 
 	/**
 	 * Sets the y-coordinate position of the element.
@@ -52,5 +52,5 @@ public interface Positionable {
 	 * @param y
 	 *            the new y-coordinate position in pixels
 	 */
-	public abstract void setY(int y);
+	public void setY(int y);
 }

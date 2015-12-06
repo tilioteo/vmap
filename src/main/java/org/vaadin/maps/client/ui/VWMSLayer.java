@@ -13,22 +13,22 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VWMSLayer extends InteractiveLayer {
 
-    /** Class name, prefix in styling */
-    public static final String CLASSNAME = "v-wmslayer";
-    
+	/** Class name, prefix in styling */
+	public static final String CLASSNAME = "v-wmslayer";
+
 	private HashMap<RequestSingleTileHandler, HandlerRegistration> requestSingleTileHandlerMap = new HashMap<RequestSingleTileHandler, HandlerRegistration>();
 
-    protected boolean base = true;
-    protected boolean singleTile = true;
-    
-    public VWMSLayer() {
-    	super();
-    	setStylePrimaryName(CLASSNAME);
+	protected boolean base = true;
+	protected boolean singleTile = true;
+
+	public VWMSLayer() {
+		super();
+		setStylePrimaryName(CLASSNAME);
 	}
 
 	public boolean isBase() {
@@ -48,18 +48,18 @@ public class VWMSLayer extends InteractiveLayer {
 	}
 
 	@Override
-	public void onSizeChange(int oldWidth, int oldHeight, int newWidth,	int newHeight) {
+	public void onSizeChange(int oldWidth, int oldHeight, int newWidth, int newHeight) {
 		Widget child = getWidget();
 		if (child instanceof VGridLayout) {
-			VGridLayout gridLayout = (VGridLayout)child;
+			VGridLayout gridLayout = (VGridLayout) child;
 			gridLayout.setMeasuredSize(newWidth, newHeight);
-			
+
 			if (singleTile) {
 				// center tile
 				Widget tileWidget = gridLayout.getWidget(0);
 				GridWrapper wrapper = gridLayout.getChildWrapper(tileWidget);
 				if (tileWidget instanceof Tile) {
-					Tile tile = (Tile)tileWidget;
+					Tile tile = (Tile) tileWidget;
 					int dx = wrapper.getLeft();
 					int dy = wrapper.getTop();
 					if (dx == 0) {
@@ -69,11 +69,10 @@ public class VWMSLayer extends InteractiveLayer {
 						dy = (newHeight - tile.getHeight()) / 2;
 					}
 					gridLayout.setWidgetPosition(tileWidget, dx, dy);
-					
+
 					int shiftX = gridLayout.getShiftX();
 					int shiftY = gridLayout.getShiftY();
 					// check if there is uncovered place of visible area
-					//if (dx > Math.abs(shiftX) || dy > Math.abs(shiftY)) {
 					if (Math.abs(shiftX) > Math.abs(dx) || Math.abs(shiftY) > Math.abs(dy)) {
 						// new tile needed
 						clearShift();
@@ -89,16 +88,16 @@ public class VWMSLayer extends InteractiveLayer {
 	@Override
 	public void onPanEnd(int totalX, int totalY) {
 		super.onPanEnd(totalX, totalY);
-		
+
 		if (!fixed) {
 			Widget child = getWidget();
 			if (child instanceof VGridLayout) {
-				VGridLayout gridLayout = (VGridLayout)child;
-				
+				VGridLayout gridLayout = (VGridLayout) child;
+
 				if (singleTile) {
 					Widget tileWidget = gridLayout.getWidget(0);
 					if (tileWidget != null && tileWidget instanceof Tile) {
-						Tile tile = (Tile)tileWidget;
+						Tile tile = (Tile) tileWidget;
 						GridWrapper wrapper = gridLayout.getChildWrapper(tileWidget);
 						if (wrapper != null) {
 							int dx = wrapper.getLeft();
@@ -108,11 +107,12 @@ public class VWMSLayer extends InteractiveLayer {
 							if (Math.abs(shiftX) > Math.abs(dx) || Math.abs(shiftY) > Math.abs(dy)) {
 								// new tile needed
 								clearShift();
-								fireEvent(new RequestSingleTileEvent(this, tile.getWidth(), tile.getHeight(), shiftX, shiftY));
+								fireEvent(new RequestSingleTileEvent(this, tile.getWidth(), tile.getHeight(), shiftX,
+										shiftY));
 							}
 						}
 					}
-					
+
 				} else {
 					// TODO grid handling
 				}
@@ -123,7 +123,7 @@ public class VWMSLayer extends InteractiveLayer {
 	@Override
 	public void onZoom(double zoom) {
 		super.onZoom(zoom);
-		
+
 		if (!fixed) {
 			if (singleTile) {
 				clearShift();
@@ -135,16 +135,16 @@ public class VWMSLayer extends InteractiveLayer {
 	public interface RequestSingleTileHandler extends EventHandler {
 		public void requestSingleTile(RequestSingleTileEvent event);
 	}
-	
+
 	public static class RequestSingleTileEvent extends GwtEvent<RequestSingleTileHandler> {
 
 		public static final Type<RequestSingleTileHandler> TYPE = new Type<RequestSingleTileHandler>();
-		
+
 		private int width = 0;
 		private int height = 0;
 		private int shiftX = 0;
 		private int shiftY = 0;
-		
+
 		public RequestSingleTileEvent(VWMSLayer source, int width, int height, int shiftX, int shiftY) {
 			setSource(source);
 			this.width = 0;
@@ -152,15 +152,15 @@ public class VWMSLayer extends InteractiveLayer {
 			this.shiftX = shiftX;
 			this.shiftY = shiftY;
 		}
-		
+
 		public int getWidth() {
 			return width;
 		}
-		
+
 		public int getHeight() {
 			return height;
 		}
-		
+
 		public int getShiftX() {
 			return shiftX;
 		}
@@ -180,7 +180,7 @@ public class VWMSLayer extends InteractiveLayer {
 		}
 
 	}
-	
+
 	public void addRequestSingleTileHandler(RequestSingleTileHandler handler) {
 		requestSingleTileHandlerMap.put(handler, addHandler(handler, RequestSingleTileEvent.TYPE));
 	}

@@ -6,7 +6,7 @@ package org.vaadin.maps.ui.handler;
 import org.vaadin.maps.ui.control.Control;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")

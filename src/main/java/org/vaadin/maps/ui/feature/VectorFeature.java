@@ -22,9 +22,8 @@ import com.vaadin.util.ReflectTools;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 
-
 /**
- * @author morong
+ * @author Kamil Morong
  *
  */
 @SuppressWarnings("serial")
@@ -41,26 +40,26 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 			fireEvent(new DoubleClickEvent(timestamp, VectorFeature.this, mouseDetails));
 		}
 	};
-	
+
 	private Geometry geometry = null;
 	private Style style = null;
 	private Style hoverStyle = null;
-	
+
 	private Style inheritedStyle = null;
 	private Style inheritedHoverStyle = null;
 
 	public VectorFeature() {
 		super();
 		registerRpc(rpc);
-		
+
 		setStyle(null);
 	}
-	
+
 	public VectorFeature(Geometry geometry) {
 		this();
 		setGeometry(geometry);
 	}
-	
+
 	@Override
 	public Geometry getGeometry() {
 		return geometry;
@@ -69,7 +68,7 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 		getState().wkb = Utils.geometryToWKBHex(geometry);
-		
+
 		setGeometryCentroid(this.geometry);
 	}
 
@@ -97,53 +96,53 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 	public Style getStyle() {
 		return style;
 	}
-	
+
 	public void setStyle(Style style) {
 		this.style = style;
-		
+
 		getState().style = StyleUtility.getStyleMap(this.style != null ? this.style : inheritedStyle);
 		markAsDirty();
 	}
-	
+
 	public Style getHoverStyle() {
 		return hoverStyle;
 	}
 
 	public void setHoverStyle(Style style) {
 		hoverStyle = style;
-		
+
 		getState().hoverStyle = StyleUtility.getStyleMap(hoverStyle != null ? hoverStyle : style);
 		markAsDirty();
 	}
-	
+
 	public Style getInheritedStyle() {
 		return inheritedStyle;
 	}
-	
+
 	public void setInheritedStyle(Style style) {
 		inheritedStyle = style;
-		
+
 		if (null == this.style) {
 			getState().style = StyleUtility.getStyleMap(inheritedStyle);
 		}
 	}
-	
+
 	public Style getInheritedHoverStyle() {
 		return inheritedHoverStyle;
 	}
 
 	public void setInheritedHoverStyle(Style style) {
 		inheritedHoverStyle = style;
-		
+
 		if (null == hoverStyle) {
 			getState().hoverStyle = StyleUtility.getStyleMap(inheritedHoverStyle);
 		}
 	}
-	
+
 	public String getText() {
 		return getState().text;
 	}
-	
+
 	public void setText(String text) {
 		getState().text = text;
 	}
@@ -152,11 +151,11 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 		getState().offsetX = x;
 		getState().offsetY = y;
 	}
-	
+
 	public boolean isHidden() {
 		return getState().hidden;
 	}
-	
+
 	public void setHidden(boolean hidden) {
 		getState().hidden = hidden;
 	}
@@ -329,13 +328,12 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 	 */
 	public interface ClickListener extends Serializable {
 
-		public static final Method FEATURE_CLICK_METHOD = ReflectTools
-				.findMethod(ClickListener.class, "click",
-						ClickEvent.class);
+		public static final Method FEATURE_CLICK_METHOD = ReflectTools.findMethod(ClickListener.class, "click",
+				ClickEvent.class);
 
 		/**
-		 * Called when a {@link VectorFeature} has been clicked. A reference to the
-		 * feature is given by {@link ClickEvent#getFeature()}.
+		 * Called when a {@link VectorFeature} has been clicked. A reference to
+		 * the feature is given by {@link ClickEvent#getFeature()}.
 		 * 
 		 * @param event
 		 *            An event containing information about the click.
@@ -343,7 +341,7 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 		public void click(ClickEvent event);
 
 	}
-	
+
 	/**
 	 * Adds the feature click listener.
 	 * 
@@ -351,8 +349,7 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 	 *            the Listener to be added.
 	 */
 	public void addClickListener(ClickListener listener) {
-		addListener(ClickEvent.class, listener,
-				ClickListener.FEATURE_CLICK_METHOD);
+		addListener(ClickEvent.class, listener, ClickListener.FEATURE_CLICK_METHOD);
 	}
 
 	/**
@@ -362,8 +359,7 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 	 *            the Listener to be removed.
 	 */
 	public void removeClickListener(ClickListener listener) {
-		removeListener(ClickEvent.class, listener,
-				ClickListener.FEATURE_CLICK_METHOD);
+		removeListener(ClickEvent.class, listener, ClickListener.FEATURE_CLICK_METHOD);
 	}
 
 	public class DoubleClickEvent extends ClickEvent {
@@ -375,7 +371,7 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 		public DoubleClickEvent(long timestamp, Component source, MouseEventDetails details) {
 			super(timestamp, source, details);
 		}
-		
+
 	}
 
 	/**
@@ -385,13 +381,13 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 	 */
 	public interface DoubleClickListener extends Serializable {
 
-		public static final Method FEATURE_DOUBLE_CLICK_METHOD = ReflectTools
-				.findMethod(DoubleClickListener.class, "doubleClick",
-						DoubleClickEvent.class);
+		public static final Method FEATURE_DOUBLE_CLICK_METHOD = ReflectTools.findMethod(DoubleClickListener.class,
+				"doubleClick", DoubleClickEvent.class);
 
 		/**
-		 * Called when a {@link VectorFeature} has been double-clicked. A reference to the
-		 * feature is given by {@link DoubleClickEvent#getFeature()}.
+		 * Called when a {@link VectorFeature} has been double-clicked. A
+		 * reference to the feature is given by
+		 * {@link DoubleClickEvent#getFeature()}.
 		 * 
 		 * @param event
 		 *            An event containing information about the click.
@@ -407,8 +403,7 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 	 *            the Listener to be added.
 	 */
 	public void addDoubleClickListener(DoubleClickListener listener) {
-		addListener(DoubleClickEvent.class, listener,
-				DoubleClickListener.FEATURE_DOUBLE_CLICK_METHOD);
+		addListener(DoubleClickEvent.class, listener, DoubleClickListener.FEATURE_DOUBLE_CLICK_METHOD);
 	}
 
 	/**
@@ -418,8 +413,7 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 	 *            the Listener to be removed.
 	 */
 	public void removeDoubleClickListener(DoubleClickListener listener) {
-		removeListener(DoubleClickEvent.class, listener,
-				DoubleClickListener.FEATURE_DOUBLE_CLICK_METHOD);
+		removeListener(DoubleClickEvent.class, listener, DoubleClickListener.FEATURE_DOUBLE_CLICK_METHOD);
 	}
 
 	@Override
@@ -430,17 +424,17 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 	private Geometry transformGeometryToView(Geometry worldGeometry, ViewWorldTransform viewWorldTransform) {
 		if (worldGeometry != null && viewWorldTransform != null) {
 			Geometry clone = (Geometry) worldGeometry.clone();
-			
+
 			Utils.transformWorldToView(clone, viewWorldTransform);
 			return clone;
 		}
 		return null;
 	}
-	
+
 	public void transformToView(ViewWorldTransform viewWorldTransform) {
 		if (viewWorldTransform != null && viewWorldTransform.getViewWorldRatio() != 0) {
 			Geometry viewGeometry = transformGeometryToView(this.geometry, viewWorldTransform);
-			
+
 			getState().wkb = Utils.geometryToWKBHex(viewGeometry);
 			setGeometryCentroid(viewGeometry);
 
@@ -448,5 +442,5 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 			setGeometry(this.geometry);
 		}
 	}
-	
+
 }
