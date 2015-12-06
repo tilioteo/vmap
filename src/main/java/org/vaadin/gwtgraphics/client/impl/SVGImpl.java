@@ -17,11 +17,11 @@ package org.vaadin.gwtgraphics.client.impl;
 
 import java.util.List;
 
+import org.vaadin.gwtgraphics.client.Drawing;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.Line;
-import org.vaadin.gwtgraphics.client.AbstractDrawing;
 import org.vaadin.gwtgraphics.client.impl.util.NumberUtil;
 import org.vaadin.gwtgraphics.client.impl.util.SVGBBox;
 import org.vaadin.gwtgraphics.client.impl.util.SVGUtil;
@@ -47,6 +47,7 @@ import com.google.gwt.regexp.shared.RegExp;
  * This class contains the SVG implementation module of GWT Graphics.
  * 
  * @author Henri Kerola
+ * @author Kamil Morong
  * 
  */
 public class SVGImpl extends DrawImpl {
@@ -61,21 +62,8 @@ public class SVGImpl extends DrawImpl {
 		return "svg";
 	}
 
-	/*
-	 * public Element createDrawingArea(Element container, int width, int
-	 * height) { Element root = SVGUtil.createSVGElementNS("svg"); // IE9 needs
-	 * this to crop overflowing content root.setAttribute("overflow", "hidden");
-	 * container.appendChild(root); setWidth(root, width); setHeight(root,
-	 * height);
-	 * 
-	 * Element defs = SVGUtil.createSVGElementNS("defs");
-	 * root.appendChild(defs);
-	 * 
-	 * return root; }
-	 */
-
 	@Override
-	public Element createElement(Class<? extends AbstractDrawing> type) {
+	public Element createElement(Class<? extends Drawing> type) {
 		Element element = null;
 		if (type == DrawingArea.class) {
 			element = SVGUtil.createSVGElementNS("svg");
@@ -104,19 +92,17 @@ public class SVGImpl extends DrawImpl {
 		} else if (type == Group.class) {
 			element = SVGUtil.createSVGElementNS("g");
 		}
-		
-		return element;
+
+		return element != null ? element : super.createElement(type);
 	}
 
 	@Override
 	public int getX(Element element) {
 		if (element.getTagName().toLowerCase().equals("g")) {
 			MatchResult r = getTranslation(element);
-			return r != null && r.getGroupCount() == 4 ? NumberUtil
-					.parseIntValue(r.getGroup(1), 0) : 0;
+			return r != null && r.getGroupCount() == 4 ? NumberUtil.parseIntValue(r.getGroup(1), 0) : 0;
 		} else {
-			return NumberUtil.parseIntValue(element,
-					getPosAttribute(element, true), 0);
+			return NumberUtil.parseIntValue(element, getPosAttribute(element, true), 0);
 		}
 	}
 
@@ -129,11 +115,9 @@ public class SVGImpl extends DrawImpl {
 	public int getY(Element element) {
 		if (element.getTagName().toLowerCase().equals("g")) {
 			MatchResult r = getTranslation(element);
-			return r != null && r.getGroupCount() == 4 ? NumberUtil
-					.parseIntValue(r.getGroup(3), 0) : 0;
+			return r != null && r.getGroupCount() == 4 ? NumberUtil.parseIntValue(r.getGroup(3), 0) : 0;
 		} else {
-			return NumberUtil.parseIntValue(element,
-					getPosAttribute(element, false), 0);
+			return NumberUtil.parseIntValue(element, getPosAttribute(element, false), 0);
 		}
 
 	}
@@ -143,8 +127,7 @@ public class SVGImpl extends DrawImpl {
 		setXY(element, false, y, attached);
 	}
 
-	private void setXY(final Element element, boolean x, final int value,
-			final boolean attached) {
+	private void setXY(final Element element, boolean x, final int value, final boolean attached) {
 		if (element.getTagName().toLowerCase().equals("g")) {
 			int other = x ? getY(element) : getX(element);
 			StringBuilder sb = new StringBuilder("translate(");
@@ -173,6 +156,7 @@ public class SVGImpl extends DrawImpl {
 			SVGUtil.setAttributeNS(element, posAttr, value);
 			if (rotation != 0) {
 				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+					@Override
 					public void execute() {
 						SVGUtil.setAttributeNS(element, "transform", "");
 						SVGUtil.setAttributeNS(element, posAttr, value);
@@ -186,8 +170,7 @@ public class SVGImpl extends DrawImpl {
 	private String getPosAttribute(Element element, boolean x) {
 		String tagName = element.getTagName();
 		String attr = "";
-		if (tagName.equals("rect") || tagName.equals("text")
-				|| tagName.equals("image")) {
+		if (tagName.equals("rect") || tagName.equals("text") || tagName.equals("image")) {
 			attr = x ? "x" : "y";
 		} else if (tagName.equals("circle") || tagName.equals("ellipse")) {
 			attr = x ? "cx" : "cy";
@@ -201,9 +184,8 @@ public class SVGImpl extends DrawImpl {
 
 	private MatchResult getTranslation(Element e) {
 		String xform = e.getAttribute("transform");
-		return xform != null ? RegExp.compile(
-				"translate\\(\\s*([-+]?\\d+)\\s*(,\\s*([-+]?\\d+))?\\s*\\)", "i").exec(
-				xform) : null;
+		return xform != null
+				? RegExp.compile("translate\\(\\s*([-+]?\\d+)\\s*(,\\s*([-+]?\\d+))?\\s*\\)", "i").exec(xform) : null;
 	}
 
 	@Override
@@ -222,8 +204,7 @@ public class SVGImpl extends DrawImpl {
 
 	@Override
 	public double getFillOpacity(Element element) {
-		return NumberUtil.parseDoubleValue(
-				element.getAttribute("fill-opacity"), 1);
+		return NumberUtil.parseDoubleValue(element.getAttribute("fill-opacity"), 1);
 	}
 
 	@Override
@@ -254,8 +235,7 @@ public class SVGImpl extends DrawImpl {
 
 	@Override
 	public double getStrokeOpacity(Element element) {
-		return NumberUtil.parseDoubleValue(
-				element.getAttribute("stroke-opacity"), 1);
+		return NumberUtil.parseDoubleValue(element.getAttribute("stroke-opacity"), 1);
 	}
 
 	@Override
@@ -265,8 +245,7 @@ public class SVGImpl extends DrawImpl {
 
 	@Override
 	public double getOpacity(Element element) {
-		return NumberUtil.parseDoubleValue(
-				element.getAttribute("opacity"), 1);
+		return NumberUtil.parseDoubleValue(element.getAttribute("opacity"), 1);
 	}
 
 	@Override
@@ -282,9 +261,6 @@ public class SVGImpl extends DrawImpl {
 	@Override
 	public void setWidth(Element element, int width) {
 		SVGUtil.setAttributeNS(element, "width", width);
-		/*if (element.getTagName().equalsIgnoreCase("svg")) {
-			element.getParentElement().getStyle().setPropertyPx("width", width);
-		}*/
 	}
 
 	@Override
@@ -302,9 +278,6 @@ public class SVGImpl extends DrawImpl {
 	@Override
 	public void setHeight(Element element, int height) {
 		SVGUtil.setAttributeNS(element, "height", height);
-		/*if (element.getTagName().equalsIgnoreCase("svg")) {
-			element.getParentElement().getStyle().setPropertyPx("height", height);
-		}*/
 	}
 
 	@Override
@@ -376,25 +349,22 @@ public class SVGImpl extends DrawImpl {
 			path.append(arc.isRelativeCoords() ? " a" : " A");
 			path.append(arc.getRx()).append(",").append(arc.getRy());
 			path.append(" ").append(arc.getxAxisRotation());
-			path.append(" ").append(arc.isLargeArc() ? "1" : "0").append(",")
-					.append(arc.isSweep() ? "1" : "0");
+			path.append(" ").append(arc.isLargeArc() ? "1" : "0").append(",").append(arc.isSweep() ? "1" : "0");
 			path.append(" ").append(arc.getX()).append(",").append(arc.getY());
 		} else if (step instanceof CurveTo) {
 			CurveTo curve = (CurveTo) step;
 			path.append(curve.isRelativeCoords() ? " c" : " C");
 			path.append(curve.getX1()).append(" ").append(curve.getY1());
-			path.append(" ").append(curve.getX2()).append(" ")
-					.append(curve.getY2());
-			path.append(" ").append(curve.getX()).append(" ")
-					.append(curve.getY());
+			path.append(" ").append(curve.getX2()).append(" ").append(curve.getY2());
+			path.append(" ").append(curve.getX()).append(" ").append(curve.getY());
 		} else if (step instanceof LineTo) {
 			LineTo lineTo = (LineTo) step;
-			path.append(lineTo.isRelativeCoords() ? " l" : " L")
-					.append(lineTo.getX()).append(" ").append(lineTo.getY());
+			path.append(lineTo.isRelativeCoords() ? " l" : " L").append(lineTo.getX()).append(" ")
+					.append(lineTo.getY());
 		} else if (step instanceof MoveTo) {
 			MoveTo moveTo = (MoveTo) step;
-			path.append(moveTo.isRelativeCoords() ? " m" : " M")
-					.append(moveTo.getX()).append(" ").append(moveTo.getY());
+			path.append(moveTo.isRelativeCoords() ? " m" : " M").append(moveTo.getX()).append(" ")
+					.append(moveTo.getY());
 		} else if (step instanceof ClosePath) {
 			path.append(" z");
 		}
@@ -416,8 +386,7 @@ public class SVGImpl extends DrawImpl {
 	}
 
 	@Override
-	public void setTextFontFamily(Element element, String family,
-			boolean attached) {
+	public void setTextFontFamily(Element element, String family, boolean attached) {
 		SVGUtil.setAttributeNS(element, "font-family", family);
 	}
 
@@ -460,7 +429,6 @@ public class SVGImpl extends DrawImpl {
 	@Override
 	public void setLineX2(Element element, int x2) {
 		SVGUtil.setAttributeNS(element, "x2", x2);
-
 	}
 
 	@Override
@@ -471,7 +439,6 @@ public class SVGImpl extends DrawImpl {
 	@Override
 	public void setLineY2(Element element, int y2) {
 		SVGUtil.setAttributeNS(element, "y2", y2);
-
 	}
 
 	@Override
@@ -480,8 +447,7 @@ public class SVGImpl extends DrawImpl {
 	}
 
 	@Override
-	public void insert(Element root, Element element, int beforeIndex,
-			boolean attached) {
+	public void insert(Element root, Element element, int beforeIndex, boolean attached) {
 		if ("defs".equals(root.getChildNodes().getItem(0).getNodeName())) {
 			beforeIndex++;
 		}
@@ -508,37 +474,34 @@ public class SVGImpl extends DrawImpl {
 
 	@Override
 	public void setStyleName(Element element, String name) {
-		SVGUtil.setClassName(element, name); 
-				//+ "-" + getStyleSuffix());
+		SVGUtil.setClassName(element, name);
 	}
 
 	@Override
 	public void setStyleName(Element element, String name, boolean add) {
-		SVGUtil.setClassName(element, name, add); 
+		SVGUtil.setClassName(element, name, add);
 	}
 
 	@Override
-	public void setRotation(final Element element, final int degree,
-			final boolean attached) {
+	public void setRotation(final Element element, final int degree, final boolean attached) {
 		element.setPropertyInt("_rotation", degree);
 		if (degree == 0) {
 			SVGUtil.setAttributeNS(element, "transform", "");
 			return;
 		}
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
 			public void execute() {
 				setRotateTransform(element, degree, attached);
 			}
 		});
 	}
 
-	private void setRotateTransform(Element element, int degree,
-			boolean attached) {
+	private void setRotateTransform(Element element, int degree, boolean attached) {
 		SVGBBox box = SVGUtil.getBBBox(element, attached);
 		int x = box.getX() + box.getWidth() / 2;
 		int y = box.getY() + box.getHeight() / 2;
-		SVGUtil.setAttributeNS(element, "transform", "rotate(" + degree + " "
-				+ x + " " + y + ")");
+		SVGUtil.setAttributeNS(element, "transform", "rotate(" + degree + " " + x + " " + y + ")");
 	}
 
 	@Override

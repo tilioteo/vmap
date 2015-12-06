@@ -15,26 +15,9 @@
  */
 package org.vaadin.gwtgraphics.client;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.HasAllMouseHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.MouseWheelEvent;
-import com.google.gwt.event.dom.client.MouseWheelHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * The following example shows how a DrawingArea instance is created and added
@@ -62,11 +45,11 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * 
  * 
  * @author Henri Kerola
- * @author kamil
+ * @author Kamil Morong
  * 
  */
-public class DrawingArea extends AbstractDrawingContainer implements Sizeable,
-		HasClickHandlers, HasAllMouseHandlers, HasDoubleClickHandlers {
+public class DrawingArea extends AbstractDrawingContainer
+		implements Sizeable, HasClickHandlers, HasAllMouseHandlers, HasDoubleClickHandlers {
 
 	/**
 	 * Creates a DrawingArea of given width and height.
@@ -82,7 +65,7 @@ public class DrawingArea extends AbstractDrawingContainer implements Sizeable,
 	}
 
 	@Override
-	protected Class<? extends AbstractDrawing> getType() {
+	public Class<? extends Drawing> getType() {
 		return DrawingArea.class;
 	}
 
@@ -101,6 +84,7 @@ public class DrawingArea extends AbstractDrawingContainer implements Sizeable,
 	 * 
 	 * @return the width of the DrawingArea in pixels.
 	 */
+	@Override
 	public int getWidth() {
 		return getImpl().getWidth(getElement());
 	}
@@ -111,6 +95,7 @@ public class DrawingArea extends AbstractDrawingContainer implements Sizeable,
 	 * @param width
 	 *            the new width in pixels
 	 */
+	@Override
 	public void setWidth(int width) {
 		getImpl().setWidth(getElement(), width);
 	}
@@ -120,6 +105,7 @@ public class DrawingArea extends AbstractDrawingContainer implements Sizeable,
 	 * 
 	 * @return the height of the DrawingArea in pixels.
 	 */
+	@Override
 	public int getHeight() {
 		return getImpl().getHeight(getElement());
 	}
@@ -130,116 +116,19 @@ public class DrawingArea extends AbstractDrawingContainer implements Sizeable,
 	 * @param height
 	 *            the new height
 	 */
+	@Override
 	public void setHeight(int height) {
 		getImpl().setHeight(getElement(), height);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.google.gwt.user.client.ui.UIObject#setHeight(java.lang.String)
-	 */
 	@Override
 	public void setHeight(String height) {
 		getImpl().setAreaHeight(getElement(), height);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.google.gwt.user.client.ui.UIObject#setWidth(java.lang.String)
-	 */
 	@Override
 	public void setWidth(String width) {
 		getImpl().setAreaWidth(getElement(), width);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasClickHandlers#addClickHandler(com.
-	 * google.gwt.event.dom.client.ClickHandler)
-	 */
-	public HandlerRegistration addClickHandler(ClickHandler handler) {
-		return addDomHandler(handler, ClickEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasDoubleClickHandlers#addDoubleClickHandler
-	 * (com.google.gwt.event.dom.client.DoubleClickHandler)
-	 */
-	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
-		return addDomHandler(handler, DoubleClickEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseDownHandlers#addMouseDownHandler
-	 * (com.google.gwt.event.dom.client.MouseDownHandler)
-	 */
-	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
-		return addDomHandler(handler, MouseDownEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseUpHandlers#addMouseUpHandler(
-	 * com.google.gwt.event.dom.client.MouseUpHandler)
-	 */
-	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
-		return addDomHandler(handler, MouseUpEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseOutHandlers#addMouseOutHandler
-	 * (com.google.gwt.event.dom.client.MouseOutHandler)
-	 */
-	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
-		return addDomHandler(handler, MouseOutEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseOverHandlers#addMouseOverHandler
-	 * (com.google.gwt.event.dom.client.MouseOverHandler)
-	 */
-	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
-		return addDomHandler(handler, MouseOverEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseMoveHandlers#addMouseMoveHandler
-	 * (com.google.gwt.event.dom.client.MouseMoveHandler)
-	 */
-	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
-		return addDomHandler(handler, MouseMoveEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseWheelHandlers#addMouseWheelHandler
-	 * (com.google.gwt.event.dom.client.MouseWheelHandler)
-	 */
-	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
-		return addDomHandler(handler, MouseWheelEvent.getType());
 	}
 
 }

@@ -18,8 +18,8 @@ package org.vaadin.gwtgraphics.client.shape;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.vaadin.gwtgraphics.client.Drawing;
 import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.AbstractDrawing;
 import org.vaadin.gwtgraphics.client.shape.path.Arc;
 import org.vaadin.gwtgraphics.client.shape.path.ClosePath;
 import org.vaadin.gwtgraphics.client.shape.path.CurveTo;
@@ -55,13 +55,15 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
  * </pre>
  * 
  * @author Henri Kerola
+ * @author Kamil Morong
  * 
  */
 public class Path extends Shape implements Cloneable {
 
 	/**
 	 * Predefined draw types<br/>
-	 * <code>AUTO</code>(default): path is automatically being redrawn on change<br/>
+	 * <code>AUTO</code>(default): path is automatically being redrawn on change
+	 * <br/>
 	 * <code>MANUAL</code>: user has to explicitly call
 	 * <code>issueRedraw(true)</code><br/>
 	 * <code>DEFERRED</code>: redraw is deffered
@@ -79,7 +81,7 @@ public class Path extends Shape implements Cloneable {
 	 * Defines if deffered redraw was issued.
 	 */
 	private boolean deferredDrawPending = false;
-	
+
 	private boolean fillAllowed = true;
 	private double lastFillOpacity = 1.0;
 
@@ -115,6 +117,7 @@ public class Path extends Shape implements Cloneable {
 	 * 
 	 * @return a cloned Path
 	 */
+	@Override
 	public Path clone() {
 		int length = steps.size();
 		Path p = new Path(length);
@@ -124,38 +127,28 @@ public class Path extends Shape implements Cloneable {
 				p.addStep(new ClosePath());
 			} else if (step.getClass() == MoveTo.class) {
 				MoveTo _step = (MoveTo) step;
-				p.addStep(new MoveTo(_step.isRelativeCoords(), _step.getX(),
-						_step.getY()));
+				p.addStep(new MoveTo(_step.isRelativeCoords(), _step.getX(), _step.getY()));
 			} else if (step.getClass() == LineTo.class) {
 				LineTo _step = (LineTo) step;
-				p.addStep(new LineTo(_step.isRelativeCoords(), _step.getX(),
-						_step.getY()));
+				p.addStep(new LineTo(_step.isRelativeCoords(), _step.getX(), _step.getY()));
 			} else if (step.getClass() == CurveTo.class) {
 				CurveTo _step = (CurveTo) step;
-				p.addStep(new CurveTo(_step.isRelativeCoords(), _step.getX1(),
-						_step.getY1(), _step.getX2(), _step.getY2(), _step
-								.getX(), _step.getY()));
+				p.addStep(new CurveTo(_step.isRelativeCoords(), _step.getX1(), _step.getY1(), _step.getX2(),
+						_step.getY2(), _step.getX(), _step.getY()));
 			} else if (step.getClass() == Arc.class) {
 				Arc _step = (Arc) step;
-				p.addStep(new Arc(_step.isRelativeCoords(), _step.getRx(),
-						_step.getRy(), _step.getxAxisRotation(), _step
-								.isLargeArc(), _step.isSweep(), _step.getX(),
-						_step.getY()));
+				p.addStep(new Arc(_step.isRelativeCoords(), _step.getRx(), _step.getRy(), _step.getxAxisRotation(),
+						_step.isLargeArc(), _step.isSweep(), _step.getX(), _step.getY()));
 			}
 		}
 		return p;
 	}
 
 	@Override
-	protected Class<? extends AbstractDrawing> getType() {
+	public Class<? extends Drawing> getType() {
 		return Path.class;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Shape#getX()
-	 */
 	@Override
 	public int getX() {
 		return ((MoveTo) steps.get(0)).getX();
@@ -165,11 +158,6 @@ public class Path extends Shape implements Cloneable {
 		return redrawingType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Shape#setX(int)
-	 */
 	@Override
 	public void setX(int x) {
 		steps.set(0, new MoveTo(false, x, getY()));
@@ -184,21 +172,11 @@ public class Path extends Shape implements Cloneable {
 		this.redrawingType = redrawingType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Shape#getY()
-	 */
 	@Override
 	public int getY() {
 		return ((MoveTo) steps.get(0)).getY();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Shape#setY(int)
-	 */
 	@Override
 	public void setY(int y) {
 		steps.set(0, new MoveTo(false, getX(), y));
@@ -214,13 +192,9 @@ public class Path extends Shape implements Cloneable {
 	 *            PathStep to be stored at the specified position
 	 * @throws IllegalArgumentException
 	 */
-	public void setStep(int index, PathStep step)
-			throws IllegalArgumentException {
-		if (index == 0
-				&& !(step instanceof MoveTo || ((MoveTo) step)
-						.isRelativeCoords())) {
-			throw new IllegalArgumentException(
-					"The first step must be an absolute MoveTo step.");
+	public void setStep(int index, PathStep step) throws IllegalArgumentException {
+		if (index == 0 && !(step instanceof MoveTo || ((MoveTo) step).isRelativeCoords())) {
+			throw new IllegalArgumentException("The first step must be an absolute MoveTo step.");
 		} else {
 			steps.set(index, step);
 			issueRedraw(false);
@@ -238,13 +212,9 @@ public class Path extends Shape implements Cloneable {
 	 *            new Step
 	 * @throws IllegalArgumentException
 	 */
-	public void addStep(int index, PathStep step)
-			throws IllegalArgumentException {
-		if (index == 0
-				&& !(step instanceof MoveTo || ((MoveTo) step)
-						.isRelativeCoords())) {
-			throw new IllegalArgumentException(
-					"The first step must be an absolute MoveTo step.");
+	public void addStep(int index, PathStep step) throws IllegalArgumentException {
+		if (index == 0 && !(step instanceof MoveTo || ((MoveTo) step).isRelativeCoords())) {
+			throw new IllegalArgumentException("The first step must be an absolute MoveTo step.");
 		} else {
 			boolean appended = index == steps.size() - 1;
 			steps.add(index, step);
@@ -269,11 +239,8 @@ public class Path extends Shape implements Cloneable {
 	 * @throws IllegalArgumentException
 	 */
 	public void addStep(PathStep step) throws IllegalArgumentException {
-		if (steps.size() == 0
-				&& !(step instanceof MoveTo || ((MoveTo) step)
-						.isRelativeCoords())) {
-			throw new IllegalArgumentException(
-					"The first step must be an absolute MoveTo step.");
+		if (steps.size() == 0 && !(step instanceof MoveTo || ((MoveTo) step).isRelativeCoords())) {
+			throw new IllegalArgumentException("The first step must be an absolute MoveTo step.");
 		} else {
 			steps.add(step);
 			getImpl().getPathStepString(getElement(), step);
@@ -403,14 +370,12 @@ public class Path extends Shape implements Cloneable {
 		issueRedraw(false);
 	}
 
-	public void arc(int rx, int ry, int xAxisRotation, boolean largeArc,
-			boolean sweep, int x, int y) {
+	public void arc(int rx, int ry, int xAxisRotation, boolean largeArc, boolean sweep, int x, int y) {
 		addStep(new Arc(false, rx, ry, xAxisRotation, largeArc, sweep, x, y));
 		issueRedraw(false);
 	}
 
-	public void arcRelatively(int rx, int ry, int xAxisRotation,
-			boolean largeArc, boolean sweep, int x, int y) {
+	public void arcRelatively(int rx, int ry, int xAxisRotation, boolean largeArc, boolean sweep, int x, int y) {
 		addStep(new Arc(true, rx, ry, xAxisRotation, largeArc, sweep, x, y));
 		issueRedraw(false);
 	}
@@ -426,7 +391,7 @@ public class Path extends Shape implements Cloneable {
 	private void drawPath() {
 		getImpl().drawPath(getElement(), steps);
 	}
-	
+
 	public void setFillEvenOdd() {
 		getImpl().setPathFillEvenOdd(getElement());
 	}
@@ -435,6 +400,7 @@ public class Path extends Shape implements Cloneable {
 		if (!deferredDrawPending) {
 			deferredDrawPending = true;
 			Scheduler.get().scheduleFinally(new ScheduledCommand() {
+				@Override
 				public void execute() {
 					deferredDrawPending = false;
 					drawPath();
@@ -482,8 +448,5 @@ public class Path extends Shape implements Cloneable {
 			super.setFillOpacity(opacity);
 		}
 	}
-	
-	
-	
-	
+
 }

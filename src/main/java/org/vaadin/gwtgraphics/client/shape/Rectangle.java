@@ -15,8 +15,8 @@
  */
 package org.vaadin.gwtgraphics.client.shape;
 
+import org.vaadin.gwtgraphics.client.Drawing;
 import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.AbstractDrawing;
 
 /**
  * Rectangle represents a rectangle.
@@ -48,7 +48,7 @@ public class Rectangle extends Shape {
 	}
 
 	@Override
-	protected Class<? extends AbstractDrawing> getType() {
+	public Class<? extends Drawing> getType() {
 		return Rectangle.class;
 	}
 
@@ -82,15 +82,13 @@ public class Rectangle extends Shape {
 		boolean successful = false;
 		if (width != null && width.endsWith("px")) {
 			try {
-				setWidth(Integer
-						.parseInt(width.substring(0, width.length() - 2)));
+				setWidth(Integer.parseInt(width.substring(0, width.length() - 2)));
 				successful = true;
 			} catch (NumberFormatException e) {
 			}
 		}
 		if (!successful) {
-			throw new IllegalArgumentException(
-					"Only pixel units (px) are supported");
+			throw new IllegalArgumentException("Only pixel units (px) are supported");
 		}
 	}
 
@@ -113,26 +111,18 @@ public class Rectangle extends Shape {
 		getImpl().setHeight(getElement(), height);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.VectorObject#setHeight(java.lang.String)
-	 */
 	@Override
 	public void setHeight(String height) {
 		boolean successful = false;
 		if (height != null && height.endsWith("px")) {
 			try {
-				setHeight(Integer.parseInt(height.substring(0,
-						height.length() - 2)));
+				setHeight(Integer.parseInt(height.substring(0, height.length() - 2)));
 				successful = true;
 			} catch (NumberFormatException e) {
 			}
 		}
 		if (!successful) {
-			throw new IllegalArgumentException(
-					"Only pixel units (px) are supported");
+			throw new IllegalArgumentException("Only pixel units (px) are supported");
 		}
 	}
 
@@ -159,6 +149,7 @@ public class Rectangle extends Shape {
 		getImpl().setRectangleRoundedCorners(getElement(), radius);
 	}
 
+	@Override
 	public void setPropertyDouble(String property, double value) {
 		property = property.toLowerCase();
 		if ("width".equals(property)) {

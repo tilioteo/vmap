@@ -5,7 +5,7 @@ package org.vaadin.gwtgraphics.client.impl;
 
 import java.util.List;
 
-import org.vaadin.gwtgraphics.client.AbstractDrawing;
+import org.vaadin.gwtgraphics.client.Drawing;
 import org.vaadin.gwtgraphics.client.shape.path.PathStep;
 
 import com.google.gwt.dom.client.DivElement;
@@ -16,10 +16,11 @@ import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.dom.client.Style.WhiteSpace;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * @author morong
+ * @author Kamil Morong
  * 
  */
 public abstract class DrawImpl {
@@ -32,24 +33,24 @@ public abstract class DrawImpl {
 
 	public abstract void setStyleName(Element element, String name, boolean add);
 
-	public abstract Element createElement(Class<? extends AbstractDrawing> type);
+	public Element createElement(Class<? extends Drawing> type) {
+		return DOM.createDiv();
+	}
 
 	public abstract void initCanvasSize(Element element, int width, int height);
 
 	public abstract int getX(Element element);
 
-	public abstract void setX(final Element element, final int x,
-			final boolean attached);
+	public abstract void setX(final Element element, final int x, final boolean attached);
 
 	public abstract int getY(Element element);
 
-	public abstract void setY(final Element element, final int y,
-			final boolean attached);
+	public abstract void setY(final Element element, final int y, final boolean attached);
 
 	public abstract int getWidth(Element element);
 
 	public abstract void setWidth(Element element, int width);
-	
+
 	public abstract void setAreaWidth(Element element, String value);
 
 	public abstract int getHeight(Element element);
@@ -72,13 +73,12 @@ public abstract class DrawImpl {
 
 	public abstract int getStrokeWidth(Element element);
 
-	public abstract void setStrokeWidth(Element element, int width,
-			boolean attached);
+	public abstract void setStrokeWidth(Element element, int width, boolean attached);
 
 	public abstract double getStrokeOpacity(Element element);
 
 	public abstract void setStrokeOpacity(Element element, double opacity);
-	
+
 	public abstract double getOpacity(Element element);
 
 	public abstract void setOpacity(Element element, double opacity);
@@ -117,13 +117,11 @@ public abstract class DrawImpl {
 
 	public abstract String getTextFontFamily(Element element);
 
-	public abstract void setTextFontFamily(Element element, String family,
-			boolean attached);
+	public abstract void setTextFontFamily(Element element, String family, boolean attached);
 
 	public abstract int getTextFontSize(Element element);
 
-	public abstract void setTextFontSize(Element element, int size,
-			boolean attached);
+	public abstract void setTextFontSize(Element element, int size, boolean attached);
 
 	public abstract void drawPath(Element element, List<PathStep> steps);
 
@@ -131,8 +129,7 @@ public abstract class DrawImpl {
 
 	public abstract void add(Element root, Element element, boolean attached);
 
-	public abstract void insert(Element root, Element element, int beforeIndex,
-			boolean attached);
+	public abstract void insert(Element root, Element element, int beforeIndex, boolean attached);
 
 	public abstract void remove(Element root, Element element);
 
@@ -140,8 +137,7 @@ public abstract class DrawImpl {
 
 	public abstract void clear(Element root);
 
-	public abstract void setRotation(final Element element, final int degree,
-			final boolean attached);
+	public abstract void setRotation(final Element element, final int degree, final boolean attached);
 
 	public abstract int getRotation(Element element);
 
@@ -170,7 +166,7 @@ public abstract class DrawImpl {
 		style.setWhiteSpace(WhiteSpace.NOWRAP);
 		style.setProperty("fontFamily", getTextFontFamily(element));
 		style.setFontSize(getTextFontSize(element), Unit.PX);
-		//style.setPropertyPx("fontSize", getTextFontSize(element));
+		// style.setPropertyPx("fontSize", getTextFontSize(element));
 		measureElement.setInnerText(text);
 		RootPanel.getBodyElement().appendChild(measureElement);
 		int measurement;
@@ -183,6 +179,6 @@ public abstract class DrawImpl {
 
 		return measurement;
 	}
-	
+
 	public abstract void setPathFillEvenOdd(Element element);
 }

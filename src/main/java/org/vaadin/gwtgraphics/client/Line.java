@@ -15,8 +15,6 @@
  */
 package org.vaadin.gwtgraphics.client;
 
-import org.vaadin.gwtgraphics.client.animation.Animatable;
-
 /**
  * Line represents a straight line from one point to another. Line can be
  * stroked.
@@ -50,7 +48,7 @@ public class Line extends AbstractDrawing implements Strokeable, Animatable {
 	}
 
 	@Override
-	protected Class<? extends AbstractDrawing> getType() {
+	public Class<? extends Drawing> getType() {
 		return Line.class;
 	}
 
@@ -130,68 +128,37 @@ public class Line extends AbstractDrawing implements Strokeable, Animatable {
 		getImpl().setLineY2(getElement(), y2);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Strokeable#getStrokeColor()
-	 */
+	@Override
 	public String getStrokeColor() {
 		return getImpl().getStrokeColor(getElement());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.Strokeable#setStrokeColor(java.lang.String)
-	 */
+	@Override
 	public void setStrokeColor(String color) {
 		getImpl().setStrokeColor(getElement(), color);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Strokeable#getStrokeWidth()
-	 */
+	@Override
 	public int getStrokeWidth() {
 		return getImpl().getStrokeWidth(getElement());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Strokeable#setStrokeWidth(int)
-	 */
+	@Override
 	public void setStrokeWidth(int width) {
 		getImpl().setStrokeWidth(getElement(), width, isAttached());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Strokeable#getStrokeOpacity()
-	 */
+	@Override
 	public double getStrokeOpacity() {
 		return getImpl().getStrokeOpacity(getElement());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Strokeable#setStrokeOpacity(double)
-	 */
+	@Override
 	public void setStrokeOpacity(double opacity) {
 		getImpl().setStrokeOpacity(getElement(), opacity);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.animation.Animatable#setPropertyDouble(
-	 * java.lang.String, double)
-	 */
+	@Override
 	public void setPropertyDouble(String property, double value) {
 		property = property.toLowerCase();
 		if ("x1".equals(property)) {

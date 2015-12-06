@@ -5,15 +5,15 @@ package org.vaadin.maps.client.drawing;
 
 import java.util.Iterator;
 
-import org.vaadin.gwtgraphics.client.AbstractDrawing;
+import org.vaadin.gwtgraphics.client.Drawing;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.Strokeable;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Path;
+import org.vaadin.gwtgraphics.client.shape.Path.RedrawType;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.Text;
-import org.vaadin.gwtgraphics.client.shape.Path.RedrawType;
 import org.vaadin.gwtgraphics.client.shape.path.Arc;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
@@ -33,23 +33,15 @@ import org.vaadin.maps.client.io.ParseException;
 import org.vaadin.maps.shared.ui.Style;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class Utils {
-	
+
 	public enum PointShape {
-		Circle,
-		Square,
-		Cross,
-		XCross,
-		Asterisk,
-		TriangleUp,
-		TriangleDown,
-		Diamond//,
-		//Star
+		Circle, Square, Cross, XCross, Asterisk, TriangleUp, TriangleDown, Diamond //, Star
 	}
-	
+
 	public static PointShape pointShapeFromString(String string) {
 		if (string != null) {
 			for (PointShape pointShape : PointShape.values()) {
@@ -60,31 +52,31 @@ public class Utils {
 		}
 		return null;
 	}
-	
+
 	public static Geometry hexWKBToGeometry(String wkb) throws ParseException {
-		if ( wkb != null) {
+		if (wkb != null) {
 			WKBReader wkbReader = new WKBReader();
-		
+
 			return wkbReader.read(WKBReader.hexToBytes(wkb));
 		}
 
 		return null;
 	}
-	
+
 	public static String GeometryToWKBHex(Geometry geometry) {
 		if (geometry != null) {
 			WKBWriter wkbWriter = new WKBWriter();
-			
+
 			return WKBWriter.bytesToHex(wkbWriter.write(geometry));
 		}
-		
+
 		return null;
 	}
 
 	private static Circle drawPoint(Point point, int shiftX, int shiftY) {
-		Circle circle = new Circle(Math.round((float) point.getX() + shiftX),
-				Math.round((float) point.getY() + shiftY), 5);   // TODO radius from
-		circle.setFillOpacity(0.3);						// feature styling
+		Circle circle = new Circle(Math.round((float) point.getX() + shiftX), Math.round((float) point.getY() + shiftY),
+				5); // TODO radius from
+		circle.setFillOpacity(0.3); // feature styling
 		return circle;
 	}
 
@@ -114,12 +106,12 @@ public class Utils {
 	}
 
 	private static Shape drawDiamond(Point point, double scale, int shiftX, int shiftY) {
-		int d = Math.round((float)(1 * scale));
+		int d = Math.round((float) (1 * scale));
 		if (d < 1) {
 			d = 1;
 		}
-		
-		Path path = new Path(Math.round((float)point.getX()+shiftX)-d, Math.round((float)point.getY()+shiftY));
+
+		Path path = new Path(Math.round((float) point.getX() + shiftX) - d, Math.round((float) point.getY() + shiftY));
 		path.setRedrawingType(RedrawType.MANUAL);
 		path.addStep(new LineTo(true, d, d));
 		path.addStep(new LineTo(true, d, -d));
@@ -131,93 +123,98 @@ public class Utils {
 	}
 
 	private static Shape drawTriangle(Point point, boolean down, double scale, int shiftX, int shiftY) {
-		int a = Math.round((float)(1 * scale));
+		int a = Math.round((float) (1 * scale));
 		if (a < 1) {
 			a = 1;
 		}
-		int b = Math.round((float)(2 * scale));
+		int b = Math.round((float) (2 * scale));
 		if (b < 2) {
 			b = 2;
 		}
-		int c = Math.round((float)((a+1)*Math.sqrt(3))) - 1;
+		int c = Math.round((float) ((a + 1) * Math.sqrt(3))) - 1;
 		if (c < 2) {
 			c = 2;
 		}
-		
-		Path path = new Path(Math.round((float)point.getX()+shiftX), Math.round((float)point.getY()+shiftY)+ (down ? b : -b));
+
+		Path path = new Path(Math.round((float) point.getX() + shiftX),
+				Math.round((float) point.getY() + shiftY) + (down ? b : -b));
 		path.setRedrawingType(RedrawType.MANUAL);
-		path.addStep(new LineTo(true, c, down ? -a-b: a+b));
-		path.addStep(new LineTo(true, -2*c, 0));
-		path.addStep(new LineTo(true, c, down ? a+b: -a-b));
+		path.addStep(new LineTo(true, c, down ? -a - b : a + b));
+		path.addStep(new LineTo(true, -2 * c, 0));
+		path.addStep(new LineTo(true, c, down ? a + b : -a - b));
 		path.close();
 		path.issueRedraw(true);
 		return path;
 	}
 
 	private static Shape drawAsterisk(Point point, double scale, int shiftX, int shiftY) {
-		int d = Math.round((float)(1 * scale));
+		int d = Math.round((float) (1 * scale));
 		if (d < 1) {
 			d = 1;
 		}
-		int e = Math.round((float)Math.sqrt((2*Math.pow(1*scale + 1, 2))))-1;
+		int e = Math.round((float) Math.sqrt((2 * Math.pow(1 * scale + 1, 2)))) - 1;
 		if (e < 1) {
 			e = 1;
 		}
-		
-		Path path = new Path(Math.round((float)point.getX()+shiftX)-d, Math.round((float)point.getY()+shiftY)-d);
+
+		Path path = new Path(Math.round((float) point.getX() + shiftX) - d,
+				Math.round((float) point.getY() + shiftY) - d);
 		path.setFillAllowed(false);
 		path.setRedrawingType(RedrawType.MANUAL);
-		path.addStep(new LineTo(true, 2*d, 2*d));
-		path.addStep(new MoveTo(true, -2*d, 0));
-		path.addStep(new LineTo(true, 2*d, -2*d));
-		
-		path.addStep(new MoveTo(false, Math.round((float)point.getX()+shiftX)-e, Math.round((float)point.getY()+shiftY)));
-		path.addStep(new LineTo(true, 2*e, 0));
+		path.addStep(new LineTo(true, 2 * d, 2 * d));
+		path.addStep(new MoveTo(true, -2 * d, 0));
+		path.addStep(new LineTo(true, 2 * d, -2 * d));
+
+		path.addStep(new MoveTo(false, Math.round((float) point.getX() + shiftX) - e,
+				Math.round((float) point.getY() + shiftY)));
+		path.addStep(new LineTo(true, 2 * e, 0));
 		path.addStep(new MoveTo(true, -e, e));
-		path.addStep(new LineTo(true, 0, -2*e));
+		path.addStep(new LineTo(true, 0, -2 * e));
 
 		path.issueRedraw(true);
 		return path;
 	}
 
 	private static Shape drawXCross(Point point, double scale, int shiftX, int shiftY) {
-		int d = Math.round((float)(1 * scale));
+		int d = Math.round((float) (1 * scale));
 		if (d < 1) {
 			d = 1;
 		}
-		
-		Path path = new Path(Math.round((float)point.getX()+shiftX)-d, Math.round((float)point.getY()+shiftY)-d);
+
+		Path path = new Path(Math.round((float) point.getX() + shiftX) - d,
+				Math.round((float) point.getY() + shiftY) - d);
 		path.setFillAllowed(false);
 		path.setRedrawingType(RedrawType.MANUAL);
-		path.addStep(new LineTo(true, 2*d, 2*d));
-		path.addStep(new MoveTo(true, -2*d, 0));
-		path.addStep(new LineTo(true, 2*d, -2*d));
+		path.addStep(new LineTo(true, 2 * d, 2 * d));
+		path.addStep(new MoveTo(true, -2 * d, 0));
+		path.addStep(new LineTo(true, 2 * d, -2 * d));
 		path.issueRedraw(true);
 		return path;
 	}
 
 	private static Shape drawCross(Point point, double scale, int shiftX, int shiftY) {
-		int d = Math.round((float)(1 * scale));
+		int d = Math.round((float) (1 * scale));
 		if (d < 1) {
 			d = 1;
 		}
-		
-		Path path = new Path(Math.round((float)point.getX()+shiftX)-d, Math.round((float)point.getY()+shiftY));
+
+		Path path = new Path(Math.round((float) point.getX() + shiftX) - d, Math.round((float) point.getY() + shiftY));
 		path.setFillAllowed(false);
 		path.setRedrawingType(RedrawType.MANUAL);
-		path.addStep(new LineTo(true, 2*d, 0));
+		path.addStep(new LineTo(true, 2 * d, 0));
 		path.addStep(new MoveTo(true, -d, d));
-		path.addStep(new LineTo(true, 0, -2*d));
+		path.addStep(new LineTo(true, 0, -2 * d));
 		path.issueRedraw(true);
 		return path;
 	}
 
 	private static Rectangle drawSquare(Point point, double scale, int shiftX, int shiftY) {
-		int d = Math.round((float)(1 * scale));
+		int d = Math.round((float) (1 * scale));
 		if (d < 1) {
 			d = 1;
 		}
-		return new Rectangle(Math.round((float)point.getX()+shiftX)-d, Math.round((float)point.getY()+shiftY)-d, 2*d+1, 2*d+1);
+		return new Rectangle(Math.round((float) point.getX() + shiftX) - d,
+				Math.round((float) point.getY() + shiftY) - d, 2 * d + 1, 2 * d + 1);
 	}
 
 	public static Path drawLineString(LineString lineString, int shiftX, int shiftY) {
@@ -225,8 +222,7 @@ public class Utils {
 
 		for (Coordinate coordinate : lineString.getCoordinateSequence()) {
 			if (path != null) {
-				path.lineTo(Math.round((float) coordinate.x + shiftX),
-						Math.round((float) coordinate.y + shiftY));
+				path.lineTo(Math.round((float) coordinate.x + shiftX), Math.round((float) coordinate.y + shiftY));
 			} else {
 				path = new Path(Math.round((float) coordinate.x + shiftX), Math.round((float) coordinate.y + shiftY));
 				path.setFillAllowed(false);
@@ -280,16 +276,15 @@ public class Utils {
 		for (Coordinate coordinate : hole.getCoordinateSequence()) {
 			if (!moved) {
 				moved = true;
-				path.moveTo(Math.round((float) coordinate.x),
-						Math.round((float) coordinate.y));
+				path.moveTo(Math.round((float) coordinate.x), Math.round((float) coordinate.y));
 			} else {
-				path.lineTo(Math.round((float) coordinate.x),
-						Math.round((float) coordinate.y));
+				path.lineTo(Math.round((float) coordinate.x), Math.round((float) coordinate.y));
 			}
 		}
 	}
 
-	public static Group drawMultiPoint(MultiPoint multiPoint, PointShape pointShape, double scale, int shiftX, int shiftY) {
+	public static Group drawMultiPoint(MultiPoint multiPoint, PointShape pointShape, double scale, int shiftX,
+			int shiftY) {
 		Group group = new Group();
 
 		for (Iterator<Geometry> iterator = multiPoint.iterator(); iterator.hasNext();) {
@@ -322,7 +317,8 @@ public class Utils {
 		return group;
 	}
 
-	public static Group drawGeometryCollection(GeometryCollection geometryCollection, PointShape pointShape, double scale, int shiftX, int shiftY) {
+	public static Group drawGeometryCollection(GeometryCollection geometryCollection, PointShape pointShape,
+			double scale, int shiftX, int shiftY) {
 		Group group = new Group();
 		for (Iterator<Geometry> iterator = geometryCollection.iterator(); iterator.hasNext();) {
 			Geometry geometry = iterator.next();
@@ -332,7 +328,7 @@ public class Utils {
 		return group;
 	}
 
-	public static AbstractDrawing drawGeometry(Geometry geometry, PointShape pointShape, double scale, int shiftX, int shiftY) {
+	public static Drawing drawGeometry(Geometry geometry, PointShape pointShape, double scale, int shiftX, int shiftY) {
 		if (geometry instanceof MultiPolygon) {
 			return drawMultiPolygon((MultiPolygon) geometry, shiftX, shiftY);
 		} else if (geometry instanceof MultiLineString) {
@@ -353,30 +349,34 @@ public class Utils {
 
 		return null;
 	}
-	
+
 	public static Path drawDonut(double x, double y, double r1, double r2) {
-		Path path = new Path(Math.round((float)x), Math.round((float)(y-r1)));
+		Path path = new Path(Math.round((float) x), Math.round((float) (y - r1)));
 		path.setFillEvenOdd();
-		path.addStep(new Arc(false, Math.round((float)r1), Math.round((float)r1), 0, false, true, Math.round((float)x), Math.round((float)(y+r1))));
-		path.addStep(new Arc(false, Math.round((float)r1), Math.round((float)r1), 0, false, true, Math.round((float)x), Math.round((float)(y-r1))));
+		path.addStep(new Arc(false, Math.round((float) r1), Math.round((float) r1), 0, false, true,
+				Math.round((float) x), Math.round((float) (y + r1))));
+		path.addStep(new Arc(false, Math.round((float) r1), Math.round((float) r1), 0, false, true,
+				Math.round((float) x), Math.round((float) (y - r1))));
 		path.close();
-		path.moveTo(Math.round((float)x), Math.round((float)(y-r2)));
-		path.addStep(new Arc(false, Math.round((float)r2), Math.round((float)r2), 0, false, true, Math.round((float)x), Math.round((float)(y+r2))));
-		path.addStep(new Arc(false, Math.round((float)r2), Math.round((float)r2), 0, false, true, Math.round((float)x), Math.round((float)(y-r2))));
+		path.moveTo(Math.round((float) x), Math.round((float) (y - r2)));
+		path.addStep(new Arc(false, Math.round((float) r2), Math.round((float) r2), 0, false, true,
+				Math.round((float) x), Math.round((float) (y + r2))));
+		path.addStep(new Arc(false, Math.round((float) r2), Math.round((float) r2), 0, false, true,
+				Math.round((float) x), Math.round((float) (y - r2))));
 		path.close();
-		
+
 		return path;
 	}
 
 	private static void updateCircleStyle(Circle circle, Style style) {
 		updateShapeStyle(circle, style);
-		
+
 		circle.setRadius(style.pointRadius);
 	}
 
 	private static void updateDonutStyle(Donut donut, Style style) {
 		updateShapeStyle(donut, style);
-		
+
 		donut.setR1(style.pointRadius > 1 ? style.pointRadius : 1);
 		donut.setR2(1);
 	}
@@ -386,7 +386,7 @@ public class Utils {
 			text.setFillColor(style.textColor);
 		else
 			text.setFillColor(null);
-		
+
 		if (style.textFillOpacity < 1)
 			text.setFillOpacity(style.textFillOpacity);
 		else
@@ -394,12 +394,12 @@ public class Utils {
 
 		text.setFontFamily(style.fontFamily);
 		text.setFontSize(style.fontSize);
-		
+
 		if (!style.textStrokeColor.isEmpty())
 			text.setStrokeColor(style.textStrokeColor);
 		else
 			text.setStrokeColor(null);
-		
+
 		if (style.textStrokeWidth > 0)
 			text.setStrokeWidth(style.textStrokeWidth);
 		else
@@ -413,17 +413,17 @@ public class Utils {
 
 	private static void updateShapeStyle(Shape shape, Style style) {
 		updateStrokeableStyle(shape, style);
-		
+
 		if (!style.fillColor.isEmpty())
 			shape.setFillColor(style.fillColor);
 		else
 			shape.setFillColor(null);
-		
+
 		if (style.fillOpacity < 1)
 			shape.setFillOpacity(style.fillOpacity);
 		else
 			shape.setFillOpacity(1.0);
-		
+
 		if (style.opacity < 1)
 			shape.setOpacity(style.opacity);
 		else
@@ -435,7 +435,7 @@ public class Utils {
 			strokeable.setStrokeColor(style.strokeColor);
 		else
 			strokeable.setStrokeColor(null);
-			
+
 		if (style.strokeOpacity < 1)
 			strokeable.setStrokeOpacity(style.strokeOpacity);
 		else
@@ -447,12 +447,12 @@ public class Utils {
 	}
 
 	private static void updateGroupStyle(Group group, Style style) {
-		for (Iterator<AbstractDrawing> iterator = group.iterator(); iterator.hasNext();) {
+		for (Iterator<Drawing> iterator = group.drawingIterator(); iterator.hasNext();) {
 			updateDrawingStyle(iterator.next(), style);
 		}
 	}
 
-	public static void updateDrawingStyle(AbstractDrawing drawing, Style style) {
+	public static void updateDrawingStyle(Drawing drawing, Style style) {
 		if (drawing instanceof Circle) {
 			updateCircleStyle((Circle) drawing, style);
 		} else if (drawing instanceof Donut) {
@@ -468,18 +468,6 @@ public class Utils {
 		}
 	}
 
-	/*public static void updateDrawingPosition(AbstractDrawing drawing, int shiftX, int shiftY) {
-		if (drawing instanceof Group) {
-			Iterator<AbstractDrawing> iterator;
-			for (iterator = ((Group)drawing).iterator(); iterator.hasNext();) {
-				updateDrawingPosition(iterator.next(), shiftX, shiftY);
-			}
-		} else if (drawing instanceof Positionable) {
-			Positionable positionable = (Positionable)drawing;
-			positionable.setX(positi);
-		}
-	}*/
-	
 	public static void moveGeometry(Geometry geometry, int dX, int dY) {
 		if (geometry != null && (dX != 0 || dY != 0)) {
 			Coordinate[] coordinates = geometry.getCoordinates();

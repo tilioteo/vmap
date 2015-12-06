@@ -15,8 +15,8 @@
  */
 package org.vaadin.gwtgraphics.client.shape;
 
+import org.vaadin.gwtgraphics.client.Drawing;
 import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.AbstractDrawing;
 
 /**
  * Embed text into DrawingArea.
@@ -46,7 +46,7 @@ public class Text extends Shape {
 	}
 
 	@Override
-	protected Class<? extends AbstractDrawing> getType() {
+	public Class<? extends Drawing> getType() {
 		return Text.class;
 	}
 
@@ -125,13 +125,7 @@ public class Text extends Shape {
 		return getImpl().getTextHeight(getElement());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.Shape#setPropertyDouble(java.lang.String,
-	 * double)
-	 */
+	@Override
 	public void setPropertyDouble(String property, double value) {
 		property = property.toLowerCase();
 		if ("fontsize".equals(property)) {

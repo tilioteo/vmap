@@ -5,12 +5,12 @@
 	<groupId>org.vaadin.maps</groupId>
 	<artifactId>vmaps</artifactId>
 	<packaging>jar</packaging>
-	<version>0.9.4</version>
+	<version>0.9.5</version>
 	<name>Vaadin Maps Add-on</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<vaadin.version>7.5.7</vaadin.version>
+		<vaadin.version>7.5.10</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 
 		<!-- ZIP Manifest fields -->
@@ -26,17 +26,6 @@
 		<name>Tilioteo Ltd</name>
 		<url>https://github.com/tilioteo/</url>
 	</organization>
-
-	<scm>
-		<url>git://github.com/tilioteo/vmaps.git</url>
-		<connection>scm:git:git://github.com/tilioteo/vmaps.git</connection>
-		<tag>Maps component add-on for Vaadin</tag>
-	</scm>
-
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/tilioteo/vbuttons/issues</url>
-	</issueManagement>
 
 	<licenses>
 		<license>
@@ -98,7 +87,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

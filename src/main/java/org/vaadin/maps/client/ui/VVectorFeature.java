@@ -3,8 +3,8 @@
  */
 package org.vaadin.maps.client.ui;
 
-import org.vaadin.gwtgraphics.client.AbstractDrawing;
 import org.vaadin.gwtgraphics.client.AbstractDrawingContainer;
+import org.vaadin.gwtgraphics.client.Drawing;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.shape.Text;
 import org.vaadin.maps.client.drawing.Utils;
@@ -21,15 +21,15 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author kamil
+ * @author Kamil Morong
  *
  */
 public class VVectorFeature extends AbstractDrawingContainer implements CanShift {
-	
+
 	public static final String CLASSNAME = "v-vectorfeature";
-	
+
 	private Geometry geometry = null;
-	private AbstractDrawing drawing = null;
+	private Drawing drawing = null;
 	private String text = null;
 	private Text textShape = null;
 	private Style style = Style.DEFAULT;
@@ -37,21 +37,21 @@ public class VVectorFeature extends AbstractDrawingContainer implements CanShift
 	private Coordinate centroid = null;
 	private Coordinate textOffset = new Coordinate();
 	private boolean hidden = false;
-	
+
 	private PointShape pointShape = PointShape.Circle;
 	private double pointShapeScale = 1.0;
-	
+
 	private HandlerRegistration mouseOverHandler = null;
 	private HandlerRegistration mouseOutHandler = null;
-	
+
 	private int shiftX = 0;
 	private int shiftY = 0;
-	
+
 	public VVectorFeature() {
 		super();
 		setStyleName(CLASSNAME);
 	}
-	
+
 	public Geometry getGeometry() {
 		return geometry;
 	}
@@ -60,7 +60,8 @@ public class VVectorFeature extends AbstractDrawingContainer implements CanShift
 		if (geometry != null) {
 			Utils.moveGeometry(geometry, -shiftX, -shiftY);
 			if (!geometry.equals(this.geometry)) {
-				// create new vector object and insert it into feature root element
+				// create new vector object and insert it into feature root
+				// element
 				drawGeometry(geometry);
 			}
 		} else {
@@ -69,11 +70,11 @@ public class VVectorFeature extends AbstractDrawingContainer implements CanShift
 
 		this.geometry = geometry;
 	}
-	
+
 	public String getText() {
 		return text;
 	}
-	
+
 	public void setText(String text) {
 		if (text != null) {
 			if (!text.equals(this.text)) {
@@ -83,27 +84,27 @@ public class VVectorFeature extends AbstractDrawingContainer implements CanShift
 			clearText();
 		}
 	}
-	
+
 	public Style getStyle() {
 		return style;
 	}
-	
+
 	public void setStyle(Style style) {
 		this.style = style;
-		
+
 		setPointShape();
-		
+
 		updateDrawingStyle();
 		updateTextStyle();
 	}
-	
+
 	private void setPointShape() {
 		if (style != null) {
 			pointShape = Utils.pointShapeFromString(style.pointShape);
 			if (null == pointShape) {
 				pointShape = PointShape.Circle;
 			}
-		
+
 			pointShapeScale = style.pointShapeScale;
 		} else {
 			pointShape = PointShape.Circle;
@@ -114,13 +115,12 @@ public class VVectorFeature extends AbstractDrawingContainer implements CanShift
 	public Style getHoverStyle() {
 		return hoverStyle;
 	}
-	
+
 	public void setHoverStyle(Style style) {
 		this.hoverStyle = style;
 		updateHoverStyle();
-		//updateTextStyle();
 	}
-	
+
 	public boolean isHidden() {
 		return hidden;
 	}
@@ -128,7 +128,7 @@ public class VVectorFeature extends AbstractDrawingContainer implements CanShift
 	public void setHidden(boolean hidden) {
 		if (this.hidden != hidden) {
 			this.hidden = hidden;
-			
+
 			VVectorFeatureContainer container = null;
 			Widget parent = getParent();
 			if (parent instanceof VVectorFeatureContainer) {
@@ -190,9 +190,8 @@ public class VVectorFeature extends AbstractDrawingContainer implements CanShift
 	public void clear() {
 		super.clear();
 		drawing = null;
-		//setShift(0, 0);
 	}
-	
+
 	public void clearText() {
 		if (textShape != null) {
 			remove(textShape);
@@ -210,7 +209,7 @@ public class VVectorFeature extends AbstractDrawingContainer implements CanShift
 			add(drawing);
 		}
 	}
-	
+
 	public void setCentroid(Double x, Double y) {
 		if (x != null && y != null) {
 			centroid = new Coordinate(x, y);
@@ -227,8 +226,8 @@ public class VVectorFeature extends AbstractDrawingContainer implements CanShift
 
 	private void updateTextPosition() {
 		if (textShape != null && centroid != null) {
-			textShape.setX(Math.round((float)(centroid.getX() + textOffset.getX())));
-			textShape.setY(Math.round((float)(centroid.getY() + textOffset.getY())));
+			textShape.setX(Math.round((float) (centroid.getX() + textOffset.getX())));
+			textShape.setY(Math.round((float) (centroid.getY() + textOffset.getY())));
 		}
 	}
 
@@ -243,23 +242,26 @@ public class VVectorFeature extends AbstractDrawingContainer implements CanShift
 		}
 		this.text = text;
 	}
-	
-	public AbstractDrawing getDrawing() {
+
+	public Drawing getDrawing() {
 		return drawing;
 	}
 
 	/**
-	 * Returns type of Group class, constructor will create its implementation as root element 
+	 * Returns type of Group class, constructor will create its implementation
+	 * as root element
 	 */
 	@Override
-	protected Class<? extends AbstractDrawing> getType() {
+	public Class<? extends Drawing> getType() {
 		return Group.class;
 	}
 
+	@Override
 	public int getShiftX() {
 		return shiftX;
 	}
 
+	@Override
 	public int getShiftY() {
 		return shiftY;
 	}
@@ -268,10 +270,8 @@ public class VVectorFeature extends AbstractDrawingContainer implements CanShift
 	public void setShift(int x, int y) {
 		shiftX = x;
 		shiftY = y;
-		
+
 		drawGeometry(geometry);
-		/*getImpl().setX(getElement(), x, isAttached());
-		getImpl().setY(getElement(), y, isAttached());*/
 	}
 
 }

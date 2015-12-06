@@ -15,16 +15,13 @@
  */
 package org.vaadin.gwtgraphics.client;
 
-import org.vaadin.gwtgraphics.client.animation.Animatable;
-
 /**
  * Image represents a raster image that can be embedded into DrawingArea.
  * 
  * @author Henri Kerola
  * 
  */
-public class Image extends AbstractDrawing implements Sizeable, Positionable,
-		Animatable {
+public class Image extends AbstractDrawing implements Sizeable, Positionable, Animatable {
 
 	/**
 	 * Create a new Image with the given properties.
@@ -51,42 +48,26 @@ public class Image extends AbstractDrawing implements Sizeable, Positionable,
 	}
 
 	@Override
-	protected Class<? extends AbstractDrawing> getType() {
+	public Class<? extends Drawing> getType() {
 		return Image.class;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Positionable#getX()
-	 */
+	@Override
 	public int getX() {
 		return getImpl().getX(getElement());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Positionable#setX(int)
-	 */
+	@Override
 	public void setX(int x) {
 		getImpl().setX(getElement(), x, isAttached());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Positionable#getY()
-	 */
+	@Override
 	public int getY() {
 		return getImpl().getY(getElement());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.gwtgraphics.client.Positionable#setY(int)
-	 */
+	@Override
 	public void setY(int y) {
 		getImpl().setY(getElement(), y, isAttached());
 	}
@@ -115,6 +96,7 @@ public class Image extends AbstractDrawing implements Sizeable, Positionable,
 	 * 
 	 * @return the width of the Image in pixels
 	 */
+	@Override
 	public int getWidth() {
 		return getImpl().getWidth(getElement());
 	}
@@ -125,6 +107,7 @@ public class Image extends AbstractDrawing implements Sizeable, Positionable,
 	 * @param width
 	 *            the new width in pixels
 	 */
+	@Override
 	public void setWidth(int width) {
 		getImpl().setWidth(getElement(), width);
 	}
@@ -134,15 +117,13 @@ public class Image extends AbstractDrawing implements Sizeable, Positionable,
 		boolean successful = false;
 		if (width != null && width.endsWith("px")) {
 			try {
-				setWidth(Integer
-						.parseInt(width.substring(0, width.length() - 2)));
+				setWidth(Integer.parseInt(width.substring(0, width.length() - 2)));
 				successful = true;
 			} catch (NumberFormatException e) {
 			}
 		}
 		if (!successful) {
-			throw new IllegalArgumentException(
-					"Only pixel units (px) are supported");
+			throw new IllegalArgumentException("Only pixel units (px) are supported");
 		}
 	}
 
@@ -151,6 +132,7 @@ public class Image extends AbstractDrawing implements Sizeable, Positionable,
 	 * 
 	 * @return the height of the Image in pixels
 	 */
+	@Override
 	public int getHeight() {
 		return getImpl().getHeight(getElement());
 	}
@@ -161,40 +143,27 @@ public class Image extends AbstractDrawing implements Sizeable, Positionable,
 	 * @param height
 	 *            the new height in pixels
 	 */
+	@Override
 	public void setHeight(int height) {
 		getImpl().setHeight(getElement(), height);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.VectorObject#setHeight(java.lang.String)
-	 */
 	@Override
 	public void setHeight(String height) {
 		boolean successful = false;
 		if (height != null && height.endsWith("px")) {
 			try {
-				setHeight(Integer.parseInt(height.substring(0,
-						height.length() - 2)));
+				setHeight(Integer.parseInt(height.substring(0, height.length() - 2)));
 				successful = true;
 			} catch (NumberFormatException e) {
 			}
 		}
 		if (!successful) {
-			throw new IllegalArgumentException(
-					"Only pixel units (px) are supported");
+			throw new IllegalArgumentException("Only pixel units (px) are supported");
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.animation.Animatable#setPropertyDouble(
-	 * java.lang.String, double)
-	 */
+	@Override
 	public void setPropertyDouble(String property, double value) {
 		property = property.toLowerCase();
 		if ("x".equals(property)) {

@@ -15,8 +15,8 @@
  */
 package org.vaadin.gwtgraphics.client.shape;
 
+import org.vaadin.gwtgraphics.client.Drawing;
 import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.AbstractDrawing;
 
 /**
  * Circle represents a circle.
@@ -44,7 +44,7 @@ public class Circle extends Shape {
 	}
 
 	@Override
-	protected Class<? extends AbstractDrawing> getType() {
+	public Class<? extends Drawing> getType() {
 		return Circle.class;
 	}
 
@@ -67,13 +67,7 @@ public class Circle extends Shape {
 		getImpl().setCircleRadius(getElement(), radius);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.Shape#setPropertyDouble(java.lang.String,
-	 * double)
-	 */
+	@Override
 	public void setPropertyDouble(String property, double value) {
 		property = property.toLowerCase();
 		if ("radius".equals(property)) {

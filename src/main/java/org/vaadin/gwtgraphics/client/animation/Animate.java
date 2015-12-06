@@ -15,6 +15,8 @@
  */
 package org.vaadin.gwtgraphics.client.animation;
 
+import org.vaadin.gwtgraphics.client.Animatable;
+
 import com.google.gwt.animation.client.Animation;
 
 /**
@@ -51,8 +53,7 @@ public class Animate {
 		};
 	};
 
-	public Animate(Animatable target, String property, double startValue,
-			double endValue, int duration) {
+	public Animate(Animatable target, String property, double startValue, double endValue, int duration) {
 		this.target = target;
 		this.property = property;
 		this.startValue = startValue;

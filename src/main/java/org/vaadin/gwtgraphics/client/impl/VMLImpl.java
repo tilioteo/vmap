@@ -17,11 +17,11 @@ package org.vaadin.gwtgraphics.client.impl;
 
 import java.util.List;
 
+import org.vaadin.gwtgraphics.client.Drawing;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.Line;
-import org.vaadin.gwtgraphics.client.AbstractDrawing;
 import org.vaadin.gwtgraphics.client.impl.util.NumberUtil;
 import org.vaadin.gwtgraphics.client.impl.util.VMLUtil;
 import org.vaadin.gwtgraphics.client.shape.Circle;
@@ -51,6 +51,7 @@ import com.google.gwt.regexp.shared.RegExp;
  * This class contains the VML implementation module of GWT Graphics.
  * 
  * @author Henri Kerola
+ * @author Kamil Morong
  * 
  */
 public class VMLImpl extends DrawImpl {
@@ -65,28 +66,6 @@ public class VMLImpl extends DrawImpl {
 		return "vml";
 	}
 
-	/*
-	 * @Override public Element createDrawingArea(Element container, int width,
-	 * int height) { addNamespaceAndStyle(VMLUtil.VML_NS_PREFIX,
-	 * VMLUtil.VML_ELEMENT_CLASSNAME);
-	 * 
-	 * container.getStyle().setProperty("position", "relative");
-	 * container.getStyle().setProperty("overflow", "hidden");
-	 * container.getStyle().setPropertyPx("width", width);
-	 * container.getStyle().setPropertyPx("height", height);
-	 * disableSelection(container);
-	 * 
-	 * Element container2 = Document.get().createDivElement();
-	 * container2.getStyle().setProperty("position", "absolute");
-	 * container2.getStyle().setProperty("overflow", "hidden");
-	 * container2.getStyle().setPropertyPx("width", width);
-	 * container2.getStyle().setPropertyPx("height", height);
-	 * container.appendChild(container2);
-	 * 
-	 * Element root = VMLUtil.createVMLElement("group"); setDefaultSize(root);
-	 * container2.appendChild(root); return root; }
-	 */
-
 	private native void disableSelection(Element element) /*-{
 		element.onselectstart = function() { return false };
 	}-*/;
@@ -95,22 +74,20 @@ public class VMLImpl extends DrawImpl {
 		if (!$doc.namespaces[ns]) {
 			$doc.namespaces.add(ns, "urn:schemas-microsoft-com:vml");
 			// IE8's standards mode doesn't support * selector
-			$doc.createStyleSheet().cssText = "." + classname + "{behavior:url(#default#VML); position: absolute; display:inline-block; }";
+			$doc.createStyleSheet().cssText = "." + classname +
+				"{behavior:url(#default#VML); position: absolute; display:inline-block; }";
 		}
 	}-*/;
 
 	@Override
-	public Element createElement(Class<? extends AbstractDrawing> type) {
+	public Element createElement(Class<? extends Drawing> type) {
 		Element element = null;
 		if (type == DrawingArea.class) {
-			addNamespaceAndStyle(VMLUtil.VML_NS_PREFIX,
-					VMLUtil.VML_ELEMENT_CLASSNAME);
+			addNamespaceAndStyle(VMLUtil.VML_NS_PREFIX, VMLUtil.VML_ELEMENT_CLASSNAME);
 
 			element = Document.get().createDivElement();
 			element.getStyle().setPosition(Position.ABSOLUTE);
 			element.getStyle().setOverflow(Overflow.HIDDEN);
-			// element.getStyle().setPropertyPx("width", width);
-			// element.getStyle().setPropertyPx("height", height);
 
 			Element root = VMLUtil.createVMLElement("group");
 			setDefaultSize(root);
@@ -134,7 +111,6 @@ public class VMLImpl extends DrawImpl {
 
 			Element textpath = VMLUtil.createVMLElement("textpath");
 			textpath.setPropertyBoolean("on", true);
-			// textpath.getStyle().setProperty("v-text-align", "left");
 			element.appendChild(textpath);
 		} else if (type == Image.class) {
 			element = VMLUtil.createVMLElement("image");
@@ -145,7 +121,7 @@ public class VMLImpl extends DrawImpl {
 			setDefaultSize(element);
 		}
 
-		return element;
+		return element != null ? element : super.createElement(type);
 	}
 
 	@Override
@@ -153,8 +129,7 @@ public class VMLImpl extends DrawImpl {
 		String tagName = VMLUtil.getTagName(element);
 		if (tagName.toLowerCase().equals("group")) {
 			MatchResult r = getCoordOrigin(element);
-			return r != null && r.getGroupCount() == 3 ? NumberUtil
-					.parseIntValue(r.getGroup(1), 0) : 0;
+			return r != null && r.getGroupCount() == 3 ? NumberUtil.parseIntValue(r.getGroup(1), 0) : 0;
 		} else {
 			return element.getPropertyInt("_x");
 		}
@@ -170,8 +145,7 @@ public class VMLImpl extends DrawImpl {
 		String tagName = VMLUtil.getTagName(element);
 		if (tagName.toLowerCase().equals("group")) {
 			MatchResult r = getCoordOrigin(element);
-			return r != null && r.getGroupCount() == 3 ? NumberUtil
-					.parseIntValue(r.getGroup(2), 0) : 0;
+			return r != null && r.getGroupCount() == 3 ? NumberUtil.parseIntValue(r.getGroup(2), 0) : 0;
 		} else {
 			return element.getPropertyInt("_y");
 		}
@@ -184,8 +158,7 @@ public class VMLImpl extends DrawImpl {
 
 	private MatchResult getCoordOrigin(Element e) {
 		String coordorigin = e.getAttribute("coordorigin");
-		return coordorigin != null ? RegExp.compile("(\\-?\\d+)\\s(\\-?\\d+)")
-				.exec(coordorigin) : null;
+		return coordorigin != null ? RegExp.compile("(\\-?\\d+)\\s(\\-?\\d+)").exec(coordorigin) : null;
 	}
 
 	@Override
@@ -195,8 +168,7 @@ public class VMLImpl extends DrawImpl {
 
 	@Override
 	public void setFillColor(Element element, String color) {
-		Element fill = VMLUtil.getOrCreateChildElementWithTagName(element,
-				"fill");
+		Element fill = VMLUtil.getOrCreateChildElementWithTagName(element, "fill");
 		if (color == null) {
 			fill.setPropertyString("color", "black");
 			fill.setPropertyBoolean("on", false);
@@ -214,8 +186,7 @@ public class VMLImpl extends DrawImpl {
 
 	@Override
 	public void setFillOpacity(Element element, double opacity) {
-		VMLUtil.getOrCreateChildElementWithTagName(element, "fill")
-				.setPropertyString("opacity", "" + opacity);
+		VMLUtil.getOrCreateChildElementWithTagName(element, "fill").setPropertyString("opacity", "" + opacity);
 		element.setPropertyDouble("_fill-opacity", opacity);
 	}
 
@@ -226,8 +197,7 @@ public class VMLImpl extends DrawImpl {
 
 	@Override
 	public void setStrokeColor(Element element, String color) {
-		Element stroke = VMLUtil.getOrCreateChildElementWithTagName(element,
-				"stroke");
+		Element stroke = VMLUtil.getOrCreateChildElementWithTagName(element, "stroke");
 		stroke.setPropertyString("color", color);
 		stroke.setPropertyBoolean("on", color != null ? true : false);
 		element.setPropertyString("_stroke-color", color);
@@ -240,8 +210,7 @@ public class VMLImpl extends DrawImpl {
 
 	@Override
 	public void setStrokeWidth(Element element, int width, boolean attached) {
-		Element stroke = VMLUtil.getOrCreateChildElementWithTagName(element,
-				"stroke");
+		Element stroke = VMLUtil.getOrCreateChildElementWithTagName(element, "stroke");
 		stroke.setPropertyString("weight", width + "px");
 		stroke.setPropertyBoolean("on", width > 0 ? true : false);
 		// store value for getter
@@ -258,8 +227,7 @@ public class VMLImpl extends DrawImpl {
 
 	@Override
 	public void setStrokeOpacity(Element element, double opacity) {
-		VMLUtil.getOrCreateChildElementWithTagName(element, "stroke")
-				.setPropertyString("opacity", "" + opacity);
+		VMLUtil.getOrCreateChildElementWithTagName(element, "stroke").setPropertyString("opacity", "" + opacity);
 		element.setPropertyDouble("_stroke-opacity", opacity);
 	}
 
@@ -279,8 +247,7 @@ public class VMLImpl extends DrawImpl {
 			// DrawingArea's root element
 			element = element.getParentElement();
 		}
-		return NumberUtil.parseIntValue(
-				element.getStyle().getWidth(), 0);
+		return NumberUtil.parseIntValue(element.getStyle().getWidth(), 0);
 	}
 
 	@Override
@@ -392,18 +359,16 @@ public class VMLImpl extends DrawImpl {
 			CurveTo curve = (CurveTo) step;
 			path.append(curve.isRelativeCoords() ? " v" : " c");
 			path.append(curve.getX1()).append(" ").append(curve.getY1());
-			path.append(" ").append(curve.getX2()).append(" ")
-					.append(curve.getY2());
-			path.append(" ").append(curve.getX()).append(" ")
-					.append(curve.getY());
+			path.append(" ").append(curve.getX2()).append(" ").append(curve.getY2());
+			path.append(" ").append(curve.getX()).append(" ").append(curve.getY());
 		} else if (step instanceof LineTo) {
 			LineTo lineTo = (LineTo) step;
-			path.append(lineTo.isRelativeCoords() ? " r" : " l")
-					.append(lineTo.getX()).append(" ").append(lineTo.getY());
+			path.append(lineTo.isRelativeCoords() ? " r" : " l").append(lineTo.getX()).append(" ")
+					.append(lineTo.getY());
 		} else if (step instanceof MoveTo) {
 			MoveTo moveTo = (MoveTo) step;
-			path.append(moveTo.isRelativeCoords() ? " t" : " m")
-					.append(moveTo.getX()).append(" ").append(moveTo.getY());
+			path.append(moveTo.isRelativeCoords() ? " t" : " m").append(moveTo.getX()).append(" ")
+					.append(moveTo.getY());
 		} else if (step instanceof ClosePath) {
 			path.append(" x e");
 		}
@@ -426,6 +391,7 @@ public class VMLImpl extends DrawImpl {
 		}
 		element.getStyle().setVisibility(Visibility.HIDDEN);
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
 			public void execute() {
 				setX(element, getX(element), attached);
 				setY(element, getY(element), attached);
@@ -466,16 +432,13 @@ public class VMLImpl extends DrawImpl {
 				}
 				setRotation(element, rot, attached);
 			} else if (tagName.equals("oval")) {
-				xy = xy
-						- NumberUtil.parseIntValue(element.getStyle()
-								.getProperty(x ? "width" : "height"), 0) / 2;
+				xy = xy - NumberUtil.parseIntValue(element.getStyle().getProperty(x ? "width" : "height"), 0) / 2;
 			}
 			element.getStyle().setPropertyPx(x ? "left" : "top", xy);
 		}
 	}
 
-	private void setLineFromTo(Element element, Integer x, Integer y,
-			boolean from) {
+	private void setLineFromTo(Element element, Integer x, Integer y, boolean from) {
 		StringBuilder value = new StringBuilder();
 		String xAttr = from ? "_x1" : "_x2";
 		String yAttr = from ? "_y1" : "_y2";
@@ -503,14 +466,12 @@ public class VMLImpl extends DrawImpl {
 
 	@Override
 	public String getText(Element element) {
-		return VMLUtil.getPropertyOfFirstChildElementWithTagName(element,
-				"textpath", "string");
+		return VMLUtil.getPropertyOfFirstChildElementWithTagName(element, "textpath", "string");
 	}
 
 	@Override
 	public void setText(Element element, String text, boolean attached) {
-		VMLUtil.getOrCreateChildElementWithTagName(element, "textpath")
-				.setPropertyString("string", text);
+		VMLUtil.getOrCreateChildElementWithTagName(element, "textpath").setPropertyString("string", text);
 		fixTextPosition(element, attached);
 	}
 
@@ -520,8 +481,7 @@ public class VMLImpl extends DrawImpl {
 	}
 
 	@Override
-	public void setTextFontFamily(Element element, String family,
-			boolean attached) {
+	public void setTextFontFamily(Element element, String family, boolean attached) {
 		element.setPropertyString("_fontfamily", family);
 		setTextFont(element, attached);
 	}
@@ -538,18 +498,14 @@ public class VMLImpl extends DrawImpl {
 	}
 
 	private void setTextFont(Element element, boolean attached) {
-		VMLUtil.getOrCreateChildElementWithTagName(element, "textpath")
-				.getStyle().setProperty("font",
-						element.getPropertyInt("_fontsize") + "px "
-								+ element.getPropertyString("_fontfamily"));
+		VMLUtil.getOrCreateChildElementWithTagName(element, "textpath").getStyle().setProperty("font",
+				element.getPropertyInt("_fontsize") + "px " + element.getPropertyString("_fontfamily"));
 		fixTextPosition(element, attached);
 	}
 
 	private boolean isTextElement(Element element) {
-		return VMLUtil.getTagName(element).equals("shape")
-				&& element.getFirstChildElement() != null
-				&& VMLUtil.getTagName(element.getFirstChildElement()).equals(
-						"path");
+		return VMLUtil.getTagName(element).equals("shape") && element.getFirstChildElement() != null
+				&& VMLUtil.getTagName(element.getFirstChildElement()).equals("path");
 	}
 
 	@Override
@@ -598,7 +554,6 @@ public class VMLImpl extends DrawImpl {
 	@Override
 	public void setLineY2(Element element, int y2) {
 		setLineFromTo(element, null, y2, false);
-
 	}
 
 	@Override
@@ -611,8 +566,7 @@ public class VMLImpl extends DrawImpl {
 	}
 
 	@Override
-	public void insert(Element root, Element element, int beforeIndex,
-			boolean attached) {
+	public void insert(Element root, Element element, int beforeIndex, boolean attached) {
 		Element e = root.getChildNodes().getItem(beforeIndex).cast();
 		root.insertBefore(element, e);
 		applyFillAndStroke(element, attached);
@@ -652,8 +606,7 @@ public class VMLImpl extends DrawImpl {
 
 	@Override
 	public void setStyleName(Element element, String name) {
-		element.setClassName(/*VMLUtil.VML_ELEMENT_CLASSNAME + " " +*/ name);
-				//+ "-" + getStyleSuffix());
+		element.setClassName(name);
 	}
 
 	@Override
@@ -675,8 +628,7 @@ public class VMLImpl extends DrawImpl {
 
 	@Override
 	public int getRotation(Element element) {
-		return NumberUtil.parseIntValue(
-				element.getStyle().getProperty("rotation"), 0);
+		return NumberUtil.parseIntValue(element.getStyle().getProperty("rotation"), 0);
 	}
 
 	@Override
@@ -688,8 +640,6 @@ public class VMLImpl extends DrawImpl {
 
 	@Override
 	public void initCanvasSize(Element element, int width, int height) {
-		//element.getStyle().setPosition(Position.RELATIVE);
-		//element.getStyle().setOverflow(Overflow.HIDDEN);
 		element.getStyle().setWidth(width, Unit.PX);
 		element.getStyle().setHeight(height, Unit.PX);
 		disableSelection(element);

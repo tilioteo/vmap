@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.gwtgraphics.client.animation;
+package org.vaadin.gwtgraphics.client;
 
 /**
  * Classes implementing this interface can be animated by using the Animate

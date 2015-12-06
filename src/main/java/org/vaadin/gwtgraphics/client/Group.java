@@ -19,6 +19,7 @@ package org.vaadin.gwtgraphics.client;
  * Group is a container, which can contain one or more VectorObjects.
  * 
  * @author Henri Kerola
+ * @author Kamil Morong
  * 
  */
 public class Group extends AbstractDrawingContainer implements Positionable {
@@ -30,24 +31,9 @@ public class Group extends AbstractDrawingContainer implements Positionable {
 	}
 
 	@Override
-	protected Class<? extends AbstractDrawing> getType() {
+	public Class<? extends Drawing> getType() {
 		return Group.class;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.VectorObjectContainer#bringToFront(org.
-	 * vaadin.gwtgraphics.client.VectorObject)
-	 */
-	/*public AbstractDrawing bringToFront(AbstractDrawing vo) {
-		if (vo.getParent() != this) {
-			return null;
-		}
-		getImpl().bringToFront(getElement(), vo.getElement());
-		return vo;
-	}*/
 
 	@Override
 	public int getX() {
@@ -68,7 +54,7 @@ public class Group extends AbstractDrawingContainer implements Positionable {
 	public void setY(int y) {
 		getImpl().setY(getElement(), y, isAttached());
 	}
-	
+
 	/**
 	 * Returns the opacity of the Group element.
 	 * 
@@ -79,9 +65,8 @@ public class Group extends AbstractDrawingContainer implements Positionable {
 	}
 
 	/**
-	 * Sets the opacity of the Group element. The initial value 1.0 means
-	 * fully opaque group. On the other hand, value 0.0 means fully transparent
-	 * paint.
+	 * Sets the opacity of the Group element. The initial value 1.0 means fully
+	 * opaque group. On the other hand, value 0.0 means fully transparent paint.
 	 * 
 	 * @param opacity
 	 *            the new opacity

@@ -23,6 +23,7 @@ import java.util.Iterator;
  * renamed from VectorObjectContainer
  * 
  * @author Henri Kerola
+ * @author Kamil Morong
  * 
  */
 public interface HasDrawings {
@@ -30,77 +31,42 @@ public interface HasDrawings {
 	/**
 	 * Adds a child drawing.
 	 * 
-	 * @param d
+	 * @param drawing
 	 *            the drawing to be added
 	 * @return added drawing
 	 * @throws UnsupportedOperationException
 	 *             if this method is not supported (most often this means that a
 	 *             specific overload must be called)
 	 */
-	AbstractDrawing add(AbstractDrawing d);
-
-	/**
-	 * Insert the given VectorObject before the specified index.
-	 * 
-	 * If the VectorObjectContainer contains already the VectorObject, it will
-	 * be removed from the VectorObjectContainer before insertion.
-	 * 
-	 * @param vo
-	 *            VectorObject to be inserted
-	 * @param beforeIndex
-	 *            the index before which the VectorObject will be inserted.
-	 * @return inserted VectorObject
-	 * @throws IndexOutOfBoundsException
-	 *             if <code>beforeIndex</code> is out of range
-	 */
-	//public abstract AbstractDrawing insert(AbstractDrawing vo, int beforeIndex);
+	public Drawing addDrawing(Drawing drawing);
 
 	/**
 	 * Gets an iterator for the contained drawings. This iterator is required to
 	 * implement {@link Iterator#remove()}.
 	 */
-	Iterator<AbstractDrawing> iterator();
+	public Iterator<Drawing> drawingIterator();
 
 	/**
 	 * Removes a child drawing.
 	 * 
-	 * @param d
+	 * @param drawing
 	 *            the drawing to be removed
 	 * 
-	 * @return removed drawing or null if the container doesn't contain
-	 *         the given drawing
+	 * @return removed drawing or null if the container doesn't contain the
+	 *         given drawing
 	 */
-	AbstractDrawing remove(AbstractDrawing d);
-
-	/**
-	 * 
-	 * Brings the given VectorObject to front in this VectorObjectContainer.
-	 * 
-	 * @param vo
-	 *            VectorObject to be brought to front
-	 * @return the popped VectorObject
-	 */
-	//public abstract AbstractDrawing bringToFront(AbstractDrawing vo);
+	public Drawing removeDrawing(Drawing drawing);
 
 	/**
 	 * Removes all child drawings.
 	 */
-	void clear();
+	public void clear();
 
 	/**
-	 * Returns the number of VectorObjects in this VectorObjectContainer.
+	 * Returns the number of drawings in this container.
 	 * 
-	 * @return the number of VectorObjects in this VectorObjectContainer.
+	 * @return the number of drawings in this container.
 	 */
-	//public abstract int getVectorObjectCount();
-
-	/**
-	 * Returns the VectorObject element at the specified position.
-	 * 
-	 * @param index
-	 *            index of element to return.
-	 * @return the VectorObject element at the specified position.
-	 */
-	//public abstract AbstractDrawing getVectorObject(int index);
+	public int getCount();
 
 }

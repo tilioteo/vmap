@@ -15,8 +15,8 @@
  */
 package org.vaadin.gwtgraphics.client.shape;
 
+import org.vaadin.gwtgraphics.client.Drawing;
 import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.AbstractDrawing;
 
 /**
  * Ellipse represents an ellipse.
@@ -48,7 +48,7 @@ public class Ellipse extends Shape {
 	}
 
 	@Override
-	protected Class<? extends AbstractDrawing> getType() {
+	public Class<? extends Drawing> getType() {
 		return Ellipse.class;
 	}
 
@@ -90,13 +90,7 @@ public class Ellipse extends Shape {
 		getImpl().setEllipseRadiusY(getElement(), radiusY);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.Shape#setPropertyDouble(java.lang.String,
-	 * double)
-	 */
+	@Override
 	public void setPropertyDouble(String property, double value) {
 		property = property.toLowerCase();
 		if ("radiusx".equals(property)) {
