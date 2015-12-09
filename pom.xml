@@ -5,7 +5,7 @@
 	<groupId>org.vaadin.maps</groupId>
 	<artifactId>vmaps</artifactId>
 	<packaging>jar</packaging>
-	<version>0.9.9</version>
+	<version>0.9.10</version>
 	<name>Vaadin Maps Add-on</name>
 
 	<properties>
@@ -107,7 +107,7 @@
 							<!-- Package format version - do not change -->
 							<Vaadin-Package-Version>1</Vaadin-Package-Version>
 							<Vaadin-License-Title>${Vaadin-License-Title}</Vaadin-License-Title>
-							<Vaadin-Widgetsets>org.vaadin.maps.VaadinMapsWidgetset</Vaadin-Widgetsets>
+							<Vaadin-Widgetsets>org.vaadin.maps.WidgetSet</Vaadin-Widgetsets>
 						</manifestEntries>
 					</archive>
 				</configuration>
