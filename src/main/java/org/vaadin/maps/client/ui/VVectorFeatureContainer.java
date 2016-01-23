@@ -13,6 +13,7 @@ import org.vaadin.gwtgraphics.client.shape.Path;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * @author Kamil Morong
@@ -39,10 +40,11 @@ public class VVectorFeatureContainer extends DrawingArea implements CanShift {
 		setStyleName(CLASSNAME);
 
 		addIETridentHack();
-		super.add(container);
 
 		hiddenContainer.setOpacity(0);
 		super.add(hiddenContainer);
+
+		super.add(container);
 	}
 
 	@Override
@@ -67,30 +69,50 @@ public class VVectorFeatureContainer extends DrawingArea implements CanShift {
 	@Override
 	public Drawing addDrawing(Drawing drawing) {
 		if (drawing != null) {
-			VVectorFeature feature = null;
-			if (drawing instanceof VVectorFeature) {
-				feature = (VVectorFeature) drawing;
-				feature.setShift(shiftX, shiftY);
-			}
-			if (feature != null && feature.isHidden()) {
-				return hiddenContainer.addDrawing(feature);
+			add(drawing.asWidget());
+
+			return drawing;
+		}
+
+		return null;
+	}
+
+	@Override
+	public void add(Widget child) {
+		if (child != null && child instanceof VVectorFeature) {
+			VVectorFeature feature = (VVectorFeature) child;
+			feature.setShift(shiftX, shiftY);
+
+			if (feature.isHidden()) {
+				hiddenContainer.add(child);
 			} else {
-				return container.addDrawing(drawing);
+				container.add(feature);
 			}
 		}
-		return null;
 	}
 
 	@Override
 	public Drawing removeDrawing(Drawing drawing) {
 		if (drawing != null) {
-			if (drawing.asWidget().getParent() == container) {
-				return container.removeDrawing(drawing);
-			} else if (drawing.asWidget().getParent() == hiddenContainer) {
-				return hiddenContainer.removeDrawing(drawing);
+			return remove(drawing.asWidget()) ? drawing : null;
+		}
+
+		return null;
+	}
+
+	@Override
+	public boolean remove(Widget child) {
+		if (child != null && child instanceof VVectorFeature) {
+			Widget parent = child.getParent();
+
+			if (parent == container) {
+				return container.remove(child);
+			} else if (parent == hiddenContainer) {
+				return hiddenContainer.remove(child);
 			}
 		}
-		return null;
+
+		return false;
 	}
 
 	private void addIETridentHack() {

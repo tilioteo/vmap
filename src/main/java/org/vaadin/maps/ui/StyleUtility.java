@@ -19,7 +19,7 @@ public class StyleUtility {
 		if (style != null) {
 			HashMap<String, String> map = new HashMap<String, String>();
 
-			Field[] fields = style.getClass().getDeclaredFields();
+			Field[] fields = Style.class.getDeclaredFields();
 			for (Field field : fields) {
 				if ((field.getModifiers() & Modifier.STATIC) != Modifier.STATIC) {
 					try {
