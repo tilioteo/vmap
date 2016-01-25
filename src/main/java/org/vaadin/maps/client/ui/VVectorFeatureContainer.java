@@ -41,10 +41,10 @@ public class VVectorFeatureContainer extends DrawingArea implements CanShift {
 
 		addIETridentHack();
 
+		super.add(container);
+
 		hiddenContainer.setOpacity(0);
 		super.add(hiddenContainer);
-
-		super.add(container);
 	}
 
 	@Override
