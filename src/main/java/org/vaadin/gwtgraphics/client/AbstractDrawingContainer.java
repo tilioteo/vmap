@@ -98,6 +98,7 @@ public abstract class AbstractDrawingContainer extends Panel implements Drawing,
 	@Override
 	public void clear() {
 		for (Drawing drawing : children) {
+			getElement().removeChild(drawing.asWidget().getElement());
 			orphan(drawing.asWidget());
 		}
 

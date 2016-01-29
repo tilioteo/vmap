@@ -79,14 +79,18 @@ public class VVectorFeatureContainer extends DrawingArea implements CanShift {
 
 	@Override
 	public void add(Widget child) {
-		if (child != null && child instanceof VVectorFeature) {
-			VVectorFeature feature = (VVectorFeature) child;
-			feature.setShift(shiftX, shiftY);
-
-			if (feature.isHidden()) {
-				hiddenContainer.add(child);
-			} else {
-				container.add(feature);
+		if (child != null) {
+			if (child instanceof VVectorFeature) {
+				VVectorFeature feature = (VVectorFeature) child;
+				feature.setShift(shiftX, shiftY);
+	
+				if (feature.isHidden()) {
+					hiddenContainer.add(child);
+				} else {
+					container.add(feature);
+				}
+			} else if (child instanceof Drawing) {
+				container.add(child);
 			}
 		}
 	}
@@ -102,13 +106,17 @@ public class VVectorFeatureContainer extends DrawingArea implements CanShift {
 
 	@Override
 	public boolean remove(Widget child) {
-		if (child != null && child instanceof VVectorFeature) {
-			Widget parent = child.getParent();
+		if (child != null) {
+			if (child instanceof VVectorFeature) {
+				Widget parent = child.getParent();
 
-			if (parent == container) {
+				if (parent == container) {
+					return container.remove(child);
+				} else if (parent == hiddenContainer) {
+					return hiddenContainer.remove(child);
+				}
+			} else if (child instanceof Drawing) {
 				return container.remove(child);
-			} else if (parent == hiddenContainer) {
-				return hiddenContainer.remove(child);
 			}
 		}
 
