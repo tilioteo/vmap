@@ -82,7 +82,10 @@ public abstract class AbstractDrawingContainer extends Panel implements Drawing,
 	public boolean remove(Widget child) {
 		if (child instanceof Drawing) {
 			getElement().removeChild(child.getElement());
-			orphan(child);
+			Widget parent = child.getParent();
+			if (parent == this) {
+				orphan(child);
+			}
 			children.remove(child);
 			return true;
 		}
@@ -99,7 +102,10 @@ public abstract class AbstractDrawingContainer extends Panel implements Drawing,
 	public void clear() {
 		for (Drawing drawing : children) {
 			getElement().removeChild(drawing.asWidget().getElement());
-			orphan(drawing.asWidget());
+			Widget parent = drawing.asWidget().getParent();
+			if (parent == this) {
+				orphan(drawing.asWidget());
+			}
 		}
 
 		children.clear();
