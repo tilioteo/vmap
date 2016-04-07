@@ -35,6 +35,9 @@ public class DrawPathControlConnector extends DrawFeatureControlConnector {
 		if (stateChangeEvent.hasPropertyChanged("startPointStyle")) {
 			getWidget().setStartPointStyle(MapUtility.getStyleFromMap(getState().startPointStyle, null));
 		}
+		if (stateChangeEvent.hasPropertyChanged("startPointHoverStyle")) {
+			getWidget().setStartPointHoverStyle(MapUtility.getStyleFromMap(getState().startPointHoverStyle, null));
+		}
 		if (stateChangeEvent.hasPropertyChanged("lineStyle")) {
 			getWidget().setLineStyle(MapUtility.getStyleFromMap(getState().lineStyle, null));
 		}

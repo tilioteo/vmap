@@ -44,7 +44,8 @@ public class VPolygonHandler extends VPathHandler {
 			}
 		}
 
-		if (isDoubleClick && !FinishStrategy.DoubleClick.equals(strategy)) {
+		if (isDoubleClick
+				&& !(FinishStrategy.DoubleClick.equals(strategy) || FinishStrategy.NearStartClick.equals(strategy))) {
 			return;
 		}
 
@@ -58,7 +59,9 @@ public class VPolygonHandler extends VPathHandler {
 			prepareLineString(xy);
 		} else {
 			if (canCloseLineString()) {
-				if (details.isShiftKey() && (FinishStrategy.AltClick.equals(strategy) || isDoubleClick)) {
+				if ((details.isShiftKey() && (FinishStrategy.AltClick.equals(strategy)
+						|| (isDoubleClick && FinishStrategy.DoubleClick.equals(strategy))))
+						|| FinishStrategy.NearStartClick.equals(strategy)) {
 					// finish drawing with closing line if shift key has been
 					// pressed
 					// and the click is in start point's circle
@@ -96,10 +99,6 @@ public class VPolygonHandler extends VPathHandler {
 				addLineStringVertex(xy);
 			}
 		}
-	}
-
-	protected boolean canCloseLineString() {
-		return lineString != null && lineString.getNumPoints() > 2;
 	}
 
 }

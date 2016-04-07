@@ -18,6 +18,7 @@ import org.vaadin.maps.ui.layer.VectorFeatureLayer;
 public class DrawPathControl extends DrawFeatureControl<PathHandler> {
 
 	private Style startPointStyle = null;
+	private Style startPointHoverStyle = null;
 	private Style lineStyle = null;
 	private Style vertexStyle = null;
 
@@ -41,6 +42,16 @@ public class DrawPathControl extends DrawFeatureControl<PathHandler> {
 	public void setStartPointStyle(Style style) {
 		this.startPointStyle = style;
 		getState().startPointStyle = StyleUtility.getStyleMap(style);
+		markAsDirty();
+	}
+
+	public Style getStartPointHoverStyle() {
+		return startPointHoverStyle;
+	}
+
+	public void setStartPointHoverStyle(Style style) {
+		this.startPointHoverStyle = style;
+		getState().startPointHoverStyle = StyleUtility.getStyleMap(style);
 		markAsDirty();
 	}
 

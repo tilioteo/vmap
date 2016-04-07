@@ -15,7 +15,7 @@ import org.vaadin.maps.ui.control.Control;
 public class PathHandler extends PointHandler implements CanUndoRedo {
 
 	public enum FinishStrategy {
-		AltClick, DoubleClick
+		AltClick, DoubleClick, NearStartClick
 	}
 
 	protected FinishStrategy strategy = FinishStrategy.AltClick;

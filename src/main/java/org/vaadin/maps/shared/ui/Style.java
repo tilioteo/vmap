@@ -32,6 +32,14 @@ public class Style implements Serializable {
 		}
 	};
 
+	public static final Style DEFAULT_HOVER_START_POINT = new Style() {
+		{
+			fillColor = "cyan";
+			fillOpacity = 0.3;
+			strokeWidth = 2;
+		}
+	};
+
 	public static final Style DEFAULT_DRAW_VERTEX = new Style() {
 		{
 			strokeColor = "blue";

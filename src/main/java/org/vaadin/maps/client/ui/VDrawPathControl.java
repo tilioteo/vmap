@@ -16,6 +16,7 @@ public class VDrawPathControl extends VDrawPointControl {
 	public static final String CLASSNAME = "v-drawpathcontrol";
 
 	private Style startPointStyle = null;
+	private Style startPointHoverStyle = null;
 	private Style lineStyle = null;
 	private Style vertexStyle = null;
 
@@ -49,6 +50,18 @@ public class VDrawPathControl extends VDrawPointControl {
 
 		if (handler != null) {
 			getHandler().setStartPointStyle(style);
+		}
+	}
+
+	public Style getStartPointHoverStyle() {
+		return startPointHoverStyle;
+	}
+
+	public void setStartPointHoverStyle(Style style) {
+		startPointHoverStyle = style;
+
+		if (handler != null) {
+			getHandler().setStartPointHoverStyle(style);
 		}
 	}
 
