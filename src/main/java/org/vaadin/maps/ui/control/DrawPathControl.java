@@ -26,6 +26,7 @@ public class DrawPathControl extends DrawFeatureControl<PathHandler> {
 		super(layer);
 
 		setStartPointStyle(Style.DEFAULT_DRAW_START_POINT);
+		setStartPointHoverStyle(Style.DEFAULT_HOVER_START_POINT);
 		setLineStyle(Style.DEFAULT_DRAW_LINE);
 		setVertexStyle(Style.DEFAULT_DRAW_VERTEX);
 	}
