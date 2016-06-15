@@ -13,6 +13,8 @@ public abstract class AbstractDrawFeatureHandler extends AbstractHandler {
 
 	protected Style cursorStyle;
 
+	protected boolean frozen = false;
+
 	public Style getCursorStyle() {
 		return cursorStyle;
 	}
@@ -25,4 +27,11 @@ public abstract class AbstractDrawFeatureHandler extends AbstractHandler {
 		}
 	}
 
+	public boolean isFrozen() {
+		return frozen;
+	}
+
+	public void setFrozen(boolean frozen) {
+		this.frozen = frozen;
+	}
 }

@@ -9,11 +9,11 @@ import org.vaadin.maps.server.ClassUtility;
 import org.vaadin.maps.shared.ui.Style;
 import org.vaadin.maps.shared.ui.control.DrawFeatureControlState;
 import org.vaadin.maps.ui.CanCancel;
+import org.vaadin.maps.ui.CanFreeze;
 import org.vaadin.maps.ui.CanUndoRedo;
 import org.vaadin.maps.ui.StyleUtility;
 import org.vaadin.maps.ui.handler.FeatureHandler;
 import org.vaadin.maps.ui.handler.FeatureHandler.DrawFeatureListener;
-import org.vaadin.maps.ui.handler.RequiresVectorFeatureLayer;
 import org.vaadin.maps.ui.layer.VectorFeatureLayer;
 
 /**
@@ -22,7 +22,7 @@ import org.vaadin.maps.ui.layer.VectorFeatureLayer;
  */
 @SuppressWarnings("serial")
 public abstract class DrawFeatureControl<H extends FeatureHandler> extends AbstractControl
-		implements CanUndoRedo, CanCancel {
+		implements CanUndoRedo, CanCancel, CanFreeze {
 	private final Class<H> handlerClass;
 
 	protected VectorFeatureLayer layer = null;
@@ -57,14 +57,14 @@ public abstract class DrawFeatureControl<H extends FeatureHandler> extends Abstr
 	}
 
 	private void provideLayerToHandler() {
-		if (handler != null && handler instanceof RequiresVectorFeatureLayer) {
-			((RequiresVectorFeatureLayer) handler).setLayer(layer);
+		if (handlerInstance != null) {
+			handlerInstance.setLayer(layer);
 		}
 	}
 
 	private void provideFeatureStyleToHandler() {
-		if (handler != null && handler instanceof FeatureHandler) {
-			((FeatureHandler) handler).setFeatureStyle(featureStyle);
+		if (handlerInstance != null) {
+			handlerInstance.setFeatureStyle(featureStyle);
 		}
 	}
 
@@ -150,4 +150,17 @@ public abstract class DrawFeatureControl<H extends FeatureHandler> extends Abstr
 		return handlerInstance;
 	}
 
+	@Override
+	public void freeze() {
+		if (handlerInstance != null) {
+			handlerInstance.freeze();
+		}
+	}
+
+	@Override
+	public void unfreeze() {
+		if (handlerInstance != null) {
+			handlerInstance.unfreeze();
+		}
+	}
 }

@@ -186,6 +186,12 @@ public class VPointHandler extends AbstractDrawFeatureHandler
 	}
 
 	protected void syntheticClick(MouseEventDetails details, Element relativeElement) {
+		cleanMouseState();
+
+		if (!active || frozen) {
+			return;
+		}
+
 		if (clickHandlerSlave != null) {
 			clickHandlerSlave.syntheticClick(details, relativeElement);
 		}
@@ -307,6 +313,11 @@ public class VPointHandler extends AbstractDrawFeatureHandler
 	}
 
 	protected void updateDrawings(int deltaX, int deltaY) {
+	}
+
+	protected void cleanMouseState() {
+		mouseDown = false;
+		mouseMoved = false;
 	}
 
 }

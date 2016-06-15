@@ -10,7 +10,7 @@ import com.vaadin.shared.Connector;
  *
  */
 @SuppressWarnings("serial")
-public class PointHandlerState extends AbstractHandlerState {
+public class PointHandlerState extends FeatureHandlerState {
 	{
 		primaryStyleName = "v-pointhandler";
 	}

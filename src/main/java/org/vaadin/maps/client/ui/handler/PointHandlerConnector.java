@@ -26,7 +26,7 @@ import com.vaadin.shared.ui.Connect;
  */
 @SuppressWarnings("serial")
 @Connect(org.vaadin.maps.ui.handler.PointHandler.class)
-public class PointHandlerConnector extends AbstractHandlerConnector
+public class PointHandlerConnector extends FeatureHandlerConnector
 		implements SyntheticClickHandler, GeometryEventHandler {
 
 	@Override

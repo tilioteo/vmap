@@ -21,9 +21,16 @@ public class VLineHandler extends VPathHandler {
 
 	@Override
 	protected void syntheticClick(MouseEventDetails details, Element relativeElement) {
-		if (!active) {
+		cleanMouseState();
+
+		if (!active || frozen) {
 			return;
 		}
+
+		/*
+		 * if (clickHandlerSlave != null) {
+		 * clickHandlerSlave.syntheticClick(details, relativeElement); }
+		 */
 
 		int[] xy = getMouseEventXY(details, relativeElement);
 
@@ -38,6 +45,7 @@ public class VLineHandler extends VPathHandler {
 			// append last vertex
 			addLineStringVertex(xy);
 			fireEvent(new GeometryEvent(VLineHandler.this, lineString));
+
 			cleanDrawing();
 			cleanLineString();
 		}

@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 
 import org.vaadin.maps.event.ComponentEvent;
 import org.vaadin.maps.shared.ui.Style;
+import org.vaadin.maps.shared.ui.handler.FeatureHandlerState;
+import org.vaadin.maps.ui.CanFreeze;
 import org.vaadin.maps.ui.control.Control;
 import org.vaadin.maps.ui.feature.VectorFeature;
 
@@ -18,12 +20,17 @@ import com.vaadin.util.ReflectTools;
  *
  */
 @SuppressWarnings("serial")
-public abstract class FeatureHandler extends AbstractHandler implements RequiresVectorFeatureLayer {
+public abstract class FeatureHandler extends AbstractHandler implements RequiresVectorFeatureLayer, CanFreeze {
 
 	protected Style featureStyle = null;
 
 	protected FeatureHandler(Control control) {
 		super(control);
+	}
+
+	@Override
+	protected FeatureHandlerState getState() {
+		return (FeatureHandlerState) super.getState();
 	}
 
 	public Style getFeatureStyle() {
@@ -90,6 +97,20 @@ public abstract class FeatureHandler extends AbstractHandler implements Requires
 	 */
 	public void removeDrawFeatureListener(DrawFeatureListener listener) {
 		removeListener(DrawFeatureEvent.class, listener, DrawFeatureListener.DRAW_FEATURE_METHOD);
+	}
+
+	@Override
+	public void freeze() {
+		setFrozen(true);
+	}
+
+	@Override
+	public void unfreeze() {
+		setFrozen(false);
+	}
+
+	protected void setFrozen(boolean frozen) {
+		getState().frozen = frozen;
 	}
 
 }

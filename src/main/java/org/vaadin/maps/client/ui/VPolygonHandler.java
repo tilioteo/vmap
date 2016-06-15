@@ -25,7 +25,9 @@ public class VPolygonHandler extends VPathHandler {
 
 	@Override
 	protected void syntheticClick(MouseEventDetails details, Element relativeElement) {
-		if (!active) {
+		cleanMouseState();
+
+		if (!active || frozen) {
 			return;
 		}
 
@@ -48,6 +50,11 @@ public class VPolygonHandler extends VPathHandler {
 				&& !(FinishStrategy.DoubleClick.equals(strategy) || FinishStrategy.NearStartClick.equals(strategy))) {
 			return;
 		}
+
+		/*
+		 * if (clickHandlerSlave != null) {
+		 * clickHandlerSlave.syntheticClick(details, relativeElement); }
+		 */
 
 		int[] xy = getMouseEventXY(mouseEventDetails, relativeElement);
 
@@ -91,6 +98,7 @@ public class VPolygonHandler extends VPathHandler {
 				Polygon polygon = new Polygon(new LinearRing(lineString));
 
 				fireEvent(new GeometryEvent(VPolygonHandler.this, polygon));
+
 				cleanDrawing();
 				cleanLineString();
 			} else {

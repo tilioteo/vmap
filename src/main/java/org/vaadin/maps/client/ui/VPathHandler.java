@@ -195,7 +195,6 @@ public class VPathHandler extends VPointHandler {
 	}
 
 	protected void cleanDrawing() {
-		removeVertices();
 		removeStartPoint();
 		removeLine();
 	}
@@ -261,7 +260,9 @@ public class VPathHandler extends VPointHandler {
 
 	@Override
 	protected void syntheticClick(MouseEventDetails details, Element relativeElement) {
-		if (!active) {
+		cleanMouseState();
+
+		if (!active || frozen) {
 			return;
 		}
 
@@ -284,6 +285,11 @@ public class VPathHandler extends VPointHandler {
 				&& !(FinishStrategy.DoubleClick.equals(strategy) || FinishStrategy.NearStartClick.equals(strategy))) {
 			return;
 		}
+
+		/*
+		 * if (clickHandlerSlave != null) {
+		 * clickHandlerSlave.syntheticClick(details, relativeElement); }
+		 */
 
 		int[] xy = getMouseEventXY(details, relativeElement);
 
@@ -326,6 +332,7 @@ public class VPathHandler extends VPointHandler {
 
 			if (finish) {
 				fireEvent(new GeometryEvent(VPathHandler.this, lineString));
+
 				cleanDrawing();
 				cleanLineString();
 			} else {
@@ -389,6 +396,21 @@ public class VPathHandler extends VPointHandler {
 
 	protected boolean canCloseLineString() {
 		return lineString != null && lineString.getNumPoints() > 2;
+	}
+
+	@Override
+	public void cancel() {
+		super.cancel();
+
+		cleanDrawing();
+		cleanLineString();
+	}
+
+	@Override
+	public void deactivate() {
+		super.deactivate();
+
+		cancel();
 	}
 
 }
