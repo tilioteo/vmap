@@ -11,5 +11,8 @@ import org.vaadin.maps.shared.ui.DoubleClickRpc;
  *
  */
 public interface FeatureServerRpc extends ClickRpc, DoubleClickRpc {
+	
+	public void mouseOver(long timestamp);
+	public void mouseOut(long timestamp);
 
 }

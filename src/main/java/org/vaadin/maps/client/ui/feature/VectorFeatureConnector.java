@@ -16,6 +16,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.vaadin.client.MouseEventDetailsBuilder;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractComponentConnector;
@@ -49,6 +53,20 @@ public class VectorFeatureConnector extends AbstractComponentConnector {
 				MouseEventDetails mouseDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(),
 						getWidget().getElement());
 				getRpcProxy(FeatureServerRpc.class).doubleClick(DateUtility.getTimestamp(), mouseDetails);
+			}
+		});
+		
+		getWidget().addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				getRpcProxy(FeatureServerRpc.class).mouseOver(DateUtility.getTimestamp());
+			}
+		});
+		
+		getWidget().addMouseOutHandler(new MouseOutHandler() {
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				getRpcProxy(FeatureServerRpc.class).mouseOut(DateUtility.getTimestamp());
 			}
 		});
 	}

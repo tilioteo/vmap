@@ -39,6 +39,16 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 		public void doubleClick(long timestamp, MouseEventDetails mouseDetails) {
 			fireEvent(new DoubleClickEvent(timestamp, VectorFeature.this, mouseDetails));
 		}
+
+		@Override
+		public void mouseOver(long timestamp) {
+			fireEvent(new MouseOverEvent(timestamp, VectorFeature.this));
+		}
+
+		@Override
+		public void mouseOut(long timestamp) {
+			fireEvent(new MouseOutEvent(timestamp, VectorFeature.this));
+		}
 	};
 
 	private Geometry geometry = null;
@@ -414,6 +424,104 @@ public class VectorFeature extends AbstractFeature implements TransformChangeLis
 	 */
 	public void removeDoubleClickListener(DoubleClickListener listener) {
 		removeListener(DoubleClickEvent.class, listener, DoubleClickListener.FEATURE_DOUBLE_CLICK_METHOD);
+	}
+
+	public class MouseOverEvent extends ComponentEvent {
+
+		public MouseOverEvent(long timestamp, Component source) {
+			super(timestamp, source);
+		}
+	}
+
+	/**
+	 * Interface for listening for a {@link MouseOverEvent} fired by a
+	 * {@link VectorFeature}.
+	 * 
+	 */
+	public interface MouseOverListener extends Serializable {
+
+		public static final Method FEATURE_MOUSE_OVER_METHOD = ReflectTools.findMethod(MouseOverListener.class,
+				"mouseOver", MouseOverEvent.class);
+
+		/**
+		 * Called when a mouse pointer enters {@link VectorFeature}. A
+		 * reference to the feature is given by
+		 * {@link MouseOverEvent#getFeature()}.
+		 * 
+		 * @param event
+		 *            An event containing information about the source.
+		 */
+		public void mouseOver(MouseOverEvent event);
+
+	}
+
+	/**
+	 * Adds the feature mouse over listener.
+	 * 
+	 * @param listener
+	 *            the Listener to be added.
+	 */
+	public void addMouseOverListener(MouseOverListener listener) {
+		addListener(MouseOverEvent.class, listener, MouseOverListener.FEATURE_MOUSE_OVER_METHOD);
+	}
+
+	/**
+	 * Removes the feature mouse over listener.
+	 * 
+	 * @param listener
+	 *            the Listener to be removed.
+	 */
+	public void removeMouseOverListener(MouseOverListener listener) {
+		removeListener(MouseOverEvent.class, listener, MouseOverListener.FEATURE_MOUSE_OVER_METHOD);
+	}
+
+	public class MouseOutEvent extends ComponentEvent {
+
+		public MouseOutEvent(long timestamp, Component source) {
+			super(timestamp, source);
+		}
+	}
+
+	/**
+	 * Interface for listening for a {@link MouseOutEvent} fired by a
+	 * {@link VectorFeature}.
+	 * 
+	 */
+	public interface MouseOutListener extends Serializable {
+
+		public static final Method FEATURE_MOUSE_OUT_METHOD = ReflectTools.findMethod(MouseOutListener.class,
+				"mouseOut", MouseOutEvent.class);
+
+		/**
+		 * Called when mouse pointer leaves {@link VectorFeature}. A
+		 * reference to the feature is given by
+		 * {@link MouseOutEvent#getFeature()}.
+		 * 
+		 * @param event
+		 *            An event containing information about the source.
+		 */
+		public void mouseOut(MouseOutEvent event);
+
+	}
+
+	/**
+	 * Adds the feature mouse out listener.
+	 * 
+	 * @param listener
+	 *            the Listener to be added.
+	 */
+	public void addMouseOutListener(MouseOutListener listener) {
+		addListener(MouseOutEvent.class, listener, MouseOutListener.FEATURE_MOUSE_OUT_METHOD);
+	}
+
+	/**
+	 * Removes the feature mouse out listener.
+	 * 
+	 * @param listener
+	 *            the Listener to be removed.
+	 */
+	public void removeMouseOutListener(MouseOutListener listener) {
+		removeListener(MouseOutEvent.class, listener, MouseOutListener.FEATURE_MOUSE_OUT_METHOD);
 	}
 
 	@Override
