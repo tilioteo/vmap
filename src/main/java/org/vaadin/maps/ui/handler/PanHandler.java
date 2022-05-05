@@ -1,183 +1,178 @@
-/**
- * 
- */
 package org.vaadin.maps.ui.handler;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-
-import org.vaadin.maps.event.ComponentEvent;
+import com.tilioteo.common.event.TimekeepingComponentEvent;
+import com.vaadin.util.ReflectTools;
 import org.vaadin.maps.shared.ui.handler.PanHandlerRpc;
 import org.vaadin.maps.shared.ui.handler.PanHandlerState;
 import org.vaadin.maps.ui.LayerLayout;
 import org.vaadin.maps.ui.control.Control;
 
-import com.vaadin.util.ReflectTools;
+import java.io.Serializable;
+import java.lang.reflect.Method;
 
 /**
  * @author Kamil Morong
- *
  */
-@SuppressWarnings("serial")
 public class PanHandler extends NavigateHandler {
 
-	protected LayerLayout layout = null;
+    private final PanHandlerRpc rpc = new PanHandlerRpc() {
+        @Override
+        public void panStart(long timestamp, int x, int y) {
+            fireEvent(new PanStartEvent(timestamp, PanHandler.this, x, y));
+        }
 
-	private PanHandlerRpc rpc = new PanHandlerRpc() {
-		@Override
-		public void panStart(long timestamp, int x, int y) {
-			fireEvent(new PanStartEvent(timestamp, PanHandler.this, x, y));
-		}
+        @Override
+        public void panEnd(long timestamp, int deltaX, int deltaY) {
+            fireEvent(new PanEndEvent(timestamp, PanHandler.this, deltaX, deltaY));
+        }
+    };
+    protected LayerLayout layout = null;
 
-		@Override
-		public void panEnd(long timestamp, int deltaX, int deltaY) {
-			fireEvent(new PanEndEvent(timestamp, PanHandler.this, deltaX, deltaY));
-		}
-	};
+    public PanHandler(Control control) {
+        super(control);
 
-	public PanHandler(Control control) {
-		super(control);
+        registerRpc(rpc);
+    }
 
-		registerRpc(rpc);
-	}
+    @Override
+    public void setLayout(LayerLayout layout) {
+        this.layout = layout;
+        getState().layout = layout;
+    }
 
-	@Override
-	public void setLayout(LayerLayout layout) {
-		this.layout = layout;
-		getState().layout = layout;
-	}
+    @Override
+    protected PanHandlerState getState() {
+        return (PanHandlerState) super.getState();
+    }
 
-	@Override
-	protected PanHandlerState getState() {
-		return (PanHandlerState) super.getState();
-	}
+    /**
+     * Adds the pan start listener.
+     *
+     * @param listener the Listener to be added.
+     */
+    public void addPanStartListener(PanStartListener listener) {
+        addListener(PanStartEvent.class, listener, PanStartListener.PAN_START_METHOD);
+    }
 
-	/**
-	 * This event is thrown, when the panning started.
-	 * 
-	 */
-	public class PanStartEvent extends ComponentEvent {
+    /**
+     * Removes the pan start listener.
+     *
+     * @param listener the Listener to be removed.
+     */
+    public void removePanStartListener(PanStartListener listener) {
+        removeListener(PanStartEvent.class, listener, PanStartListener.PAN_START_METHOD);
+    }
 
-		private int x;
-		private int y;
+    /**
+     * Adds the pan end listener.
+     *
+     * @param listener the Listener to be added.
+     */
+    public void addPanEndListener(PanEndListener listener) {
+        addListener(PanEndEvent.class, listener, PanEndListener.PAN_END_METHOD);
+    }
 
-		public PanStartEvent(long timestamp, PanHandler source, int x, int y) {
-			super(timestamp, source);
-			this.x = x;
-			this.y = y;
-		}
+    /**
+     * Removes the end start listener.
+     *
+     * @param listener the Listener to be removed.
+     */
+    public void removePanEndListener(PanEndListener listener) {
+        removeListener(PanEndEvent.class, listener, PanEndListener.PAN_END_METHOD);
+    }
 
-		public int getX() {
-			return x;
-		}
+    /**
+     * Interface for listening for a {@link PanStartEvent} fired by a
+     * {@link PanHandler}.
+     */
+    public interface PanStartListener extends Serializable {
 
-		public int getY() {
-			return y;
-		}
-	}
+        Method PAN_START_METHOD = ReflectTools.findMethod(PanStartListener.class, "panStart",
+                PanStartEvent.class);
 
-	/**
-	 * Interface for listening for a {@link PanStartEvent} fired by a
-	 * {@link PanHandler}.
-	 * 
-	 */
-	public interface PanStartListener extends Serializable {
+        /**
+         * Called when panning started.
+         *
+         * @param event An event containing information about pan.
+         */
+        void panStart(PanStartEvent event);
 
-		public static final Method PAN_START_METHOD = ReflectTools.findMethod(PanStartListener.class, "panStart",
-				PanStartEvent.class);
+    }
 
-		/**
-		 * Called when panning started.
-		 * 
-		 * @param event
-		 *            An event containing information about pan.
-		 */
-		public void panStart(PanStartEvent event);
+    /**
+     * Interface for listening for a {@link PanEndEvent} fired by a
+     * {@link PanHandler}.
+     */
+    public interface PanEndListener extends Serializable {
 
-	}
+        Method PAN_END_METHOD = ReflectTools.findMethod(PanEndListener.class, "panEnd",
+                PanEndEvent.class);
 
-	/**
-	 * This event is thrown, when the panning ended.
-	 * 
-	 */
-	public class PanEndEvent extends ComponentEvent {
+        /**
+         * Called when panning ended.
+         *
+         * @param event An event containing information about pan.
+         */
+        void panEnd(PanEndEvent event);
 
-		private int dX;
-		private int dY;
+    }
 
-		public PanEndEvent(long timestamp, PanHandler source, int deltaX, int deltaY) {
-			super(timestamp, source);
-			this.dX = deltaX;
-			this.dY = deltaY;
-		}
+    public static abstract class PanEvent extends TimekeepingComponentEvent {
 
-		public int getDeltaX() {
-			return dX;
-		}
+        private final int x;
+        private final int y;
 
-		public int getDeltaY() {
-			return dY;
-		}
-	}
+        protected PanEvent(long timestamp, PanHandler source, int x, int y) {
+            super(timestamp, source);
+            this.x = x;
+            this.y = y;
+        }
 
-	/**
-	 * Interface for listening for a {@link PanEndEvent} fired by a
-	 * {@link PanHandler}.
-	 * 
-	 */
-	public interface PanEndListener extends Serializable {
+        protected int getX() {
+            return x;
+        }
 
-		public static final Method PAN_END_METHOD = ReflectTools.findMethod(PanEndListener.class, "panEnd",
-				PanEndEvent.class);
+        protected int getY() {
+            return y;
+        }
+    }
 
-		/**
-		 * Called when panning ended.
-		 * 
-		 * @param event
-		 *            An event containing information about pan.
-		 */
-		public void panEnd(PanEndEvent event);
+    /**
+     * This event is thrown, when the panning started.
+     */
+    public static class PanStartEvent extends PanEvent {
 
-	}
+        public PanStartEvent(long timestamp, PanHandler source, int x, int y) {
+            super(timestamp, source, x, y);
+        }
 
-	/**
-	 * Adds the pan start listener.
-	 * 
-	 * @param listener
-	 *            the Listener to be added.
-	 */
-	public void addPanStartListener(PanStartListener listener) {
-		addListener(PanStartEvent.class, listener, PanStartListener.PAN_START_METHOD);
-	}
+        @Override
+        public int getX() {
+            return super.getX();
+        }
 
-	/**
-	 * Removes the pan start listener.
-	 * 
-	 * @param listener
-	 *            the Listener to be removed.
-	 */
-	public void removePanStartListener(PanStartListener listener) {
-		removeListener(PanStartEvent.class, listener, PanStartListener.PAN_START_METHOD);
-	}
+        @Override
+        public int getY() {
+            return super.getY();
+        }
+    }
 
-	/**
-	 * Adds the pan end listener.
-	 * 
-	 * @param listener
-	 *            the Listener to be added.
-	 */
-	public void addPanEndListener(PanEndListener listener) {
-		addListener(PanEndEvent.class, listener, PanEndListener.PAN_END_METHOD);
-	}
+    /**
+     * This event is thrown, when the panning ended.
+     */
+    public static class PanEndEvent extends PanEvent {
 
-	/**
-	 * Removes the end start listener.
-	 * 
-	 * @param listener
-	 *            the Listener to be removed.
-	 */
-	public void removePanEndListener(PanEndListener listener) {
-		removeListener(PanEndEvent.class, listener, PanEndListener.PAN_END_METHOD);
-	}
+        public PanEndEvent(long timestamp, PanHandler source, int deltaX, int deltaY) {
+            super(timestamp, source, deltaX, deltaY);
+        }
+
+        public int getDeltaX() {
+            return getX();
+        }
+
+        public int getDeltaY() {
+            return getY();
+        }
+    }
 
 }

@@ -17,62 +17,60 @@ package org.vaadin.gwtgraphics.client;
 
 /**
  * Group is a container, which can contain one or more VectorObjects.
- * 
+ *
  * @author Henri Kerola
  * @author Kamil Morong
- * 
  */
 public class Group extends AbstractDrawingContainer implements Positionable {
 
-	/**
-	 * Creates an empty Group.
-	 */
-	public Group() {
-	}
+    /**
+     * Creates an empty Group.
+     */
+    public Group() {
+    }
 
-	@Override
-	public Class<? extends Drawing> getType() {
-		return Group.class;
-	}
+    @Override
+    public Class<? extends Drawing> getType() {
+        return Group.class;
+    }
 
-	@Override
-	public int getX() {
-		return getImpl().getX(getElement());
-	}
+    @Override
+    public int getX() {
+        return getImpl().getX(getElement());
+    }
 
-	@Override
-	public void setX(int x) {
-		getImpl().setX(getElement(), x, isAttached());
-	}
+    @Override
+    public void setX(int x) {
+        getImpl().setX(getElement(), x, isAttached());
+    }
 
-	@Override
-	public int getY() {
-		return getImpl().getY(getElement());
-	}
+    @Override
+    public int getY() {
+        return getImpl().getY(getElement());
+    }
 
-	@Override
-	public void setY(int y) {
-		getImpl().setY(getElement(), y, isAttached());
-	}
+    @Override
+    public void setY(int y) {
+        getImpl().setY(getElement(), y, isAttached());
+    }
 
-	/**
-	 * Returns the opacity of the Group element.
-	 * 
-	 * @return the current opacity
-	 */
-	public double getOpacity() {
-		return getImpl().getOpacity(getElement());
-	}
+    /**
+     * Returns the opacity of the Group element.
+     *
+     * @return the current opacity
+     */
+    public double getOpacity() {
+        return getImpl().getOpacity(getElement());
+    }
 
-	/**
-	 * Sets the opacity of the Group element. The initial value 1.0 means fully
-	 * opaque group. On the other hand, value 0.0 means fully transparent paint.
-	 * 
-	 * @param opacity
-	 *            the new opacity
-	 */
-	public void setOpacity(double opacity) {
-		getImpl().setOpacity(getElement(), opacity);
-	}
+    /**
+     * Sets the opacity of the Group element. The initial value 1.0 means fully
+     * opaque group. On the other hand, value 0.0 means fully transparent paint.
+     *
+     * @param opacity the new opacity
+     */
+    public void setOpacity(double opacity) {
+        getImpl().setOpacity(getElement(), opacity);
+    }
 
 }

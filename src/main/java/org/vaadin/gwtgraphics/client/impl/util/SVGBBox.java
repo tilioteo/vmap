@@ -19,27 +19,26 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 /**
  * @author Henri Kerola
- *
  */
 public final class SVGBBox extends JavaScriptObject {
 
-	protected SVGBBox() {
+    protected SVGBBox() {
 
-	}
+    }
 
-	public native int getX() /*-{
-		return this.x;
-	}-*/;
+    public native int getX() /*-{
+        return this.x;
+    }-*/;
 
-	public native int getY() /*-{
-		return this.y;
-	}-*/;
+    public native int getY() /*-{
+        return this.y;
+    }-*/;
 
-	public native int getWidth() /*-{
-		return this.width;
-	}-*/;
+    public native int getWidth() /*-{
+        return this.width;
+    }-*/;
 
-	public native int getHeight() /*-{
-		return this.height;
-	}-*/;
+    public native int getHeight() /*-{
+        return this.height;
+    }-*/;
 }

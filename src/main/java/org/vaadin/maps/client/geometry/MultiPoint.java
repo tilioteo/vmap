@@ -34,61 +34,54 @@ package org.vaadin.maps.client.geometry;
 
 /**
  * Models a collection of <code>Point</code>s.
- * 
+ *
  * @version 1.7
  */
-@SuppressWarnings("serial")
 public class MultiPoint extends GeometryCollection {
 
-	/**
-	 * @param points
-	 *            the <code>Point</code>s for this <code>MultiPoint</code> , or
-	 *            <code>null</code> or an empty array to create the empty
-	 *            geometry. Elements may be empty <code>Point</code>s, but not
-	 *            <code>null</code>s.
-	 */
-	public MultiPoint(Point[] points) {
-		this(points, 0);
-	}
+    /**
+     * @param points the <code>Point</code>s for this <code>MultiPoint</code> , or
+     *               <code>null</code> or an empty array to create the empty
+     *               geometry. Elements may be empty <code>Point</code>s, but not
+     *               <code>null</code>s.
+     */
+    public MultiPoint(Point[] points) {
+        this(points, 0);
+    }
 
-	/**
-	 * Constructs a <code>MultiPoint</code>.
-	 * 
-	 * @param points
-	 *            the <code>Point</code>s for this <code>MultiPoint</code> , or
-	 *            <code>null</code> or an empty array to create the empty
-	 *            geometry. Elements may be empty <code>Point</code>s, but not
-	 *            <code>null</code>s.
-	 * @param precisionModel
-	 *            the specification of the grid of allowable points for this
-	 *            <code>MultiPoint</code>
-	 * @param SRID
-	 *            the ID of the Spatial Reference System used by this
-	 *            <code>MultiPoint</code>
-	 */
-	public MultiPoint(Point[] points, int SRID) {
-		super(points, SRID);
-	}
+    /**
+     * Constructs a <code>MultiPoint</code>.
+     *
+     * @param points the <code>Point</code>s for this <code>MultiPoint</code> , or
+     *               <code>null</code> or an empty array to create the empty
+     *               geometry. Elements may be empty <code>Point</code>s, but not
+     *               <code>null</code>s.
+     * @param SRID   the ID of the Spatial Reference System used by this
+     *               <code>MultiPoint</code>
+     */
+    public MultiPoint(Point[] points, int SRID) {
+        super(points, SRID);
+    }
 
-	public MultiPoint(MultiPoint multiPoint) {
-		super(multiPoint.SRID);
-		for (Geometry geometry : multiPoint.geometries) {
-			geometries.add(Geometry.clone(geometry));
-		}
-	}
+    public MultiPoint(MultiPoint multiPoint) {
+        super(multiPoint.SRID);
+        for (Geometry geometry : multiPoint.geometries) {
+            geometries.add(Geometry.clone(geometry));
+        }
+    }
 
-	@Override
-	public String getGeometryType() {
-		return "MultiPoint";
-	}
+    @Override
+    public String getGeometryType() {
+        return "MultiPoint";
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		if (!(other instanceof MultiPoint)) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof MultiPoint)) {
+            return false;
+        }
 
-		return super.equals(other);
-	}
+        return super.equals(other);
+    }
 
 }

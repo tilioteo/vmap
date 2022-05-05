@@ -17,20 +17,19 @@ package org.vaadin.gwtgraphics.client.shape.path;
 
 /**
  * This class represents Path's closePath step.
- * 
+ *
  * @author Henri Kerola
- * 
  */
 public class ClosePath extends PathStep {
 
-	/**
-	 * Instantiates a new ClosePath step.
-	 */
-	public ClosePath() {
-	}
+    /**
+     * Instantiates a new ClosePath step.
+     */
+    public ClosePath() {
+    }
 
-	@Override
-	public String getSVGString() {
-		return "z";
-	}
+    @Override
+    public String getSVGString() {
+        return "z";
+    }
 }

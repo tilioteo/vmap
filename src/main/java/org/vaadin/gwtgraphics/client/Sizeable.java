@@ -1,20 +1,16 @@
-/**
- * 
- */
 package org.vaadin.gwtgraphics.client;
 
 /**
  * @author Kamil Morong
- * 
  */
 public interface Sizeable {
 
-	public int getWidth();
+    int getWidth();
 
-	public void setWidth(int width);
+    void setWidth(int width);
 
-	public int getHeight();
+    int getHeight();
 
-	public void setHeight(int height);
+    void setHeight(int height);
 
 }

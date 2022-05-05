@@ -20,24 +20,24 @@ package org.vaadin.gwt.i18n.client;
  */
 public class Util {
 
-	/**
-	 * Performs an equals test on two objects which may be null.
-	 * 
-	 * @param obj1
-	 * @param obj2
-	 * @return true if both objects are null or obj1.equals(obj2)
-	 */
-	public static boolean nullEquals(Object obj1, Object obj2) {
-		return obj1 == null ? obj2 == null : obj1.equals(obj2);
-	}
+    /**
+     * Performs an equals test on two objects which may be null.
+     *
+     * @param obj1
+     * @param obj2
+     * @return true if both objects are null or obj1.equals(obj2)
+     */
+    public static boolean nullEquals(Object obj1, Object obj2) {
+        return obj1 == null ? obj2 == null : obj1.equals(obj2);
+    }
 
-	/**
-	 * Computes the hash code of an object which may be null.
-	 * 
-	 * @param obj
-	 * @return 0 if obj is null, obj.hashCode() otherwise.
-	 */
-	public static int nullHash(Object obj) {
-		return obj == null ? 0 : obj.hashCode();
-	}
+    /**
+     * Computes the hash code of an object which may be null.
+     *
+     * @param obj
+     * @return 0 if obj is null, obj.hashCode() otherwise.
+     */
+    public static int nullHash(Object obj) {
+        return obj == null ? 0 : obj.hashCode();
+    }
 }

@@ -50,189 +50,183 @@ import java.util.List;
  * parameterized by your CoordinateSequenceFactory, and use this GeometryFactory
  * to create new Geometries. All of these new Geometries will use your
  * CoordinateSequence implementation.
- * 
+ *
  * @version 1.7
  */
 public class CoordinateSequence implements Iterable<Coordinate> {
 
-	List<Coordinate> coordinates = new LinkedList<Coordinate>();
+    protected final List<Coordinate> coordinates = new LinkedList<>();
 
-	public CoordinateSequence(int size) {
-		// initialize size
-		for (int i = 0; i < size; ++i) {
-			coordinates.add(new Coordinate());
-		}
-	}
+    public CoordinateSequence(int size) {
+        // initialize size
+        for (int i = 0; i < size; ++i) {
+            coordinates.add(new Coordinate());
+        }
+    }
 
-	public CoordinateSequence(Coordinate... coordinates) {
-		for (Coordinate coordinate : coordinates) {
-			this.coordinates.add(new Coordinate(coordinate));
-		}
-	}
+    public CoordinateSequence(Coordinate... coordinates) {
+        for (Coordinate coordinate : coordinates) {
+            this.coordinates.add(new Coordinate(coordinate));
+        }
+    }
 
-	public CoordinateSequence(CoordinateSequence coordinateSequence) {
-		for (Coordinate coordinate : coordinateSequence) {
-			coordinates.add(new Coordinate(coordinate));
-		}
-	}
+    public CoordinateSequence(CoordinateSequence coordinateSequence) {
+        for (Coordinate coordinate : coordinateSequence) {
+            coordinates.add(new Coordinate(coordinate));
+        }
+    }
 
-	@Override
-	public Iterator<Coordinate> iterator() {
-		return coordinates.iterator();
-	}
+    /**
+     * Reverses the coordinates in a sequence in-place.
+     */
+    public static void reverse(CoordinateSequence sequence) {
+        int last = sequence.size() - 1;
+        int mid = last / 2;
+        for (int i = 0; i <= mid; i++) {
+            swap(sequence, i, last - i);
+        }
+    }
 
-	public void add(Coordinate coordinate) {
-		coordinates.add(coordinate);
-	}
+    /**
+     * Swaps two coordinates in a sequence.
+     *
+     * @param sequence
+     * @param i
+     * @param j
+     */
+    public static void swap(CoordinateSequence sequence, int i, int j) {
+        if (i == j)
+            return;
+        Coordinate.swap(sequence.get(i), sequence.get(j));
+    }
 
-	public void removeLast() {
-		if (coordinates.size() > 0) {
-			coordinates.remove(coordinates.size() - 1);
-		}
-	}
+    @Override
+    public Iterator<Coordinate> iterator() {
+        return coordinates.iterator();
+    }
 
-	/**
-	 * Returns (possibly a copy of) the i'th coordinate in this sequence.
-	 * Whether or not the Coordinate returned is the actual underlying
-	 * Coordinate or merely a copy depends on the implementation.
-	 * <p>
-	 * Note that in the future the semantics of this method may change to
-	 * guarantee that the Coordinate returned is always a copy. Callers should
-	 * not to assume that they can modify a CoordinateSequence by modifying the
-	 * object returned by this method.
-	 * 
-	 * @param i
-	 *            the index of the coordinate to retrieve
-	 * @return the i'th coordinate in the sequence
-	 */
-	public Coordinate get(int index) {
-		if (index < 0 || index >= coordinates.size())
-			throw new OutOfBoundsException();
+    public void add(Coordinate coordinate) {
+        coordinates.add(coordinate);
+    }
 
-		return coordinates.get(index);
-	}
+    public void removeLast() {
+        if (coordinates.size() > 0) {
+            coordinates.remove(coordinates.size() - 1);
+        }
+    }
 
-	/**
-	 * Returns ordinate X (0) of the specified coordinate.
-	 * 
-	 * @param index
-	 * @return the value of the X ordinate in the index'th coordinate
-	 */
-	public double getX(int index) {
-		return get(index).x;
-	}
+    /**
+     * Returns (possibly a copy of) the i'th coordinate in this sequence.
+     * Whether or not the Coordinate returned is the actual underlying
+     * Coordinate or merely a copy depends on the implementation.
+     * <p>
+     * Note that in the future the semantics of this method may change to
+     * guarantee that the Coordinate returned is always a copy. Callers should
+     * not to assume that they can modify a CoordinateSequence by modifying the
+     * object returned by this method.
+     *
+     * @param i the index of the coordinate to retrieve
+     * @return the i'th coordinate in the sequence
+     */
+    public Coordinate get(int index) {
+        if (index < 0 || index >= coordinates.size())
+            throw new OutOfBoundsException();
 
-	/**
-	 * Returns ordinate Y (1) of the specified coordinate.
-	 * 
-	 * @param index
-	 * @return the value of the Y ordinate in the index'th coordinate
-	 */
-	public double getY(int index) {
-		return get(index).y;
-	}
+        return coordinates.get(index);
+    }
 
-	/**
-	 * Returns the ordinate of a coordinate in this sequence. Ordinate indices 0
-	 * and 1 are assumed to be X and Y. Ordinates indices greater than 1 have
-	 * user-defined semantics (for instance, they may contain other dimensions
-	 * or measure values).
-	 * 
-	 * @param index
-	 *            the coordinate index in the sequence
-	 * @param ordinateIndex
-	 *            the ordinate index in the coordinate (in range [0,
-	 *            dimension-1])
-	 */
-	public double getOrdinate(int index, int ordinateIndex) {
-		return get(index).getOrdinate(ordinateIndex);
-	}
+    /**
+     * Returns ordinate X (0) of the specified coordinate.
+     *
+     * @param index
+     * @return the value of the X ordinate in the index'th coordinate
+     */
+    public double getX(int index) {
+        return get(index).x;
+    }
 
-	/**
-	 * Returns the number of coordinates in this sequence.
-	 * 
-	 * @return the size of the sequence
-	 */
-	public int size() {
-		return coordinates.size();
-	}
+    /**
+     * Returns ordinate Y (1) of the specified coordinate.
+     *
+     * @param index
+     * @return the value of the Y ordinate in the index'th coordinate
+     */
+    public double getY(int index) {
+        return get(index).y;
+    }
 
-	/**
-	 * Sets the value for a given ordinate of a coordinate in this sequence.
-	 * 
-	 * @param index
-	 *            the coordinate index in the sequence
-	 * @param ordinateIndex
-	 *            the ordinate index in the coordinate (in range [0,
-	 *            dimension-1])
-	 * @param value
-	 *            the new ordinate value
-	 */
-	public void setOrdinate(int index, int ordinateIndex, double value) {
-		get(index).setOrdinate(ordinateIndex, value);
-	}
+    /**
+     * Returns the ordinate of a coordinate in this sequence. Ordinate indices 0
+     * and 1 are assumed to be X and Y. Ordinates indices greater than 1 have
+     * user-defined semantics (for instance, they may contain other dimensions
+     * or measure values).
+     *
+     * @param index         the coordinate index in the sequence
+     * @param ordinateIndex the ordinate index in the coordinate (in range [0,
+     *                      dimension-1])
+     */
+    public double getOrdinate(int index, int ordinateIndex) {
+        return get(index).getOrdinate(ordinateIndex);
+    }
 
-	/**
-	 * Returns (possibly copies of) the Coordinates in this collection. Whether
-	 * or not the Coordinates returned are the actual underlying Coordinates or
-	 * merely copies depends on the implementation. Note that if this
-	 * implementation does not store its data as an array of Coordinates, this
-	 * method will incur a performance penalty because the array needs to be
-	 * built from scratch.
-	 * 
-	 * @return a array of coordinates containing the point values in this
-	 *         sequence
-	 */
-	Coordinate[] toArray() {
-		Coordinate[] array = new Coordinate[size()];
-		int i = 0;
-		for (Coordinate coordinate : coordinates) {
-			array[i++] = coordinate;
-		}
-		return array;
-	}
+    /**
+     * Returns the number of coordinates in this sequence.
+     *
+     * @return the size of the sequence
+     */
+    public int size() {
+        return coordinates.size();
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		if (!(other instanceof CoordinateSequence)) {
-			return false;
-		}
+    /**
+     * Sets the value for a given ordinate of a coordinate in this sequence.
+     *
+     * @param index         the coordinate index in the sequence
+     * @param ordinateIndex the ordinate index in the coordinate (in range [0,
+     *                      dimension-1])
+     * @param value         the new ordinate value
+     */
+    public void setOrdinate(int index, int ordinateIndex, double value) {
+        get(index).setOrdinate(ordinateIndex, value);
+    }
 
-		CoordinateSequence otherSequence = (CoordinateSequence) other;
-		if (size() != otherSequence.size())
-			return false;
+    /**
+     * Returns (possibly copies of) the Coordinates in this collection. Whether
+     * or not the Coordinates returned are the actual underlying Coordinates or
+     * merely copies depends on the implementation. Note that if this
+     * implementation does not store its data as an array of Coordinates, this
+     * method will incur a performance penalty because the array needs to be
+     * built from scratch.
+     *
+     * @return a array of coordinates containing the point values in this
+     * sequence
+     */
+    Coordinate[] toArray() {
+        Coordinate[] array = new Coordinate[size()];
+        int i = 0;
+        for (Coordinate coordinate : coordinates) {
+            array[i++] = coordinate;
+        }
+        return array;
+    }
 
-		for (int i = 0; i < size(); i++) {
-			if (!coordinates.get(i).equals(otherSequence.coordinates.get(i))) {
-				return false;
-			}
-		}
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof CoordinateSequence)) {
+            return false;
+        }
 
-		return true;
-	}
+        CoordinateSequence otherSequence = (CoordinateSequence) other;
+        if (size() != otherSequence.size())
+            return false;
 
-	/**
-	 * Reverses the coordinates in a sequence in-place.
-	 */
-	public static void reverse(CoordinateSequence sequence) {
-		int last = sequence.size() - 1;
-		int mid = last / 2;
-		for (int i = 0; i <= mid; i++) {
-			swap(sequence, i, last - i);
-		}
-	}
+        for (int i = 0; i < size(); i++) {
+            if (!coordinates.get(i).equals(otherSequence.coordinates.get(i))) {
+                return false;
+            }
+        }
 
-	/**
-	 * Swaps two coordinates in a sequence.
-	 * 
-	 * @param sequence
-	 * @param i
-	 * @param j
-	 */
-	public static void swap(CoordinateSequence sequence, int i, int j) {
-		if (i == j)
-			return;
-		Coordinate.swap(sequence.get(i), sequence.get(j));
-	}
+        return true;
+    }
 
 }

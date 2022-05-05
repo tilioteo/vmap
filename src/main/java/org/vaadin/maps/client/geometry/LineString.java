@@ -34,125 +34,123 @@ package org.vaadin.maps.client.geometry;
 
 /**
  * Basic implementation of <code>LineString</code>.
- * 
+ *
  * @version 1.7
  */
-@SuppressWarnings("serial")
 public class LineString extends Point {
 
-	public LineString(Coordinate... coordinates) {
-		this(coordinates, 0);
-	}
+    public LineString(Coordinate... coordinates) {
+        this(coordinates, 0);
+    }
 
-	public LineString(Coordinate[] coordinates, int SRID) {
-		this(new CoordinateSequence(coordinates), SRID);
-	}
+    public LineString(Coordinate[] coordinates, int SRID) {
+        this(new CoordinateSequence(coordinates), SRID);
+    }
 
-	public LineString(CoordinateSequence coordinates) {
-		this(coordinates, 0);
-	}
+    public LineString(CoordinateSequence coordinates) {
+        this(coordinates, 0);
+    }
 
-	public LineString(CoordinateSequence coordinates, int SRID) {
-		super(SRID);
-		init(coordinates);
-	}
+    public LineString(CoordinateSequence coordinates, int SRID) {
+        super(SRID);
+        init(coordinates);
+    }
 
-	private void init(CoordinateSequence coordinates) {
-		if (coordinates != null) {
-			this.coordinates = new CoordinateSequence(coordinates);
-		}
-	}
+    public LineString(LineString lineString) {
+        this(lineString.coordinates, lineString.SRID);
+    }
 
-	public LineString(LineString lineString) {
-		this(lineString.coordinates, lineString.SRID);
-	}
+    private void init(CoordinateSequence coordinates) {
+        if (coordinates != null) {
+            this.coordinates = new CoordinateSequence(coordinates);
+        }
+    }
 
-	public Coordinate getCoordinate(int index) {
-		return coordinates.get(index);
-	}
+    public Coordinate getCoordinate(int index) {
+        return coordinates.get(index);
+    }
 
-	public Point getPoint(int index) {
-		return new Point(new Coordinate(coordinates.get(index)));
-	}
+    public Point getPoint(int index) {
+        return new Point(new Coordinate(coordinates.get(index)));
+    }
 
-	public Point getStartPoint() {
-		if (isEmpty()) {
-			return null;
-		}
-		return getPoint(0);
-	}
+    public Point getStartPoint() {
+        if (isEmpty()) {
+            return null;
+        }
+        return getPoint(0);
+    }
 
-	public Point getEndPoint() {
-		if (isEmpty()) {
-			return null;
-		}
-		return getPoint(getNumPoints() - 1);
-	}
+    public Point getEndPoint() {
+        if (isEmpty()) {
+            return null;
+        }
+        return getPoint(getNumPoints() - 1);
+    }
 
-	public boolean isClosed() {
-		if (isEmpty()) {
-			return false;
-		}
-		return getCoordinate(0).equals(getCoordinate(getNumPoints() - 1));
-	}
+    public boolean isClosed() {
+        if (isEmpty()) {
+            return false;
+        }
+        return getCoordinate(0).equals(getCoordinate(getNumPoints() - 1));
+    }
 
-	@Override
-	public String getGeometryType() {
-		return "LineString";
-	}
+    @Override
+    public String getGeometryType() {
+        return "LineString";
+    }
 
-	/**
-	 * Creates a {@link LineString} whose coordinates are in the reverse order
-	 * of this objects
-	 * 
-	 * @return a {@link LineString} with coordinates in the reverse order
-	 */
-	public LineString reverse() {
-		LineString lineString = new LineString(this);
-		CoordinateSequence.reverse(lineString.coordinates);
-		return lineString;
-	}
+    /**
+     * Creates a {@link LineString} whose coordinates are in the reverse order
+     * of this objects
+     *
+     * @return a {@link LineString} with coordinates in the reverse order
+     */
+    public LineString reverse() {
+        LineString lineString = new LineString(this);
+        CoordinateSequence.reverse(lineString.coordinates);
+        return lineString;
+    }
 
-	public LineString getClosed() {
-		if (!isEmpty()) {
-			LineString lineString = new LineString(this);
+    public LineString getClosed() {
+        if (!isEmpty()) {
+            LineString lineString = new LineString(this);
 
-			if (!lineString.isClosed()) {
-				lineString.coordinates.add(new Coordinate(getStartPoint().getCoordinate()));
-			}
+            if (!lineString.isClosed()) {
+                lineString.coordinates.add(new Coordinate(getStartPoint().getCoordinate()));
+            }
 
-			return lineString;
-		}
-		return null;
-	}
+            return lineString;
+        }
+        return null;
+    }
 
-	public void close() {
-		if (!isEmpty() && !isClosed()) {
-			coordinates.add(new Coordinate(getStartPoint().getCoordinate()));
-		}
-	}
+    public void close() {
+        if (!isEmpty() && !isClosed()) {
+            coordinates.add(new Coordinate(getStartPoint().getCoordinate()));
+        }
+    }
 
-	/**
-	 * Returns true if the given point is a vertex of this
-	 * <code>LineString</code>.
-	 * 
-	 * @param pt
-	 *            the <code>Coordinate</code> to check
-	 * @return <code>true</code> if <code>pt</code> is one of this
-	 *         <code>LineString</code> 's vertices
-	 */
-	public boolean isVertex(Coordinate coordinate) {
-		return coordinates.coordinates.contains(coordinate);
-	}
+    /**
+     * Returns true if the given point is a vertex of this
+     * <code>LineString</code>.
+     *
+     * @param pt the <code>Coordinate</code> to check
+     * @return <code>true</code> if <code>pt</code> is one of this
+     * <code>LineString</code> 's vertices
+     */
+    public boolean isVertex(Coordinate coordinate) {
+        return coordinates.coordinates.contains(coordinate);
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		if (!(other instanceof LineString)) {
-			return false;
-		}
-		LineString otherLineString = (LineString) other;
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof LineString)) {
+            return false;
+        }
+        LineString otherLineString = (LineString) other;
 
-		return coordinates.equals(otherLineString.coordinates);
-	}
+        return coordinates.equals(otherLineString.coordinates);
+    }
 
 }

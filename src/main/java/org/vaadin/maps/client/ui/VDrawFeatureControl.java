@@ -1,68 +1,63 @@
-/**
- * 
- */
 package org.vaadin.maps.client.ui;
 
-import org.vaadin.maps.shared.ui.Style;
-
 import com.google.gwt.user.client.ui.Widget;
+import org.vaadin.maps.shared.ui.Style;
 
 /**
  * @author Kamil Morong
- *
  */
 public class VDrawFeatureControl extends AbstractControl {
 
-	public static final String CLASSNAME = "v-drawfeaturecontrol";
+    public static final String CLASSNAME = "v-drawfeaturecontrol";
 
-	private VVectorFeatureLayer layer = null;
-	private Style cursorStyle = null;
+    private VVectorFeatureLayer layer = null;
+    private Style cursorStyle = null;
 
-	public VDrawFeatureControl() {
-		super();
-		setStyleName(CLASSNAME);
-	}
+    public VDrawFeatureControl() {
+        super();
+        setStyleName(CLASSNAME);
+    }
 
-	@Override
-	public void setWidget(Widget widget) {
-		if (widget != null && widget instanceof AbstractDrawFeatureHandler) {
-			setHandler((AbstractDrawFeatureHandler) widget);
+    @Override
+    public void setWidget(Widget widget) {
+        if (widget instanceof AbstractDrawFeatureHandler) {
+            setHandler((AbstractDrawFeatureHandler) widget);
 
-			getHandler().setCursorStyle(cursorStyle);
-		}
-	}
+            getHandler().setCursorStyle(cursorStyle);
+        }
+    }
 
-	public VVectorFeatureLayer getLayer() {
-		return layer;
-	}
+    public VVectorFeatureLayer getLayer() {
+        return layer;
+    }
 
-	public void setLayer(VVectorFeatureLayer layer) {
-		if (this.layer == layer) {
-			return;
-		}
+    public void setLayer(VVectorFeatureLayer layer) {
+        if (this.layer == layer) {
+            return;
+        }
 
-		if (this.layer != null) {
-			// TODO unset layer listeners
-		}
+        if (this.layer != null) {
+            // TODO unset layer listeners
+        }
 
-		this.layer = layer;
-	}
+        this.layer = layer;
+    }
 
-	@Override
-	public AbstractDrawFeatureHandler getHandler() {
-		return (AbstractDrawFeatureHandler) handler;
-	}
+    @Override
+    public AbstractDrawFeatureHandler getHandler() {
+        return (AbstractDrawFeatureHandler) handler;
+    }
 
-	public Style getCursorStyle() {
-		return cursorStyle;
-	}
+    public Style getCursorStyle() {
+        return cursorStyle;
+    }
 
-	public void setCursorStyle(Style style) {
-		cursorStyle = style;
+    public void setCursorStyle(Style style) {
+        cursorStyle = style;
 
-		if (handler != null) {
-			getHandler().setCursorStyle(cursorStyle);
-		}
-	}
+        if (handler != null) {
+            getHandler().setCursorStyle(cursorStyle);
+        }
+    }
 
 }

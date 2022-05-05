@@ -34,90 +34,83 @@ package org.vaadin.maps.client.geometry;
 
 /**
  * Basic implementation of <code>MultiLineString</code>.
- * 
+ *
  * @version 1.7
  */
-@SuppressWarnings("serial")
 public class MultiLineString extends GeometryCollection {
 
-	/**
-	 * @param lineStrings
-	 *            the <code>LineString</code>s for this
-	 *            <code>MultiLineString</code>, or <code>null</code> or an empty
-	 *            array to create the empty geometry. Elements may be empty
-	 *            <code>LineString</code>s, but not <code>null</code>s.
-	 */
-	public MultiLineString(LineString[] lineStrings) {
-		this(lineStrings, 0);
-	}
+    /**
+     * @param lineStrings the <code>LineString</code>s for this
+     *                    <code>MultiLineString</code>, or <code>null</code> or an empty
+     *                    array to create the empty geometry. Elements may be empty
+     *                    <code>LineString</code>s, but not <code>null</code>s.
+     */
+    public MultiLineString(LineString[] lineStrings) {
+        this(lineStrings, 0);
+    }
 
-	/**
-	 * Constructs a <code>MultiLineString</code>.
-	 * 
-	 * @param lineStrings
-	 *            the <code>LineString</code>s for this
-	 *            <code>MultiLineString</code> , or <code>null</code> or an
-	 *            empty array to create the empty geometry. Elements may be
-	 *            empty <code>LineString</code>s, but not <code>null</code> s.
-	 * @param precisionModel
-	 *            the specification of the grid of allowable points for this
-	 *            <code>MultiLineString</code>
-	 * @param SRID
-	 *            the ID of the Spatial Reference System used by this
-	 *            <code>MultiLineString</code>
-	 */
-	public MultiLineString(LineString[] lineStrings, int SRID) {
-		super(lineStrings, SRID);
-	}
+    /**
+     * Constructs a <code>MultiLineString</code>.
+     *
+     * @param lineStrings the <code>LineString</code>s for this
+     *                    <code>MultiLineString</code> , or <code>null</code> or an
+     *                    empty array to create the empty geometry. Elements may be
+     *                    empty <code>LineString</code>s, but not <code>null</code> s.
+     * @param SRID        the ID of the Spatial Reference System used by this
+     *                    <code>MultiLineString</code>
+     */
+    public MultiLineString(LineString[] lineStrings, int SRID) {
+        super(lineStrings, SRID);
+    }
 
-	public MultiLineString(MultiLineString multiLineString) {
-		super(multiLineString.SRID);
-		for (Geometry geometry : multiLineString.geometries) {
-			geometries.add(Geometry.clone(geometry));
-		}
-	}
+    public MultiLineString(MultiLineString multiLineString) {
+        super(multiLineString.SRID);
+        for (Geometry geometry : multiLineString.geometries) {
+            geometries.add(Geometry.clone(geometry));
+        }
+    }
 
-	@Override
-	public String getGeometryType() {
-		return "MultiLineString";
-	}
+    @Override
+    public String getGeometryType() {
+        return "MultiLineString";
+    }
 
-	public boolean isClosed() {
-		if (isEmpty()) {
-			return false;
-		}
-		for (Geometry geometry : geometries) {
-			if (!((LineString) geometry).isClosed()) {
-				return false;
-			}
-		}
-		return true;
-	}
+    public boolean isClosed() {
+        if (isEmpty()) {
+            return false;
+        }
+        for (Geometry geometry : geometries) {
+            if (!((LineString) geometry).isClosed()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	/**
-	 * Creates a {@link MultiLineString} in the reverse order to this object.
-	 * Both the order of the component LineStrings and the order of their
-	 * coordinate sequences are reversed.
-	 * 
-	 * @return a {@link MultiLineString} in the reverse order
-	 */
-	public MultiLineString reverse() {
-		int numLineStrings = getNumGeometries();
-		LineString[] lineStrings = new LineString[numLineStrings];
+    /**
+     * Creates a {@link MultiLineString} in the reverse order to this object.
+     * Both the order of the component LineStrings and the order of their
+     * coordinate sequences are reversed.
+     *
+     * @return a {@link MultiLineString} in the reverse order
+     */
+    public MultiLineString reverse() {
+        int numLineStrings = getNumGeometries();
+        LineString[] lineStrings = new LineString[numLineStrings];
 
-		for (int i = 0; i < geometries.size(); i++) {
-			lineStrings[numLineStrings - 1 - i] = ((LineString) getGeometry(i)).reverse();
-		}
-		return new MultiLineString(lineStrings, SRID);
-	}
+        for (int i = 0; i < geometries.size(); i++) {
+            lineStrings[numLineStrings - 1 - i] = ((LineString) getGeometry(i)).reverse();
+        }
+        return new MultiLineString(lineStrings, SRID);
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		if (!(other instanceof MultiLineString)) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof MultiLineString)) {
+            return false;
+        }
 
-		return super.equals(other);
-	}
+        return super.equals(other);
+    }
 
 }

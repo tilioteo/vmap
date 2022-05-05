@@ -34,67 +34,60 @@ package org.vaadin.maps.client.geometry;
 
 /**
  * Basic implementation of <code>MultiPolygon</code>.
- * 
+ *
  * @version 1.7
  */
-@SuppressWarnings("serial")
 public class MultiPolygon extends GeometryCollection {
 
-	/**
-	 * @param polygons
-	 *            the <code>Polygon</code>s for this <code>MultiPolygon</code>,
-	 *            or <code>null</code> or an empty array to create the empty
-	 *            geometry. Elements may be empty <code>Polygon</code>s, but not
-	 *            <code>null</code>s. The polygons must conform to the
-	 *            assertions specified in the
-	 *            <A HREF="http://www.opengis.org/techno/specs.htm">OpenGIS
-	 *            Simple Features Specification for SQL</A>.
-	 */
-	public MultiPolygon(Polygon[] polygons) {
-		this(polygons, 0);
-	}
+    /**
+     * @param polygons the <code>Polygon</code>s for this <code>MultiPolygon</code>,
+     *                 or <code>null</code> or an empty array to create the empty
+     *                 geometry. Elements may be empty <code>Polygon</code>s, but not
+     *                 <code>null</code>s. The polygons must conform to the
+     *                 assertions specified in the
+     *                 <A HREF="http://www.opengis.org/techno/specs.htm">OpenGIS
+     *                 Simple Features Specification for SQL</A>.
+     */
+    public MultiPolygon(Polygon[] polygons) {
+        this(polygons, 0);
+    }
 
-	/**
-	 * Constructs a <code>MultiPolygon</code>.
-	 * 
-	 * @param polygons
-	 *            the <code>Polygon</code>s for this <code>MultiPolygon</code> ,
-	 *            or <code>null</code> or an empty array to create the empty
-	 *            geometry. Elements may be empty <code>Polygon</code>s, but not
-	 *            <code>null</code> s. The polygons must conform to the
-	 *            assertions specified in the
-	 *            <A HREF="http://www.opengis.org/techno/specs.htm">OpenGIS
-	 *            Simple Features Specification for SQL</A> .
-	 * @param precisionModel
-	 *            the specification of the grid of allowable points for this
-	 *            <code>MultiPolygon</code>
-	 * @param SRID
-	 *            the ID of the Spatial Reference System used by this
-	 *            <code>MultiPolygon</code>
-	 */
-	public MultiPolygon(Polygon[] polygons, int SRID) {
-		super(polygons, SRID);
-	}
+    /**
+     * Constructs a <code>MultiPolygon</code>.
+     *
+     * @param polygons the <code>Polygon</code>s for this <code>MultiPolygon</code> ,
+     *                 or <code>null</code> or an empty array to create the empty
+     *                 geometry. Elements may be empty <code>Polygon</code>s, but not
+     *                 <code>null</code> s. The polygons must conform to the
+     *                 assertions specified in the
+     *                 <A HREF="http://www.opengis.org/techno/specs.htm">OpenGIS
+     *                 Simple Features Specification for SQL</A> .
+     * @param SRID     the ID of the Spatial Reference System used by this
+     *                 <code>MultiPolygon</code>
+     */
+    public MultiPolygon(Polygon[] polygons, int SRID) {
+        super(polygons, SRID);
+    }
 
-	public MultiPolygon(MultiPolygon multiPolygon) {
-		super(multiPolygon.SRID);
-		for (Geometry geometry : multiPolygon.geometries) {
-			geometries.add(Geometry.clone(geometry));
-		}
-	}
+    public MultiPolygon(MultiPolygon multiPolygon) {
+        super(multiPolygon.SRID);
+        for (Geometry geometry : multiPolygon.geometries) {
+            geometries.add(Geometry.clone(geometry));
+        }
+    }
 
-	@Override
-	public String getGeometryType() {
-		return "MultiPolygon";
-	}
+    @Override
+    public String getGeometryType() {
+        return "MultiPolygon";
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		if (!(other instanceof MultiPolygon)) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof MultiPolygon)) {
+            return false;
+        }
 
-		return super.equals(other);
-	}
+        return super.equals(other);
+    }
 
 }

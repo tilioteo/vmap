@@ -37,55 +37,53 @@ package org.vaadin.maps.client.geometry;
  * is both closed and simple. In other words, the first and last coordinate in
  * the ring must be equal, and the interior of the ring must not self-intersect.
  * Either orientation of the ring is allowed.
- * 
+ *
  * @version 1.7
  */
-@SuppressWarnings("serial")
 public class LinearRing extends LineString {
 
-	public LinearRing(Coordinate... coordinates) {
-		this(coordinates, 0);
-	}
+    public LinearRing(Coordinate... coordinates) {
+        this(coordinates, 0);
+    }
 
-	public LinearRing(Coordinate[] coordinates, int SRID) {
-		this(new CoordinateSequence(coordinates), SRID);
-	}
+    public LinearRing(Coordinate[] coordinates, int SRID) {
+        this(new CoordinateSequence(coordinates), SRID);
+    }
 
-	/**
-	 * @param coordinates
-	 *            contains the single coordinate on which to base this
-	 *            <code>Point</code> , or <code>null</code> to create the empty
-	 *            geometry.
-	 */
-	public LinearRing(CoordinateSequence coordinates) {
-		this(coordinates, 0);
-	}
+    /**
+     * @param coordinates contains the single coordinate on which to base this
+     *                    <code>Point</code> , or <code>null</code> to create the empty
+     *                    geometry.
+     */
+    public LinearRing(CoordinateSequence coordinates) {
+        this(coordinates, 0);
+    }
 
-	public LinearRing(CoordinateSequence coordinates, int SRID) {
-		super(coordinates, SRID);
-		validateConstruction();
-	}
+    public LinearRing(CoordinateSequence coordinates, int SRID) {
+        super(coordinates, SRID);
+        validateConstruction();
+    }
 
-	public LinearRing(LineString lineString) {
-		this(lineString.getClosed().coordinates, lineString.SRID);
-	}
+    public LinearRing(LineString lineString) {
+        this(lineString.getClosed().coordinates, lineString.SRID);
+    }
 
-	public LinearRing(LinearRing linearRing) {
-		this(linearRing.coordinates, linearRing.SRID);
-	}
+    public LinearRing(LinearRing linearRing) {
+        this(linearRing.coordinates, linearRing.SRID);
+    }
 
-	private void validateConstruction() {
-		if (!isEmpty() && !super.isClosed()) {
-			throw new IllegalArgumentException("points must form a closed linestring");
-		}
-		if (getCoordinateSequence().size() >= 1 && getCoordinateSequence().size() <= 3) {
-			throw new IllegalArgumentException("Number of points must be 0 or >3");
-		}
-	}
+    private void validateConstruction() {
+        if (!isEmpty() && !super.isClosed()) {
+            throw new IllegalArgumentException("points must form a closed linestring");
+        }
+        if (getCoordinateSequence().size() >= 1 && getCoordinateSequence().size() <= 3) {
+            throw new IllegalArgumentException("Number of points must be 0 or >3");
+        }
+    }
 
-	@Override
-	public String getGeometryType() {
-		return "LinearRing";
-	}
+    @Override
+    public String getGeometryType() {
+        return "LinearRing";
+    }
 
 }

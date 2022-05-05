@@ -1,25 +1,21 @@
-/**
- * 
- */
 package org.vaadin.maps.client.ui;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
  * @author Kamil Morong
- *
  */
 public interface Tile extends IsWidget, CanShift {
 
-	public int getWidth();
+    int getWidth();
 
-	public int getHeight();
+    int getHeight();
 
-	public static interface SizeChangeHandler {
-		public void onSizeChange(Tile tile, int oldWidth, int oldHeight, int newWidth, int newHeight);
-	}
+    interface SizeChangeHandler {
+        void onSizeChange(Tile tile, int oldWidth, int oldHeight, int newWidth, int newHeight);
+    }
 
-	public static interface TileLoadHandler {
-		public void onLoad(Tile tile);
-	}
+    interface TileLoadHandler {
+        void onLoad(Tile tile);
+    }
 }

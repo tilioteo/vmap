@@ -1,132 +1,127 @@
-/**
- * 
- */
 package org.vaadin.maps.client.ui;
-
-import java.util.HashMap;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
+import java.util.HashMap;
+
 /**
  * @author Kamil Morong
- *
  */
 public class VMapContainer extends VLayerLayout {
 
-	private HashMap<PanEventHandler, HandlerRegistration> panEventHandlerMap = new HashMap<PanEventHandler, HandlerRegistration>();
-	private HashMap<ZoomEventHandler, HandlerRegistration> zoomEventHandlerMap = new HashMap<ZoomEventHandler, HandlerRegistration>();
+    private final HashMap<PanEventHandler, HandlerRegistration> panEventHandlerMap = new HashMap<>();
+    private final HashMap<ZoomEventHandler, HandlerRegistration> zoomEventHandlerMap = new HashMap<>();
 
-	@Override
-	public void onPanEnd(int totalX, int totalY) {
-		fireEvent(new PanEvent(this, totalX, totalY));
+    @Override
+    public void onPanEnd(int totalX, int totalY) {
+        fireEvent(new PanEvent(this, totalX, totalY));
 
-		super.onPanEnd(totalX, totalY);
-	}
+        super.onPanEnd(totalX, totalY);
+    }
 
-	@Override
-	public void onZoom(double zoom) {
-		fireEvent(new ZoomEvent(this, zoom));
+    @Override
+    public void onZoom(double zoom) {
+        fireEvent(new ZoomEvent(this, zoom));
 
-		super.onZoom(zoom);
-	}
+        super.onZoom(zoom);
+    }
 
-	public interface PanEventHandler extends EventHandler {
-		public void onPanEnd(PanEvent event);
-	}
+    public void addPanEventHandler(PanEventHandler handler) {
+        panEventHandlerMap.put(handler, addHandler(handler, PanEvent.TYPE));
+    }
 
-	public static class PanEvent extends GwtEvent<PanEventHandler> {
+    public void removePanEventHandler(PanEventHandler handler) {
+        if (panEventHandlerMap.containsKey(handler)) {
+            removeHandler(panEventHandlerMap.get(handler));
+            panEventHandlerMap.remove(handler);
+        }
+    }
 
-		public static final Type<PanEventHandler> TYPE = new Type<PanEventHandler>();
+    public void addZoomEventHandler(ZoomEventHandler handler) {
+        zoomEventHandlerMap.put(handler, addHandler(handler, ZoomEvent.TYPE));
+    }
 
-		private int shiftX = 0;
-		private int shiftY = 0;
+    public void removeZoomEventHandler(ZoomEventHandler handler) {
+        if (zoomEventHandlerMap.containsKey(handler)) {
+            removeHandler(zoomEventHandlerMap.get(handler));
+            zoomEventHandlerMap.remove(handler);
+        }
+    }
 
-		public PanEvent(VMapContainer source, int shiftX, int shiftY) {
-			setSource(source);
-			this.shiftX = shiftX;
-			this.shiftY = shiftY;
-		}
+    protected final void removeHandler(HandlerRegistration handler) {
+        if (handler != null) {
+            handler.removeHandler();
+        }
+    }
 
-		public int getShiftX() {
-			return shiftX;
-		}
+    public interface PanEventHandler extends EventHandler {
+        void onPanEnd(PanEvent event);
+    }
 
-		public int getShiftY() {
-			return shiftY;
-		}
+    public interface ZoomEventHandler extends EventHandler {
+        void onZoom(ZoomEvent event);
+    }
 
-		@Override
-		public Type<PanEventHandler> getAssociatedType() {
-			return TYPE;
-		}
+    public static class PanEvent extends GwtEvent<PanEventHandler> {
 
-		@Override
-		protected void dispatch(PanEventHandler handler) {
-			handler.onPanEnd(this);
-		}
+        public static final Type<PanEventHandler> TYPE = new Type<>();
 
-	}
+        private final int shiftX;
+        private final int shiftY;
 
-	public interface ZoomEventHandler extends EventHandler {
-		public void onZoom(ZoomEvent event);
-	}
+        public PanEvent(VMapContainer source, int shiftX, int shiftY) {
+            setSource(source);
+            this.shiftX = shiftX;
+            this.shiftY = shiftY;
+        }
 
-	public static class ZoomEvent extends GwtEvent<ZoomEventHandler> {
+        public int getShiftX() {
+            return shiftX;
+        }
 
-		public static final Type<ZoomEventHandler> TYPE = new Type<ZoomEventHandler>();
+        public int getShiftY() {
+            return shiftY;
+        }
 
-		private double zoom = 1.0;
+        @Override
+        public Type<PanEventHandler> getAssociatedType() {
+            return TYPE;
+        }
 
-		public ZoomEvent(VMapContainer source, double zoom) {
-			setSource(source);
-			this.zoom = zoom;
-		}
+        @Override
+        protected void dispatch(PanEventHandler handler) {
+            handler.onPanEnd(this);
+        }
 
-		public double getZoom() {
-			return zoom;
-		}
+    }
 
-		@Override
-		public Type<ZoomEventHandler> getAssociatedType() {
-			return TYPE;
-		}
+    public static class ZoomEvent extends GwtEvent<ZoomEventHandler> {
 
-		@Override
-		protected void dispatch(ZoomEventHandler handler) {
-			handler.onZoom(this);
-		}
+        public static final Type<ZoomEventHandler> TYPE = new Type<>();
 
-	}
+        private final double zoom;
 
-	public void addPanEventHandler(PanEventHandler handler) {
-		panEventHandlerMap.put(handler, addHandler(handler, PanEvent.TYPE));
-	}
+        public ZoomEvent(VMapContainer source, double zoom) {
+            setSource(source);
+            this.zoom = zoom;
+        }
 
-	public void removePanEventHandler(PanEventHandler handler) {
-		if (panEventHandlerMap.containsKey(handler)) {
-			removeHandler(panEventHandlerMap.get(handler));
-			panEventHandlerMap.remove(handler);
-		}
-	}
+        public double getZoom() {
+            return zoom;
+        }
 
-	public void addZoomEventHandler(ZoomEventHandler handler) {
-		zoomEventHandlerMap.put(handler, addHandler(handler, ZoomEvent.TYPE));
-	}
+        @Override
+        public Type<ZoomEventHandler> getAssociatedType() {
+            return TYPE;
+        }
 
-	public void removeZoomEventHandler(ZoomEventHandler handler) {
-		if (zoomEventHandlerMap.containsKey(handler)) {
-			removeHandler(zoomEventHandlerMap.get(handler));
-			zoomEventHandlerMap.remove(handler);
-		}
-	}
+        @Override
+        protected void dispatch(ZoomEventHandler handler) {
+            handler.onZoom(this);
+        }
 
-	protected final void removeHandler(HandlerRegistration handler) {
-		if (handler != null) {
-			handler.removeHandler();
-			handler = null;
-		}
-	}
+    }
 
 }

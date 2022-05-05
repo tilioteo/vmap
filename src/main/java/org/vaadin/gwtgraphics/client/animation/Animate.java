@@ -15,90 +15,88 @@
  */
 package org.vaadin.gwtgraphics.client.animation;
 
-import org.vaadin.gwtgraphics.client.Animatable;
-
 import com.google.gwt.animation.client.Animation;
+import org.vaadin.gwtgraphics.client.Animatable;
 
 /**
  * This class can be used to animate classes implementing the Animatable
  * interface.
- * 
+ *
  * @author Henri Kerola
- * 
  */
 public class Animate {
 
-	private Animatable target;
+    private final Animatable target;
 
-	private String property;
+    private final String property;
 
-	private double startValue;
+    private final double startValue;
 
-	private double endValue;
+    private final double endValue;
 
-	private int duration;
+    private final int duration;
 
-	private Animation animation = new Animation() {
+    private final Animation animation = new Animation() {
 
-		@Override
-		protected void onUpdate(double progress) {
-			double value = (endValue - startValue) * progress + startValue;
-			target.setPropertyDouble(property, value);
-		}
+        @Override
+        protected void onUpdate(double progress) {
+            double value = (endValue - startValue) * progress + startValue;
+            target.setPropertyDouble(property, value);
+        }
 
-		@Override
-		protected void onComplete() {
-			super.onComplete();
-			Animate.this.onComplete();
-		};
-	};
+        @Override
+        protected void onComplete() {
+            super.onComplete();
+            Animate.this.onComplete();
+        }
+    };
 
-	public Animate(Animatable target, String property, double startValue, double endValue, int duration) {
-		this.target = target;
-		this.property = property;
-		this.startValue = startValue;
-		this.endValue = endValue;
-		this.duration = duration;
-	}
+    public Animate(Animatable target, String property, double startValue, double endValue, int duration) {
+        this.target = target;
+        this.property = property;
+        this.startValue = startValue;
+        this.endValue = endValue;
+        this.duration = duration;
+    }
 
-	/**
-	 * Start the animation.
-	 */
-	public void start() {
-		animation.run(duration);
-	}
+    /**
+     * Start the animation.
+     */
+    public void start() {
+        animation.run(duration);
+    }
 
-	/**
-	 * Stop the animation.
-	 */
-	public void stop() {
-		animation.cancel();
-	}
+    /**
+     * Stop the animation.
+     */
+    public void stop() {
+        animation.cancel();
+    }
 
-	/**
-	 * Called immediately after the animation completes.
-	 */
-	protected void onComplete() {
-	}
+    /**
+     * Called immediately after the animation completes.
+     */
+    protected void onComplete() {
+    }
 
-	public Animatable getTarget() {
-		return target;
-	}
+    public Animatable getTarget() {
+        return target;
+    }
 
-	public String getProperty() {
-		return property;
-	}
+    public String getProperty() {
+        return property;
+    }
 
-	public double getStartValue() {
-		return startValue;
-	}
+    public double getStartValue() {
+        return startValue;
+    }
 
-	public double getEndValue() {
-		return endValue;
-	}
+    public double getEndValue() {
+        return endValue;
+    }
 
-	public int getDuration() {
-		return duration;
-	}
+    public int getDuration() {
+        return duration;
+    }
 
 }

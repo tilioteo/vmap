@@ -17,16 +17,15 @@ package org.vaadin.gwtgraphics.client.shape.path;
 
 /**
  * This class is an abstract class for Path steps.
- * 
+ *
  * @author Henri Kerola
- * 
  */
 public abstract class PathStep {
 
-	public abstract String getSVGString();
+    public abstract String getSVGString();
 
-	@Override
-	public String toString() {
-		return getSVGString();
-	}
+    @Override
+    public String toString() {
+        return getSVGString();
+    }
 }

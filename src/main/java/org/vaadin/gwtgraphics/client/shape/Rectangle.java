@@ -20,146 +20,143 @@ import org.vaadin.gwtgraphics.client.Shape;
 
 /**
  * Rectangle represents a rectangle.
- * 
+ *
  * @author Henri Kerola
- * 
  */
 public class Rectangle extends Shape {
 
-	/**
-	 * Creates a new Rectangle with the given position and size properties.
-	 * 
-	 * @param x
-	 *            the x-coordinate position of the top-left corner of the
-	 *            rectangle in pixels
-	 * @param y
-	 *            the y-coordinate position of the top-left corner of the
-	 *            rectangle in pixels
-	 * @param width
-	 *            the width of the Rectangle in pixels
-	 * @param height
-	 *            the height of the Rectangle in pixels
-	 */
-	public Rectangle(int x, int y, int width, int height) {
-		setX(x);
-		setY(y);
-		setWidth(width);
-		setHeight(height);
-	}
+    /**
+     * Creates a new Rectangle with the given position and size properties.
+     *
+     * @param x      the x-coordinate position of the top-left corner of the
+     *               rectangle in pixels
+     * @param y      the y-coordinate position of the top-left corner of the
+     *               rectangle in pixels
+     * @param width  the width of the Rectangle in pixels
+     * @param height the height of the Rectangle in pixels
+     */
+    public Rectangle(int x, int y, int width, int height) {
+        setX(x);
+        setY(y);
+        setWidth(width);
+        setHeight(height);
+    }
 
-	@Override
-	public Class<? extends Drawing> getType() {
-		return Rectangle.class;
-	}
+    @Override
+    public Class<? extends Drawing> getType() {
+        return Rectangle.class;
+    }
 
-	/**
-	 * Returns the width of the Rectangle in pixels.
-	 * 
-	 * @return the width of the Rectangle in pixels
-	 */
-	public int getWidth() {
-		return getImpl().getWidth(getElement());
-	}
+    /**
+     * Returns the width of the Rectangle in pixels.
+     *
+     * @return the width of the Rectangle in pixels
+     */
+    public int getWidth() {
+        return getImpl().getWidth(getElement());
+    }
 
-	/**
-	 * Sets the width of the Rectangle in pixels.
-	 * 
-	 * @param width
-	 *            the new width in pixels
-	 */
-	public void setWidth(int width) {
-		getImpl().setWidth(getElement(), width);
-	}
+    /**
+     * Sets the width of the Rectangle in pixels.
+     *
+     * @param width the new width in pixels
+     */
+    public void setWidth(int width) {
+        getImpl().setWidth(getElement(), width);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.vaadin.gwtgraphics.client.VectorObject#setWidth(java.lang.String)
-	 */
-	@Override
-	public void setWidth(String width) {
-		boolean successful = false;
-		if (width != null && width.endsWith("px")) {
-			try {
-				setWidth(Integer.parseInt(width.substring(0, width.length() - 2)));
-				successful = true;
-			} catch (NumberFormatException e) {
-			}
-		}
-		if (!successful) {
-			throw new IllegalArgumentException("Only pixel units (px) are supported");
-		}
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.vaadin.gwtgraphics.client.VectorObject#setWidth(java.lang.String)
+     */
+    @Override
+    public void setWidth(String width) {
+        boolean successful = false;
+        if (width != null && width.endsWith("px")) {
+            try {
+                setWidth(Integer.parseInt(width.substring(0, width.length() - 2)));
+                successful = true;
+            } catch (NumberFormatException e) {
+            }
+        }
+        if (!successful) {
+            throw new IllegalArgumentException("Only pixel units (px) are supported");
+        }
+    }
 
-	/**
-	 * Returns the height of the Rectangle in pixels.
-	 * 
-	 * @return the height of the Rectangle in pixels
-	 */
-	public int getHeight() {
-		return getImpl().getHeight(getElement());
-	}
+    /**
+     * Returns the height of the Rectangle in pixels.
+     *
+     * @return the height of the Rectangle in pixels
+     */
+    public int getHeight() {
+        return getImpl().getHeight(getElement());
+    }
 
-	/**
-	 * Sets the height of the Rectangle in pixels.
-	 * 
-	 * @param height
-	 *            the new height in pixels
-	 */
-	public void setHeight(int height) {
-		getImpl().setHeight(getElement(), height);
-	}
+    /**
+     * Sets the height of the Rectangle in pixels.
+     *
+     * @param height the new height in pixels
+     */
+    public void setHeight(int height) {
+        getImpl().setHeight(getElement(), height);
+    }
 
-	@Override
-	public void setHeight(String height) {
-		boolean successful = false;
-		if (height != null && height.endsWith("px")) {
-			try {
-				setHeight(Integer.parseInt(height.substring(0, height.length() - 2)));
-				successful = true;
-			} catch (NumberFormatException e) {
-			}
-		}
-		if (!successful) {
-			throw new IllegalArgumentException("Only pixel units (px) are supported");
-		}
-	}
+    @Override
+    public void setHeight(String height) {
+        boolean successful = false;
+        if (height != null && height.endsWith("px")) {
+            try {
+                setHeight(Integer.parseInt(height.substring(0, height.length() - 2)));
+                successful = true;
+            } catch (NumberFormatException e) {
+            }
+        }
+        if (!successful) {
+            throw new IllegalArgumentException("Only pixel units (px) are supported");
+        }
+    }
 
-	/**
-	 * Gets the radius of rounded corners in pixels.
-	 * 
-	 * @return radius of rounded corners in pixels
-	 */
-	public int getRoundedCorners() {
-		return getImpl().getRectangleRoundedCorners(getElement());
-	}
+    /**
+     * Gets the radius of rounded corners in pixels.
+     *
+     * @return radius of rounded corners in pixels
+     */
+    public int getRoundedCorners() {
+        return getImpl().getRectangleRoundedCorners(getElement());
+    }
 
-	/**
-	 * Sets the radius of rounded corners in pixels. Value 0 disables rounded
-	 * corners.
-	 * 
-	 * @param radius
-	 *            radius of rounded corners in pixels
-	 */
-	public void setRoundedCorners(int radius) {
-		if (radius < 0) {
-			radius = 0;
-		}
-		getImpl().setRectangleRoundedCorners(getElement(), radius);
-	}
+    /**
+     * Sets the radius of rounded corners in pixels. Value 0 disables rounded
+     * corners.
+     *
+     * @param radius radius of rounded corners in pixels
+     */
+    public void setRoundedCorners(int radius) {
+        if (radius < 0) {
+            radius = 0;
+        }
+        getImpl().setRectangleRoundedCorners(getElement(), radius);
+    }
 
-	@Override
-	public void setPropertyDouble(String property, double value) {
-		property = property.toLowerCase();
-		if ("width".equals(property)) {
-			setWidth((int) value);
-		} else if ("height".equals(property)) {
-			setHeight((int) value);
-		} else if ("roundedcorners".equals(property)) {
-			setRoundedCorners((int) value);
-		} else {
-			super.setPropertyDouble(property, value);
-		}
-	}
+    @Override
+    public void setPropertyDouble(String property, double value) {
+        property = property.toLowerCase();
+        switch (property) {
+            case "width":
+                setWidth((int) value);
+                break;
+            case "height":
+                setHeight((int) value);
+                break;
+            case "roundedcorners":
+                setRoundedCorners((int) value);
+                break;
+            default:
+                super.setPropertyDouble(property, value);
+                break;
+        }
+    }
 }

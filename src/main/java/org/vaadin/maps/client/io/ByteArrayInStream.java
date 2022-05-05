@@ -41,22 +41,22 @@ import org.vaadin.maps.client.emul.io.IOException;
  * memory usage, instances can be reused with different byte arrays.
  */
 public class ByteArrayInStream implements InStream {
-	@SuppressWarnings("unused")
-	private byte[] byteBuffer;
-	private ByteArrayInputStream bis;
+    @SuppressWarnings("unused")
+    private byte[] byteBuffer;
+    private ByteArrayInputStream bis;
 
-	public ByteArrayInStream(byte[] byteBuffer) {
-		setBuffer(byteBuffer);
-	}
+    public ByteArrayInStream(byte[] byteBuffer) {
+        setBuffer(byteBuffer);
+    }
 
-	public void setBuffer(byte[] byteBuffer) {
-		this.byteBuffer = byteBuffer;
-		// for now - could be replaced with optimized custom code
-		bis = new ByteArrayInputStream(byteBuffer);
-	}
+    public void setBuffer(byte[] byteBuffer) {
+        this.byteBuffer = byteBuffer;
+        // for now - could be replaced with optimized custom code
+        bis = new ByteArrayInputStream(byteBuffer);
+    }
 
-	@Override
-	public void read(byte[] buf) throws IOException {
-		bis.read(buf);
-	}
+    @Override
+    public void read(byte[] buf) throws IOException {
+        bis.read(buf);
+    }
 }

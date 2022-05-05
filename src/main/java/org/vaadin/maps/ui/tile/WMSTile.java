@@ -1,122 +1,117 @@
-/**
- * 
- */
 package org.vaadin.maps.ui.tile;
 
 import org.vaadin.maps.server.WMSResource;
 
 /**
  * @author Kamil Morong
- *
  */
-@SuppressWarnings("serial")
 public class WMSTile extends AbstractProxyTile<WMSResource> {
 
-	private WMSResource resource;
-	private ClippedSizeHandler sizeHandler = null;
+    private final WMSResource resource;
+    private ClippedSizeHandler sizeHandler = null;
 
-	public WMSTile(String baseURL) {
-		super();
+    public WMSTile(String baseURL) {
+        super();
 
-		resource = new WMSResource(baseURL);
-		setSource(resource);
-	}
+        resource = new WMSResource(baseURL);
+        setSource(resource);
+    }
 
-	public void updateSource() {
-		setSource(resource);
-	}
+    public void updateSource() {
+        setSource(resource);
+    }
 
-	public void setWidth(int width) {
-		setWidth(width, Unit.PIXELS);
-		resource.setWidth(width);
-		updateSource();
-	}
+    public void setWidth(int width) {
+        setWidth(width, Unit.PIXELS);
+        resource.setWidth(width);
+        updateSource();
+    }
 
-	public void setHeight(int height) {
-		setHeight(height, Unit.PIXELS);
-		resource.setHeight(height);
-		updateSource();
-	}
+    public void setHeight(int height) {
+        setHeight(height, Unit.PIXELS);
+        resource.setHeight(height);
+        updateSource();
+    }
 
-	public void setVersion(String version) {
-		resource.setVersion(version);
-		updateSource();
-	}
+    public String getVersion() {
+        return resource.getVersion();
+    }
 
-	public String getVersion() {
-		return resource.getVersion();
-	}
+    public void setVersion(String version) {
+        resource.setVersion(version);
+        updateSource();
+    }
 
-	public void setFormat(String format) {
-		resource.setFormat(format);
-		updateSource();
-	}
+    public String getFormat() {
+        return resource.getFormat();
+    }
 
-	public String getFormat() {
-		return resource.getFormat();
-	}
+    public void setFormat(String format) {
+        resource.setFormat(format);
+        updateSource();
+    }
 
-	public void setLayers(String layers) {
-		resource.setLayers(layers);
-		updateSource();
-	}
+    public String getLayers() {
+        return resource.getLayers();
+    }
 
-	public String getLayers() {
-		return resource.getLayers();
-	}
+    public void setLayers(String layers) {
+        resource.setLayers(layers);
+        updateSource();
+    }
 
-	public void setStyles(String styles) {
-		resource.setStyles(styles);
-		updateSource();
-	}
+    public String getStyles() {
+        return resource.getStyles();
+    }
 
-	public String getStyles() {
-		return resource.getStyles();
-	}
+    public void setStyles(String styles) {
+        resource.setStyles(styles);
+        updateSource();
+    }
 
-	public void setSRS(String srs) {
-		resource.setSRS(srs);
-		updateSource();
-	}
+    public String getSRS() {
+        return resource.getSRS();
+    }
 
-	public String getSRS() {
-		return resource.getSRS();
-	}
+    public void setSRS(String srs) {
+        resource.setSRS(srs);
+        updateSource();
+    }
 
-	public void setBBox(String bbox) {
-		resource.setBBox(bbox);
-		updateSource();
-	}
+    public String getBBox() {
+        return resource.getBBox();
+    }
 
-	public String getBBox() {
-		return resource.getBBox();
-	}
+    public void setBBox(String bbox) {
+        resource.setBBox(bbox);
+        updateSource();
+    }
 
-	public void setTransparent(boolean transparent) {
-		resource.setTransparent(transparent);
-		updateSource();
-	}
+    public boolean isTransparent() {
+        return resource.isTransparent();
+    }
 
-	public boolean isTransparent() {
-		return resource.isTransparent();
-	}
+    public void setTransparent(boolean transparent) {
+        resource.setTransparent(transparent);
+        updateSource();
+    }
 
-	public String getBaseUrl() {
-		return resource.getBaseUrl();
-	}
+    public String getBaseUrl() {
+        return resource.getBaseUrl();
+    }
 
-	public ClippedSizeHandler getSizeHandler() {
-		return sizeHandler;
-	}
+    public ClippedSizeHandler getSizeHandler() {
+        return sizeHandler;
+    }
 
-	public void setSizeHandler(ClippedSizeHandler sizeHandler) {
-		this.sizeHandler = sizeHandler;
-	}
+    public void setSizeHandler(ClippedSizeHandler sizeHandler) {
+        this.sizeHandler = sizeHandler;
+    }
 
-	@Override
-	protected void clippedSizeChanged(int oldWidth, int oldHeight, int newWidth, int newHeight) {
-		if (sizeHandler != null) {
-			sizeHandler.onSizeChange(oldWidth, oldHeight, newWidth, newHeight);
-		}
-	}
+    @Override
+    protected void clippedSizeChanged(int oldWidth, int oldHeight, int newWidth, int newHeight) {
+        if (sizeHandler != null) {
+            sizeHandler.onSizeChange(oldWidth, oldHeight, newWidth, newHeight);
+        }
+    }
 }

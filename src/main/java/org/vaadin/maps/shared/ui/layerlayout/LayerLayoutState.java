@@ -1,23 +1,18 @@
-/**
- * 
- */
 package org.vaadin.maps.shared.ui.layerlayout;
+
+import org.vaadin.maps.shared.ui.AbstractLayoutState;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.vaadin.maps.shared.ui.AbstractLayoutState;
-
 /**
  * @author Kamil Morong
- *
  */
-@SuppressWarnings("serial")
 public class LayerLayoutState extends AbstractLayoutState {
-	{
-		primaryStyleName = "v-layerlayout";
-	}
+    // Maps each component to a position
+    public Map<String, String> connectorToCssPosition = new HashMap<>();
 
-	// Maps each component to a position
-	public Map<String, String> connectorToCssPosition = new HashMap<String, String>();
+    {
+        primaryStyleName = "v-layerlayout";
+    }
 }

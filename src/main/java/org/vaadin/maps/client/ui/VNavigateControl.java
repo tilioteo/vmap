@@ -1,42 +1,38 @@
-/**
- * 
- */
 package org.vaadin.maps.client.ui;
 
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  * @author Kamil Morong
- *
  */
 public class VNavigateControl extends AbstractControl {
 
-	public static final String CLASSNAME = "v-navigatecontrol";
+    public static final String CLASSNAME = "v-navigatecontrol";
 
-	private VLayerLayout layout = null;
+    private VLayerLayout layout = null;
 
-	public VNavigateControl() {
-		super();
-		setStyleName(CLASSNAME);
-	}
+    public VNavigateControl() {
+        super();
+        setStyleName(CLASSNAME);
+    }
 
-	@Override
-	public void setWidget(Widget widget) {
-		if (widget != null && widget instanceof AbstractNavigateHandler) {
-			setHandler((AbstractNavigateHandler) widget);
-		}
-	}
+    @Override
+    public void setWidget(Widget widget) {
+        if (widget != null && widget instanceof AbstractNavigateHandler) {
+            setHandler((AbstractNavigateHandler) widget);
+        }
+    }
 
-	public VLayerLayout getLayout() {
-		return layout;
-	}
+    public VLayerLayout getLayout() {
+        return layout;
+    }
 
-	public void setLayout(VLayerLayout layout) {
-		if (this.layout == layout) {
-			return;
-		}
+    public void setLayout(VLayerLayout layout) {
+        if (this.layout == layout) {
+            return;
+        }
 
-		this.layout = layout;
-	}
+        this.layout = layout;
+    }
 
 }

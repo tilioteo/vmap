@@ -15,148 +15,129 @@
  */
 package org.vaadin.gwtgraphics.client;
 
-import org.vaadin.gwtgraphics.client.impl.DrawImpl;
-
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.MouseWheelEvent;
-import com.google.gwt.event.dom.client.MouseWheelHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
+import org.vaadin.gwtgraphics.client.impl.DrawImpl;
 
 /**
  * An abstract base class for drawing objects.
- * 
+ * <p>
  * renamed from VectorObject
- * 
+ *
  * @author Henri Kerola
  * @author Kamil Morong
- * 
  */
 public abstract class AbstractDrawing extends Widget implements Drawing {
 
-	private Widget parent;
+    protected static final DrawImpl impl = GWT.create(DrawImpl.class);
+    private Widget parent;
 
-	protected static final DrawImpl impl = GWT.create(DrawImpl.class);
+    protected AbstractDrawing() {
+        setElement(impl.createElement(getType()));
+    }
 
-	protected AbstractDrawing() {
-		setElement(impl.createElement(getType()));
-	}
+    protected DrawImpl getImpl() {
+        return impl;
+    }
 
-	protected DrawImpl getImpl() {
-		return impl;
-	}
+    public int getRotation() {
+        return getImpl().getRotation(getElement());
+    }
 
-	public int getRotation() {
-		return getImpl().getRotation(getElement());
-	}
+    public void setRotation(int degree) {
+        getImpl().setRotation(getElement(), degree, isAttached());
+    }
 
-	public void setRotation(int degree) {
-		getImpl().setRotation(getElement(), degree, isAttached());
-	}
+    @Override
+    public Widget asWidget() {
+        return this;
+    }
 
-	@Override
-	public Widget asWidget() {
-		return this;
-	}
+    @Override
+    public Widget getParent() {
+        return parent;
+    }
 
-	@Override
-	public Widget getParent() {
-		return parent;
-	}
+    @Override
+    public void setStyleName(String style) {
+        getImpl().setStyleName(getElement(), style);
+    }
 
-	@Override
-	public void setStyleName(String style) {
-		getImpl().setStyleName(getElement(), style);
-	}
+    @Override
+    public void setStyleName(String style, boolean add) {
+        getImpl().setStyleName(getElement(), style, add);
+    }
 
-	@Override
-	public void setStyleName(String style, boolean add) {
-		getImpl().setStyleName(getElement(), style, add);
-	}
+    @Override
+    public void setHeight(String height) {
+        // nop
+    }
 
-	@Override
-	public void setHeight(String height) {
-		// nop
-	}
+    @Override
+    public void setWidth(String width) {
+        // nop
+    }
 
-	@Override
-	public void setWidth(String width) {
-		// nop
-	}
+    @Override
+    public HandlerRegistration addClickHandler(ClickHandler handler) {
+        return addDomHandler(handler, ClickEvent.getType());
+    }
 
-	@Override
-	public HandlerRegistration addClickHandler(ClickHandler handler) {
-		return addDomHandler(handler, ClickEvent.getType());
-	}
+    @Override
+    public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
+        return addDomHandler(handler, DoubleClickEvent.getType());
+    }
 
-	@Override
-	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
-		return addDomHandler(handler, DoubleClickEvent.getType());
-	}
+    @Override
+    public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
+        return addDomHandler(handler, MouseDownEvent.getType());
+    }
 
-	@Override
-	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
-		return addDomHandler(handler, MouseDownEvent.getType());
-	}
+    @Override
+    public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
+        return addDomHandler(handler, MouseUpEvent.getType());
+    }
 
-	@Override
-	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
-		return addDomHandler(handler, MouseUpEvent.getType());
-	}
+    @Override
+    public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
+        return addDomHandler(handler, MouseOutEvent.getType());
+    }
 
-	@Override
-	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
-		return addDomHandler(handler, MouseOutEvent.getType());
-	}
+    @Override
+    public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
+        return addDomHandler(handler, MouseOverEvent.getType());
+    }
 
-	@Override
-	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
-		return addDomHandler(handler, MouseOverEvent.getType());
-	}
+    @Override
+    public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
+        return addDomHandler(handler, MouseMoveEvent.getType());
+    }
 
-	@Override
-	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
-		return addDomHandler(handler, MouseMoveEvent.getType());
-	}
+    @Override
+    public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
+        return addDomHandler(handler, MouseWheelEvent.getType());
+    }
 
-	@Override
-	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
-		return addDomHandler(handler, MouseWheelEvent.getType());
-	}
+    @Override
+    protected void onAttach() {
+        super.onAttach();
+        getImpl().onAttach(getElement(), isAttached());
+    }
 
-	@Override
-	protected void onAttach() {
-		super.onAttach();
-		getImpl().onAttach(getElement(), isAttached());
-	}
+    /**
+     * Removes this drawing from its parent drawing, if one exists.
+     *
+     * @throws IllegalStateException if this widget's parent does not support removal
+     */
+    @Override
+    public void removeFromParent() {
+        // nop
+    }
 
-	/**
-	 * Removes this drawing from its parent drawing, if one exists.
-	 * 
-	 * @throws IllegalStateException
-	 *             if this widget's parent does not support removal
-	 */
-	@Override
-	public void removeFromParent() {
-		// nop
-	}
-
-	@Override
-	public String getStylePrimaryName() {
-		return "";
-	}
+    @Override
+    public String getStylePrimaryName() {
+        return "";
+    }
 }

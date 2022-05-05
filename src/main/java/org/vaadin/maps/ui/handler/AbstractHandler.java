@@ -1,69 +1,63 @@
-/**
- * 
- */
 package org.vaadin.maps.ui.handler;
 
+import com.vaadin.ui.AbstractComponent;
 import org.vaadin.maps.shared.ui.handler.AbstractHandlerState;
 import org.vaadin.maps.shared.ui.handler.HandlerClientRpc;
 import org.vaadin.maps.ui.control.Control;
 
-import com.vaadin.ui.AbstractComponent;
-
 /**
  * @author Kamil Morong
- *
  */
-@SuppressWarnings("serial")
 public abstract class AbstractHandler extends AbstractComponent implements Handler {
 
-	private HandlerClientRpc clientRpc;
+    private final HandlerClientRpc clientRpc;
 
-	protected Control control = null;
+    protected Control control = null;
 
-	protected AbstractHandler(Control control) {
-		setControl(control);
+    protected AbstractHandler(Control control) {
+        setControl(control);
 
-		clientRpc = getRpcProxy(HandlerClientRpc.class);
-	}
+        clientRpc = getRpcProxy(HandlerClientRpc.class);
+    }
 
-	@Override
-	protected AbstractHandlerState getState() {
-		return (AbstractHandlerState) super.getState();
-	}
+    @Override
+    protected AbstractHandlerState getState() {
+        return (AbstractHandlerState) super.getState();
+    }
 
-	private void setControl(Control control) {
-		this.control = control;
-	}
+    private void setControl(Control control) {
+        this.control = control;
+    }
 
-	@Override
-	public boolean activate() {
-		if (isActive())
-			return false;
+    @Override
+    public boolean activate() {
+        if (isActive())
+            return false;
 
-		setActive(true);
-		return true;
-	}
+        setActive(true);
+        return true;
+    }
 
-	@Override
-	public boolean deactivate() {
-		if (!isActive())
-			return false;
+    @Override
+    public boolean deactivate() {
+        if (!isActive())
+            return false;
 
-		setActive(false);
-		return false;
-	}
+        setActive(false);
+        return false;
+    }
 
-	@Override
-	public void cancel() {
-		clientRpc.cancel();
-	}
+    @Override
+    public void cancel() {
+        clientRpc.cancel();
+    }
 
-	protected boolean isActive() {
-		return getState().active;
-	}
+    protected boolean isActive() {
+        return getState().active;
+    }
 
-	protected void setActive(boolean active) {
-		getState().active = active;
-	}
+    protected void setActive(boolean active) {
+        getState().active = active;
+    }
 
 }

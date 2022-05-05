@@ -18,23 +18,23 @@ package org.vaadin.gwt.i18n.client;
 
 /**
  * Abstract base class for locale-sensitive formatting.
- *
+ * <p>
  * Intentionally not serializable because we would have no way of properly
  * building objects on the other side of the wire.
  */
 public abstract class Format {
 
-	public final String format(Object obj) {
-		return format(obj, new StringBuffer()).toString();
-	}
+    public final String format(Object obj) {
+        return format(obj, new StringBuffer()).toString();
+    }
 
-	/**
-	 * This is an implementation method that is not exposed publicly, as we do
-	 * not want to support the complexities of FieldPosition, at least not with
-	 * the current state of compiler optimizations.
-	 *
-	 * Thus, the format(Object, StringBuffer, FieldPosition) method is not
-	 * present.
-	 */
-	protected abstract StringBuffer format(Object obj, StringBuffer buf);
+    /**
+     * This is an implementation method that is not exposed publicly, as we do
+     * not want to support the complexities of FieldPosition, at least not with
+     * the current state of compiler optimizations.
+     * <p>
+     * Thus, the format(Object, StringBuffer, FieldPosition) method is not
+     * present.
+     */
+    protected abstract StringBuffer format(Object obj, StringBuffer buf);
 }

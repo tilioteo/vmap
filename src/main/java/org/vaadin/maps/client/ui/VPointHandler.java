@@ -1,10 +1,13 @@
-/**
- * 
- */
 package org.vaadin.maps.client.ui;
 
-import java.util.HashMap;
-
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Event;
+import com.vaadin.client.MouseEventDetailsBuilder;
+import com.vaadin.shared.MouseEventDetails;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.maps.client.drawing.Utils;
 import org.vaadin.maps.client.geometry.Coordinate;
@@ -12,312 +15,291 @@ import org.vaadin.maps.client.geometry.Geometry;
 import org.vaadin.maps.client.geometry.Point;
 import org.vaadin.maps.shared.ui.Style;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Event;
-import com.vaadin.client.MouseEventDetailsBuilder;
-import com.vaadin.shared.MouseEventDetails;
+import java.util.HashMap;
 
 /**
  * @author Kamil Morong
- *
  */
 public class VPointHandler extends AbstractDrawFeatureHandler
-		implements MouseDownHandler, MouseMoveHandler, MouseUpHandler, CanShift {
+        implements MouseDownHandler, MouseMoveHandler, MouseUpHandler, CanShift {
 
-	public static final String CLASSNAME = "v-pointhandler";
+    public static final String CLASSNAME = "v-pointhandler";
+    private final HashMap<GeometryEventHandler, HandlerRegistration> geometryHandlerMap = new HashMap<>();
+    public SyntheticClickHandler clickHandlerSlave;
+    protected VVectorFeatureLayer layer = null;
+    protected VVectorFeatureContainer container = null;
+    protected MouseEventDetails mouseEventDetails = null;
+    protected Element eventElement = null;
+    protected HandlerRegistration mouseDownHandler = null;
+    protected HandlerRegistration mouseUpHandler = null;
+    protected HandlerRegistration mouseMoveHandler = null;
+    private int lastShiftX = 0;
+    private int lastShiftY = 0;
+    /**
+     * point of mouse cursor position TODO make implementation independent
+     */
+    private Circle cursor = null;
+    private boolean mouseDown = false;
+    private boolean mouseMoved = false;
 
-	public SyntheticClickHandler clickHandlerSlave;
+    public VPointHandler() {
+        super();
+        setStyleName(CLASSNAME);
+    }
 
-	protected VVectorFeatureLayer layer = null;
-	protected VVectorFeatureContainer container = null;
+    public static int[] getMouseEventXY(MouseEvent<?> event) {
+        return getMouseEventXY(
+                MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(), event.getRelativeElement()),
+                event.getRelativeElement());
+    }
 
-	private int lastShiftX = 0;
-	private int lastShiftY = 0;
+    public static int[] getMouseEventXY(MouseEventDetails details, Element relativeElement) {
+        // Firefox encounters some problems with relative position to SVG
+        // element
+        // correct xy position is obtained using the parent DIV element of
+        // vector layer
+        if (relativeElement != null) {
+            Element parent = relativeElement.getParentElement();
+            if (parent != null) {
+                return new int[]{
+                        details.getClientX() - parent.getAbsoluteLeft() + parent.getScrollLeft()
+                                + parent.getOwnerDocument().getScrollLeft(),
+                        details.getClientY() - parent.getAbsoluteTop() + parent.getScrollTop()
+                                + parent.getOwnerDocument().getScrollTop()};
+            }
+        }
+        return new int[]{details.getClientX(), details.getClientY()};
+    }
 
-	/**
-	 * point of mouse cursor position TODO make implementation independent
-	 */
-	private Circle cursor = null;
+    public void setLayer(VVectorFeatureLayer layer) {
+        if (this.layer == layer) {
+            return;
+        }
 
-	private boolean mouseDown = false;
-	private boolean mouseMoved = false;
-	protected MouseEventDetails mouseEventDetails = null;
-	protected Element eventElement = null;
+        finalize();
+        this.layer = layer;
+        initialize();
+    }
 
-	protected HandlerRegistration mouseDownHandler = null;
-	protected HandlerRegistration mouseUpHandler = null;
-	protected HandlerRegistration mouseMoveHandler = null;
+    @Override
+    protected void initialize() {
+        if (layer != null && layer.getWidget() != null && layer.getWidget() instanceof VVectorFeatureContainer) {
+            container = (VVectorFeatureContainer) layer.getWidget();
+            container.setCanShiftSlave(this);
+            ensureContainerHandlers();
+        } else {
+            container = null;
+        }
+    }
 
-	private HashMap<GeometryEventHandler, HandlerRegistration> geometryHandlerMap = new HashMap<GeometryEventHandler, HandlerRegistration>();
+    @Override
+    protected void finalize() {
+        if (container != null) {
+            container.setCanShiftSlave(null);
+            removeContainerHandlers();
+            container = null;
+        }
+    }
 
-	public static int[] getMouseEventXY(MouseEvent<?> event) {
-		return getMouseEventXY(
-				MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(), event.getRelativeElement()),
-				event.getRelativeElement());
-	}
+    protected void ensureContainerHandlers() {
+        mouseDownHandler = container.addMouseDownHandler(this);
+        mouseUpHandler = container.addMouseUpHandler(this);
+        mouseMoveHandler = container.addMouseMoveHandler(this);
+    }
 
-	public static int[] getMouseEventXY(MouseEventDetails details, Element relativeElement) {
-		// Firefox encounters some problems with relative position to SVG
-		// element
-		// correct xy position is obtained using the parent DIV element of
-		// vector layer
-		if (relativeElement != null) {
-			Element parent = relativeElement.getParentElement();
-			if (parent != null) {
-				return new int[] {
-						details.getClientX() - parent.getAbsoluteLeft() + parent.getScrollLeft()
-								+ parent.getOwnerDocument().getScrollLeft(),
-						details.getClientY() - parent.getAbsoluteTop() + parent.getScrollTop()
-								+ parent.getOwnerDocument().getScrollTop() };
-			}
-		}
-		return new int[] { details.getClientX(), details.getClientY() };
-	}
+    protected void removeContainerHandlers() {
+        removeEventHandler(mouseDownHandler);
+        removeEventHandler(mouseUpHandler);
+        removeEventHandler(mouseMoveHandler);
+    }
 
-	public VPointHandler() {
-		super();
-		setStyleName(CLASSNAME);
-	}
+    private void addCursor() {
+        cursor = new Circle(0, 0, 0);
+        updateCursorStyle();
+        container.add(cursor);
+    }
 
-	public void setLayer(VVectorFeatureLayer layer) {
-		if (this.layer == layer) {
-			return;
-		}
+    private void updateCursorStyle() {
+        if (cursor != null && cursorStyle != null) {
+            Utils.updateDrawingStyle(cursor, cursorStyle);
+        }
+    }
 
-		finalize();
-		this.layer = layer;
-		initialize();
-	}
+    private void removeCursor() {
+        container.remove(cursor);
+        cursor = null;
+    }
 
-	@Override
-	protected void initialize() {
-		if (layer != null && layer.getWidget() != null && layer.getWidget() instanceof VVectorFeatureContainer) {
-			container = (VVectorFeatureContainer) layer.getWidget();
-			container.setCanShiftSlave(this);
-			ensureContainerHandlers();
-		} else {
-			container = null;
-		}
-	}
+    private void updateCursorPosition(int[] xy) {
+        cursor.setX(xy[0]);
+        cursor.setY(xy[1]);
+    }
 
-	@Override
-	protected void finalize() {
-		if (container != null) {
-			container.setCanShiftSlave(null);
-			removeContainerHandlers();
-			container = null;
-		}
-	}
+    @Override
+    public void activate() {
+        super.activate();
 
-	protected void ensureContainerHandlers() {
-		mouseDownHandler = container.addMouseDownHandler(this);
-		mouseUpHandler = container.addMouseUpHandler(this);
-		mouseMoveHandler = container.addMouseMoveHandler(this);
-	}
+        addCursor();
+    }
 
-	protected void removeContainerHandlers() {
-		removeEventHandler(mouseDownHandler);
-		removeEventHandler(mouseUpHandler);
-		removeEventHandler(mouseMoveHandler);
-	}
+    /**
+     * Create a coordinate from array. <strong>Note:</strong> World coordinates
+     * are recalculated on server side.
+     *
+     * @param xy
+     * @return new {@link Coordinate}
+     */
+    public Coordinate createCoordinate(int[] xy) {
+        return new Coordinate(xy[0], xy[1]);
+    }
 
-	private void addCursor() {
-		cursor = new Circle(0, 0, 0);
-		updateCursorStyle();
-		container.add(cursor);
-	}
+    @Override
+    public void deactivate() {
+        removeCursor();
 
-	private void updateCursorStyle() {
-		if (cursor != null && cursorStyle != null) {
-			Utils.updateDrawingStyle(cursor, cursorStyle);
-		}
-	}
+        super.deactivate();
+    }
 
-	private void removeCursor() {
-		container.remove(cursor);
-		cursor = null;
-	}
+    @Override
+    public void setCursorStyle(Style style) {
+        super.setCursorStyle(style);
 
-	private void updateCursorPosition(int[] xy) {
-		cursor.setX(xy[0]);
-		cursor.setY(xy[1]);
-	}
+        updateCursorStyle();
+    }
 
-	@Override
-	public void activate() {
-		super.activate();
+    protected void syntheticClick(MouseEventDetails details, Element relativeElement) {
+        cleanMouseState();
 
-		addCursor();
-	}
+        if (!active || frozen) {
+            return;
+        }
 
-	/**
-	 * Create a coordinate from array. <strong>Note:</strong> World coordinates
-	 * are recalculated on server side.
-	 * 
-	 * @param xy
-	 * @return new {@link Coordinate}
-	 */
-	public Coordinate createCoordinate(int[] xy) {
-		return new Coordinate(xy[0], xy[1]);
-	}
+        if (clickHandlerSlave != null) {
+            clickHandlerSlave.syntheticClick(details, relativeElement);
+        }
 
-	@Override
-	public void deactivate() {
-		removeCursor();
+        int[] xy = getMouseEventXY(details, relativeElement);
+        Point point = new Point(createCoordinate(xy));
+        fireEvent(new GeometryEvent(VPointHandler.this, point));
+    }
 
-		super.deactivate();
-	}
+    @Override
+    public void onMouseDown(MouseDownEvent event) {
+        if (!active) {
+            return;
+        }
 
-	@Override
-	public void setCursorStyle(Style style) {
-		super.setCursorStyle(style);
+        mouseDown = true;
+        mouseEventDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(),
+                event.getRelativeElement());
+        mouseEventDetails.setType(Event.getTypeInt("click"));
+        eventElement = event.getRelativeElement();
+    }
 
-		updateCursorStyle();
-	}
+    @Override
+    public void onMouseUp(MouseUpEvent event) {
+        if (!active) {
+            return;
+        }
 
-	protected void syntheticClick(MouseEventDetails details, Element relativeElement) {
-		cleanMouseState();
+        if (!mouseMoved) {
+            syntheticClick(mouseEventDetails, eventElement);
+        } else {
+            mouseMoved = false;
+        }
+        mouseDown = false;
+        mouseEventDetails = null;
+        eventElement = null;
+    }
 
-		if (!active || frozen) {
-			return;
-		}
+    @Override
+    public void onMouseMove(MouseMoveEvent event) {
+        if (!active) {
+            return;
+        }
 
-		if (clickHandlerSlave != null) {
-			clickHandlerSlave.syntheticClick(details, relativeElement);
-		}
+        if (mouseDown) {
+            mouseMoved = true;
+        }
 
-		int[] xy = getMouseEventXY(details, relativeElement);
-		Point point = new Point(createCoordinate(xy));
-		fireEvent(new GeometryEvent(VPointHandler.this, point));
-	}
+        int[] xy = getMouseEventXY(event);
 
-	@Override
-	public void onMouseDown(MouseDownEvent event) {
-		if (!active) {
-			return;
-		}
+        // redraw cursor point
+        // TODO make implementation independent
+        updateCursorPosition(xy);
+    }
 
-		mouseDown = true;
-		mouseEventDetails = MouseEventDetailsBuilder.buildMouseEventDetails(event.getNativeEvent(),
-				event.getRelativeElement());
-		mouseEventDetails.setType(Event.getTypeInt("click"));
-		eventElement = event.getRelativeElement();
-	}
+    public void addGeometryEventHandler(GeometryEventHandler handler) {
+        geometryHandlerMap.put(handler, addHandler(handler, GeometryEvent.TYPE));
+    }
 
-	@Override
-	public void onMouseUp(MouseUpEvent event) {
-		if (!active) {
-			return;
-		}
+    public void removeGeometryEventHandler(GeometryEventHandler handler) {
+        if (geometryHandlerMap.containsKey(handler)) {
+            removeEventHandler(geometryHandlerMap.get(handler));
+            geometryHandlerMap.remove(handler);
+        }
+    }
 
-		if (!mouseMoved) {
-			syntheticClick(mouseEventDetails, eventElement);
-		} else {
-			mouseMoved = false;
-		}
-		mouseDown = false;
-		mouseEventDetails = null;
-		eventElement = null;
-	}
+    @Override
+    public void setShift(int x, int y) {
+        int deltaX = x - lastShiftX;
+        int deltaY = y - lastShiftY;
+        lastShiftX = x;
+        lastShiftY = y;
 
-	@Override
-	public void onMouseMove(MouseMoveEvent event) {
-		if (!active) {
-			return;
-		}
+        updateDrawings(deltaX, deltaY);
+    }
 
-		if (mouseDown) {
-			mouseMoved = true;
-		}
+    @Override
+    public int getShiftX() {
+        return lastShiftX;
+    }
 
-		int[] xy = getMouseEventXY(event);
+    @Override
+    public int getShiftY() {
+        return lastShiftY;
+    }
 
-		// redraw cursor point
-		// TODO make implementation independent
-		updateCursorPosition(xy);
-	}
+    protected void updateDrawings(int deltaX, int deltaY) {
+    }
 
-	public interface GeometryEventHandler extends EventHandler {
-		void geometry(GeometryEvent event);
-	}
+    protected void cleanMouseState() {
+        mouseDown = false;
+        mouseMoved = false;
+    }
 
-	public static class GeometryEvent extends GwtEvent<GeometryEventHandler> {
+    public interface GeometryEventHandler extends EventHandler {
+        void geometry(GeometryEvent event);
+    }
 
-		public static final Type<GeometryEventHandler> TYPE = new Type<GeometryEventHandler>();
+    public interface SyntheticClickHandler {
+        public void syntheticClick(MouseEventDetails details, Element relativeElement);
+    }
 
-		private Geometry geometry;
+    public static class GeometryEvent extends GwtEvent<GeometryEventHandler> {
 
-		public GeometryEvent(VPointHandler source, Geometry geometry) {
-			setSource(source);
-			this.geometry = geometry;
-		}
+        public static final Type<GeometryEventHandler> TYPE = new Type<>();
 
-		public Geometry getGeometry() {
-			return geometry;
-		}
+        private final Geometry geometry;
 
-		@Override
-		public Type<GeometryEventHandler> getAssociatedType() {
-			return TYPE;
-		}
+        public GeometryEvent(VPointHandler source, Geometry geometry) {
+            setSource(source);
+            this.geometry = geometry;
+        }
 
-		@Override
-		protected void dispatch(GeometryEventHandler handler) {
-			handler.geometry(this);
-		}
-	}
+        public Geometry getGeometry() {
+            return geometry;
+        }
 
-	public void addGeometryEventHandler(GeometryEventHandler handler) {
-		geometryHandlerMap.put(handler, addHandler(handler, GeometryEvent.TYPE));
-	}
+        @Override
+        public Type<GeometryEventHandler> getAssociatedType() {
+            return TYPE;
+        }
 
-	public void removeGeometryEventHandler(GeometryEventHandler handler) {
-		if (geometryHandlerMap.containsKey(handler)) {
-			removeEventHandler(geometryHandlerMap.get(handler));
-			geometryHandlerMap.remove(handler);
-		}
-	}
-
-	public interface SyntheticClickHandler {
-		public void syntheticClick(MouseEventDetails details, Element relativeElement);
-	}
-
-	@Override
-	public void setShift(int x, int y) {
-		int deltaX = x - lastShiftX;
-		int deltaY = y - lastShiftY;
-		lastShiftX = x;
-		lastShiftY = y;
-
-		updateDrawings(deltaX, deltaY);
-	}
-
-	@Override
-	public int getShiftX() {
-		return lastShiftX;
-	}
-
-	@Override
-	public int getShiftY() {
-		return lastShiftY;
-	}
-
-	protected void updateDrawings(int deltaX, int deltaY) {
-	}
-
-	protected void cleanMouseState() {
-		mouseDown = false;
-		mouseMoved = false;
-	}
+        @Override
+        protected void dispatch(GeometryEventHandler handler) {
+            handler.geometry(this);
+        }
+    }
 
 }

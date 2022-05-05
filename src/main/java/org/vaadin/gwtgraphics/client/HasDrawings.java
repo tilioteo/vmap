@@ -19,54 +19,49 @@ import java.util.Iterator;
 
 /**
  * Classes implementing this class are able to contain VectorObjects.
- * 
+ * <p>
  * renamed from VectorObjectContainer
- * 
+ *
  * @author Henri Kerola
  * @author Kamil Morong
- * 
  */
 public interface HasDrawings {
 
-	/**
-	 * Adds a child drawing.
-	 * 
-	 * @param drawing
-	 *            the drawing to be added
-	 * @return added drawing
-	 * @throws UnsupportedOperationException
-	 *             if this method is not supported (most often this means that a
-	 *             specific overload must be called)
-	 */
-	public Drawing addDrawing(Drawing drawing);
+    /**
+     * Adds a child drawing.
+     *
+     * @param drawing the drawing to be added
+     * @return added drawing
+     * @throws UnsupportedOperationException if this method is not supported (most often this means that a
+     *                                       specific overload must be called)
+     */
+    public Drawing addDrawing(Drawing drawing);
 
-	/**
-	 * Gets an iterator for the contained drawings. This iterator is required to
-	 * implement {@link Iterator#remove()}.
-	 */
-	public Iterator<Drawing> drawingIterator();
+    /**
+     * Gets an iterator for the contained drawings. This iterator is required to
+     * implement {@link Iterator#remove()}.
+     */
+    public Iterator<Drawing> drawingIterator();
 
-	/**
-	 * Removes a child drawing.
-	 * 
-	 * @param drawing
-	 *            the drawing to be removed
-	 * 
-	 * @return removed drawing or null if the container doesn't contain the
-	 *         given drawing
-	 */
-	public Drawing removeDrawing(Drawing drawing);
+    /**
+     * Removes a child drawing.
+     *
+     * @param drawing the drawing to be removed
+     * @return removed drawing or null if the container doesn't contain the
+     * given drawing
+     */
+    public Drawing removeDrawing(Drawing drawing);
 
-	/**
-	 * Removes all child drawings.
-	 */
-	public void clear();
+    /**
+     * Removes all child drawings.
+     */
+    public void clear();
 
-	/**
-	 * Returns the number of drawings in this container.
-	 * 
-	 * @return the number of drawings in this container.
-	 */
-	public int getCount();
+    /**
+     * Returns the number of drawings in this container.
+     *
+     * @return the number of drawings in this container.
+     */
+    public int getCount();
 
 }

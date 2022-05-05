@@ -1,18 +1,14 @@
-/**
- * 
- */
 package org.vaadin.maps.client.ui;
 
 /**
  * @author Kamil Morong
- *
  */
 public interface CanShift {
 
-	public void setShift(int x, int y);
+    void setShift(int x, int y);
 
-	public int getShiftX();
+    int getShiftX();
 
-	public int getShiftY();
+    int getShiftY();
 
 }

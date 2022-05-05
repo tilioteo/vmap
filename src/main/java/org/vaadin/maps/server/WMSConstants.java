@@ -1,35 +1,31 @@
-/**
- * 
- */
 package org.vaadin.maps.server;
 
 /**
  * @author Kamil Morong
- *
  */
 public interface WMSConstants {
 
-	public static final String PARAM_SERVICE_WMS = "SERVICE=WMS";
-	public static final String PARAM_VERSION = "VERSION";
-	public static final String PARAM_REQUEST = "REQUEST";
-	public static final String PARAM_LAYERS = "LAYERS";
-	public static final String PARAM_STYLES = "STYLES";
-	public static final String PARAM_SRS = "SRS";
-	public static final String PARAM_CRS = "CRS";
-	public static final String PARAM_BBOX = "BBOX";
-	public static final String PARAM_WIDTH = "WIDTH";
-	public static final String PARAM_HEIGHT = "HEIGHT";
-	public static final String PARAM_FORMAT = "FORMAT";
-	public static final String PARAM_TRANSPARENT = "TRANSPARENT";
-	public static final String PARAM_BGCOLOR = "BGCOLOR";
+    String PARAM_SERVICE_WMS = "SERVICE=WMS";
+    String PARAM_VERSION = "VERSION";
+    String PARAM_REQUEST = "REQUEST";
+    String PARAM_LAYERS = "LAYERS";
+    String PARAM_STYLES = "STYLES";
+    String PARAM_SRS = "SRS";
+    String PARAM_CRS = "CRS";
+    String PARAM_BBOX = "BBOX";
+    String PARAM_WIDTH = "WIDTH";
+    String PARAM_HEIGHT = "HEIGHT";
+    String PARAM_FORMAT = "FORMAT";
+    String PARAM_TRANSPARENT = "TRANSPARENT";
+    String PARAM_BGCOLOR = "BGCOLOR";
 
-	public static final String DEFAULT_VERSION = "1.1.1";
-	public static final String DEFAULT_FORMAT = "image/jpeg";
-	public static final int DEFAULT_WIDTH = 255;
-	public static final int DEFAULT_HEIGHT = 255;
+    String DEFAULT_VERSION = "1.1.1";
+    String DEFAULT_FORMAT = "image/jpeg";
+    int DEFAULT_WIDTH = 255;
+    int DEFAULT_HEIGHT = 255;
 
-	public static final String GET_CAPABILITIES = "GetCapabilities";
-	public static final String GET_MAP = "GetMap";
-	public static final String GET_FEATURE_INFO = "GetFeatureInfo";
+    String GET_CAPABILITIES = "GetCapabilities";
+    String GET_MAP = "GetMap";
+    String GET_FEATURE_INFO = "GetFeatureInfo";
 
 }

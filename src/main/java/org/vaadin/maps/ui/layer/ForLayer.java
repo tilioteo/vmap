@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.vaadin.maps.ui.layer;
 
 import org.vaadin.maps.server.Bounds;
@@ -9,18 +6,17 @@ import org.vaadin.maps.server.ViewWorldTransform.TransformChangeListener;
 
 /**
  * @author Kamil Morong
- *
  */
 public interface ForLayer {
 
-	public String getCRS();
+    String getCRS();
 
-	public Bounds getExtent();
+    Bounds getExtent();
 
-	public ViewWorldTransform getViewWorldTransform();
+    ViewWorldTransform getViewWorldTransform();
 
-	public void addTransformChangeListener(TransformChangeListener listener);
+    void addTransformChangeListener(TransformChangeListener listener);
 
-	public void removeTransformChangeListener(TransformChangeListener listener);
+    void removeTransformChangeListener(TransformChangeListener listener);
 
 }

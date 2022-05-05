@@ -1,41 +1,39 @@
-/**
- * 
- */
 package org.vaadin.maps.client.ui;
 
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  * @author Kamil Morong
- * 
  */
 public class VVectorFeatureLayer extends InteractiveLayer {
 
-	/** Class name, prefix in styling */
-	public static final String CLASSNAME = "v-vectorfeaturelayer";
+    /**
+     * Class name, prefix in styling
+     */
+    public static final String CLASSNAME = "v-vectorfeaturelayer";
 
-	public VVectorFeatureLayer() {
-		super();
-		setStylePrimaryName(CLASSNAME);
-	}
+    public VVectorFeatureLayer() {
+        super();
+        setStylePrimaryName(CLASSNAME);
+    }
 
-	@Override
-	public void setFixed(boolean fixed) {
-		super.setFixed(fixed);
-	}
+    @Override
+    public void setFixed(boolean fixed) {
+        super.setFixed(fixed);
+    }
 
-	@Override
-	public void onZoom(double zoom) {
-		super.onZoom(zoom);
+    @Override
+    public void onZoom(double zoom) {
+        super.onZoom(zoom);
 
-		if (!fixed) {
-			clearShift();
+        if (!fixed) {
+            clearShift();
 
-			Widget content = getWidget();
-			if (content instanceof CanShift) {
-				((CanShift) content).setShift(0, 0);
-			}
-		}
-	}
+            Widget content = getWidget();
+            if (content instanceof CanShift) {
+                ((CanShift) content).setShift(0, 0);
+            }
+        }
+    }
 
 }

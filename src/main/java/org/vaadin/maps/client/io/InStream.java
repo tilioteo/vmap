@@ -40,18 +40,14 @@ import org.vaadin.maps.client.emul.io.InputStream;
  * A interface for classes providing an input stream of bytes. This interface is
  * similar to the Java {@link InputStream}, but with a narrower interface to
  * make it easier to implement.
- * 
  */
 public interface InStream {
-	/**
-	 * Reads <code>buf.length</code> bytes from the input stream and stores them
-	 * in the supplied buffer.
-	 * 
-	 * @param buf
-	 *            the buffer to receive the bytes
-	 * 
-	 * @throws IOException
-	 *             if an I/O error occurs
-	 */
-	void read(byte[] buf) throws IOException;
+    /**
+     * Reads <code>buf.length</code> bytes from the input stream and stores them
+     * in the supplied buffer.
+     *
+     * @param buf the buffer to receive the bytes
+     * @throws IOException if an I/O error occurs
+     */
+    void read(byte[] buf) throws IOException;
 }

@@ -34,31 +34,28 @@ package org.vaadin.maps.client.io;
 
 /**
  * Thrown by a <code>WKTReader</code> when a parsing problem occurs.
- * 
+ *
  * @version 1.7
  */
-@SuppressWarnings("serial")
 public class ParseException extends Exception {
 
-	/**
-	 * Creates a <code>ParseException</code> with the given detail message.
-	 * 
-	 * @param message
-	 *            a description of this <code>ParseException</code>
-	 */
-	public ParseException(String message) {
-		super(message);
-	}
+    /**
+     * Creates a <code>ParseException</code> with the given detail message.
+     *
+     * @param message a description of this <code>ParseException</code>
+     */
+    public ParseException(String message) {
+        super(message);
+    }
 
-	/**
-	 * Creates a <code>ParseException</code> with <code>e</code>s detail
-	 * message.
-	 * 
-	 * @param e
-	 *            an exception that occurred while a <code>WKTReader</code> was
-	 *            parsing a Well-known Text string
-	 */
-	public ParseException(Exception e) {
-		this(e.toString());
-	}
+    /**
+     * Creates a <code>ParseException</code> with <code>e</code>s detail
+     * message.
+     *
+     * @param e an exception that occurred while a <code>WKTReader</code> was
+     *          parsing a Well-known Text string
+     */
+    public ParseException(Exception e) {
+        this(e.toString());
+    }
 }

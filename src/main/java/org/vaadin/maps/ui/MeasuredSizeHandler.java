@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.vaadin.maps.ui;
 
 /**
@@ -9,6 +6,6 @@ package org.vaadin.maps.ui;
  */
 public interface MeasuredSizeHandler {
 
-	public void sizeChanged(int oldWidth, int oldHeight, int newWidth, int newHeight);
+	void sizeChanged(int oldWidth, int oldHeight, int newWidth, int newHeight);
 
 }

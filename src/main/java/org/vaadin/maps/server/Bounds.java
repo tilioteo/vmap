@@ -1,267 +1,263 @@
-/**
- * 
- */
 package org.vaadin.maps.server;
 
 /**
  * @author Kamil Morong
- *
  */
 public class Bounds {
 
-	private static final int DEFAULT_DECIMAL = 6;
+    private static final int DEFAULT_DECIMAL = 6;
 
-	private double left = 0.0;
-	private double bottom = 0.0;
-	private double right = 0.0;
-	private double top = 0.0;
+    private double left = 0.0;
+    private double bottom = 0.0;
+    private double right = 0.0;
+    private double top = 0.0;
 
-	public Bounds() {
-	}
+    public Bounds() {
+    }
 
-	public Bounds(double left, double bottom, double right, double top) {
-		if (left <= right) {
-			this.left = left;
-			this.right = right;
-		} else {
-			this.left = right;
-			this.right = left;
-		}
+    public Bounds(double left, double bottom, double right, double top) {
+        if (left <= right) {
+            this.left = left;
+            this.right = right;
+        } else {
+            this.left = right;
+            this.right = left;
+        }
 
-		if (bottom < top) {
-			this.bottom = bottom;
-			this.top = top;
-		} else {
-			this.bottom = top;
-			this.top = bottom;
-		}
-	}
+        if (bottom < top) {
+            this.bottom = bottom;
+            this.top = top;
+        } else {
+            this.bottom = top;
+            this.top = bottom;
+        }
+    }
 
-	public double getLeft() {
-		return left;
-	}
+    public static Bounds fromBBOX(String bbox, boolean reverseAxisOrder) {
+        if (bbox != null && !bbox.trim().isEmpty()) {
+            String[] parts = bbox.split(",");
+            if (parts.length >= 4) {
+                double[] box = new double[4];
+                for (int i = 0; i < 4; ++i) {
+                    try {
+                        box[i] = Double.parseDouble(parts[i].trim());
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }
 
-	public double getBottom() {
-		return bottom;
-	}
+                return reverseAxisOrder ? new Bounds(box[1], box[0], box[3], box[2])
+                        : new Bounds(box[0], box[1], box[2], box[3]);
+            }
+        }
+        return null;
+    }
 
-	public double getRight() {
-		return right;
-	}
+    public static Bounds fromBBOX(String bbox) {
+        return fromBBOX(bbox, false);
+    }
 
-	public double getTop() {
-		return top;
-	}
+    public double getLeft() {
+        return left;
+    }
 
-	public LonLat getTopLeft() {
-		return new LonLat(left, top);
-	}
+    public double getBottom() {
+        return bottom;
+    }
 
-	public LonLat getTopRight() {
-		return new LonLat(right, top);
-	}
+    public double getRight() {
+        return right;
+    }
 
-	public LonLat getBottomLeft() {
-		return new LonLat(left, bottom);
-	}
+    public double getTop() {
+        return top;
+    }
 
-	public LonLat getBottomRight() {
-		return new LonLat(right, bottom);
-	}
+    public LonLat getTopLeft() {
+        return new LonLat(left, top);
+    }
 
-	public double getWidth() {
-		return right - left;
-	}
+    public LonLat getTopRight() {
+        return new LonLat(right, top);
+    }
 
-	public void setWidth(double width) {
-		if (width > 0) {
-			right = left + width;
-		}
-	}
+    public LonLat getBottomLeft() {
+        return new LonLat(left, bottom);
+    }
 
-	public void setWidthCentered(double width) {
-		if (width > 0) {
-			double add = (width - getWidth()) / 2;
-			left -= add;
-			right += add;
-		}
-	}
+    public LonLat getBottomRight() {
+        return new LonLat(right, bottom);
+    }
 
-	public double getHeight() {
-		return top - bottom;
-	}
+    public double getWidth() {
+        return right - left;
+    }
 
-	public void setHeight(double height) {
-		if (height > 0) {
-			bottom = top - height;
-		}
-	}
+    public void setWidth(double width) {
+        if (width > 0) {
+            right = left + width;
+        }
+    }
 
-	public void setHeightCentered(double height) {
-		if (height > 0) {
-			double add = (height - getHeight()) / 2;
-			bottom -= add;
-			top += add;
-		}
-	}
+    public void setWidthCentered(double width) {
+        if (width > 0) {
+            double add = (width - getWidth()) / 2;
+            left -= add;
+            right += add;
+        }
+    }
 
-	public LonLat getCenter() {
-		return new LonLat((left + right) / 2, (bottom + top) / 2);
-	}
+    public double getHeight() {
+        return top - bottom;
+    }
 
-	public Bounds scale(double ratio, LonLat origin) {
-		if (null == origin) {
-			origin = getCenter();
-		}
+    public void setHeight(double height) {
+        if (height > 0) {
+            bottom = top - height;
+        }
+    }
 
-		return new Bounds((left - origin.getLon()) * ratio + origin.getLon(),
-				(bottom - origin.getLat()) * ratio + origin.getLat(),
-				(right - origin.getLon()) * ratio + origin.getLon(), (top - origin.getLat()) * ratio + origin.getLat());
-	}
+    public void setHeightCentered(double height) {
+        if (height > 0) {
+            double add = (height - getHeight()) / 2;
+            bottom -= add;
+            top += add;
+        }
+    }
 
-	public Bounds scale(double ratio) {
-		return scale(ratio, null);
-	}
+    public LonLat getCenter() {
+        return new LonLat((left + right) / 2, (bottom + top) / 2);
+    }
 
-	public Bounds add(double x, double y) {
-		return new Bounds(left + x, bottom + y, right + x, top + y);
-	}
+    public Bounds scale(double ratio, LonLat origin) {
+        if (null == origin) {
+            origin = getCenter();
+        }
 
-	public boolean isValid() {
-		return getWidth() > 0 && getHeight() > 0;
-	}
+        return new Bounds((left - origin.getLon()) * ratio + origin.getLon(),
+                (bottom - origin.getLat()) * ratio + origin.getLat(),
+                (right - origin.getLon()) * ratio + origin.getLon(), (top - origin.getLat()) * ratio + origin.getLat());
+    }
 
-	public void shift(double x, double y) {
-		left += x;
-		bottom += y;
-		right += x;
-		top += y;
-	}
+    public Bounds scale(double ratio) {
+        return scale(ratio, null);
+    }
 
-	public void extend(LonLat lonLat) {
-		if (lonLat != null) {
-			if (lonLat.getLon() < left) {
-				left = lonLat.getLon();
-			}
-			if (lonLat.getLat() < bottom) {
-				bottom = lonLat.getLat();
-			}
-			if (lonLat.getLon() > right) {
-				right = lonLat.getLon();
-			}
-			if (lonLat.getLat() > top) {
-				top = lonLat.getLat();
-			}
-		}
-	}
+    public Bounds add(double x, double y) {
+        return new Bounds(left + x, bottom + y, right + x, top + y);
+    }
 
-	public void expand(double x, double y) {
-		left -= x;
-		bottom -= y;
-		right += x;
-		top += y;
-	}
+    public boolean isValid() {
+        return getWidth() > 0 && getHeight() > 0;
+    }
 
-	public void extend(Bounds bounds) {
-		if (bounds != null) {
-			if (bounds.left < left) {
-				left = bounds.left;
-			}
-			if (bounds.bottom < bottom) {
-				bottom = bounds.bottom;
-			}
-			if (bounds.right > right) {
-				right = bounds.right;
-			}
-			if (bounds.top > top) {
-				top = bounds.top;
-			}
-		}
-	}
+    public void shift(double x, double y) {
+        left += x;
+        bottom += y;
+        right += x;
+        top += y;
+    }
 
-	public String toBBOX(int decimal, boolean reverseAxisOrder) {
-		if (decimal >= 0) {
-			double multi = Math.pow(10, decimal);
-			double xmin = Math.round(left * multi) / multi;
-			double ymin = Math.round(bottom * multi) / multi;
-			double xmax = Math.round(right * multi) / multi;
-			double ymax = Math.round(top * multi) / multi;
+    public void extend(LonLat lonLat) {
+        if (lonLat != null) {
+            if (lonLat.getLon() < left) {
+                left = lonLat.getLon();
+            }
+            if (lonLat.getLat() < bottom) {
+                bottom = lonLat.getLat();
+            }
+            if (lonLat.getLon() > right) {
+                right = lonLat.getLon();
+            }
+            if (lonLat.getLat() > top) {
+                top = lonLat.getLat();
+            }
+        }
+    }
 
-			if (reverseAxisOrder) {
-				return ymin + "," + xmin + "," + ymax + "," + xmax;
-			} else {
-				return xmin + "," + ymin + "," + xmax + "," + ymax;
-			}
-		} else {
-			if (reverseAxisOrder) {
-				return bottom + "," + left + "," + top + "," + right;
-			} else {
-				return left + "," + bottom + "," + right + "," + top;
-			}
-		}
-	}
+    public void expand(double x, double y) {
+        left -= x;
+        bottom -= y;
+        right += x;
+        top += y;
+    }
 
-	public String toBBOX(int decimal) {
-		return toBBOX(decimal, false);
-	}
+    public void extend(Bounds bounds) {
+        if (bounds != null) {
+            if (bounds.left < left) {
+                left = bounds.left;
+            }
+            if (bounds.bottom < bottom) {
+                bottom = bounds.bottom;
+            }
+            if (bounds.right > right) {
+                right = bounds.right;
+            }
+            if (bounds.top > top) {
+                top = bounds.top;
+            }
+        }
+    }
 
-	public String toBBOX(boolean reverseAxisOrder) {
-		return toBBOX(DEFAULT_DECIMAL, reverseAxisOrder);
-	}
+    public String toBBOX(int decimal, boolean reverseAxisOrder) {
+        if (decimal >= 0) {
+            double multi = Math.pow(10, decimal);
+            double xmin = Math.round(left * multi) / multi;
+            double ymin = Math.round(bottom * multi) / multi;
+            double xmax = Math.round(right * multi) / multi;
+            double ymax = Math.round(top * multi) / multi;
 
-	public String toBBOX() {
-		return toBBOX(DEFAULT_DECIMAL, false);
-	}
+            if (reverseAxisOrder) {
+                return ymin + "," + xmin + "," + ymax + "," + xmax;
+            } else {
+                return xmin + "," + ymin + "," + xmax + "," + ymax;
+            }
+        } else {
+            if (reverseAxisOrder) {
+                return bottom + "," + left + "," + top + "," + right;
+            } else {
+                return left + "," + bottom + "," + right + "," + top;
+            }
+        }
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Bounds)) {
-			return false;
-		}
+    public String toBBOX(int decimal) {
+        return toBBOX(decimal, false);
+    }
 
-		Bounds other = (Bounds) obj;
+    public String toBBOX(boolean reverseAxisOrder) {
+        return toBBOX(DEFAULT_DECIMAL, reverseAxisOrder);
+    }
 
-		return (left == other.left && bottom == other.bottom && right == other.right && top == other.top);
-	}
+    public String toBBOX() {
+        return toBBOX(DEFAULT_DECIMAL, false);
+    }
 
-	@Override
-	public Bounds clone() {
-		return new Bounds(left, bottom, right, top);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Bounds)) {
+            return false;
+        }
 
-	@Override
-	public String toString() {
-		return "left=" + left + ",bottom=" + bottom + ",right=" + right + ",top=" + top + "\nwidth=" + getWidth()
-				+ ",height=" + getHeight();
-	}
+        Bounds other = (Bounds) obj;
 
-	public static Bounds fromBBOX(String bbox, boolean reverseAxisOrder) {
-		if (bbox != null && !bbox.trim().isEmpty()) {
-			String[] parts = bbox.split(",");
-			if (parts.length >= 4) {
-				double[] box = new double[4];
-				for (int i = 0; i < 4; ++i) {
-					try {
-						box[i] = Double.parseDouble(parts[i].trim());
-					} catch (Exception e) {
-						return null;
-					}
-				}
+        return (left == other.left && bottom == other.bottom && right == other.right && top == other.top);
+    }
 
-				return reverseAxisOrder ? new Bounds(box[1], box[0], box[3], box[2])
-						: new Bounds(box[0], box[1], box[2], box[3]);
-			}
-		}
-		return null;
-	}
+    @Override
+    public Bounds clone() {
+        return new Bounds(left, bottom, right, top);
+    }
 
-	public static Bounds fromBBOX(String bbox) {
-		return fromBBOX(bbox, false);
-	}
+    @Override
+    public String toString() {
+        return "left=" + left + ",bottom=" + bottom + ",right=" + right + ",top=" + top + "\nwidth=" + getWidth()
+                + ",height=" + getHeight();
+    }
 }

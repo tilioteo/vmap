@@ -1,30 +1,26 @@
-/**
- * 
- */
 package org.vaadin.maps.client.ui;
-
-import java.util.Iterator;
 
 import com.google.gwt.user.client.ui.Widget;
 
+import java.util.Iterator;
+
 /**
  * @author Kamil Morong
- *
  */
 public interface Container {
 
-	public boolean contains(Widget widget);
+    boolean contains(Widget widget);
 
-	public Widget getWidget(int index);
+    Widget getWidget(int index);
 
-	public int getWidgetCount();
+    int getWidgetCount();
 
-	public int getWidgetIndex(Widget widget);
+    int getWidgetIndex(Widget widget);
 
-	public Iterator<Widget> iterator();
+    Iterator<Widget> iterator();
 
-	public boolean remove(int index);
+    boolean remove(int index);
 
-	public boolean remove(Widget widget);
+    boolean remove(Widget widget);
 
 }

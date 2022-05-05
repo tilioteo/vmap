@@ -1,12 +1,12 @@
-/**
- * 
- */
 package org.vaadin.maps.ui.handler;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-
-import org.vaadin.maps.event.ComponentEvent;
+import com.tilioteo.common.event.MouseEvents;
+import com.vaadin.shared.MouseEventDetails;
+import com.vaadin.ui.Component;
+import com.vaadin.util.ReflectTools;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
 import org.vaadin.maps.geometry.Utils;
 import org.vaadin.maps.shared.ui.handler.PointHandlerServerRpc;
 import org.vaadin.maps.shared.ui.handler.PointHandlerState;
@@ -14,224 +14,143 @@ import org.vaadin.maps.ui.control.Control;
 import org.vaadin.maps.ui.feature.VectorFeature;
 import org.vaadin.maps.ui.layer.VectorFeatureLayer;
 
-import com.vaadin.ui.Component;
-import com.vaadin.util.ReflectTools;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
+import java.io.Serializable;
+import java.lang.reflect.Method;
 
 /**
  * @author Kamil Morong
- *
  */
-@SuppressWarnings("serial")
 public class PointHandler extends FeatureHandler {
 
-	private PointHandlerServerRpc rpc = new PointHandlerServerRpc() {
+    /**
+     * The last drawn feature
+     */
+    protected VectorFeature feature = null;
+    /**
+     * The drawing layer
+     */
+    protected VectorFeatureLayer layer = null;
+    private final PointHandlerServerRpc rpc = new PointHandlerServerRpc() {
 
-		@Override
-		public void click(long timestamp, double x, double y, String buttonName, boolean altKey, boolean ctrlKey,
-				boolean metaKey, boolean shiftKey, boolean doubleClick) {
-			fireEvent(new ClickEvent(timestamp, PointHandler.this, new Coordinate(x, y), buttonName, altKey, ctrlKey,
-					metaKey, shiftKey, doubleClick));
-		}
+        @Override
+        public void click(long timestamp, MouseEventDetails mouseDetails) {
+            fireEvent(new ClickEvent(timestamp, PointHandler.this, mouseDetails));
+        }
 
-		@Override
-		public void geometry(long timestamp, String wkb) {
-			try {
-				Geometry geometry = Utils.wkbHexToGeometry(wkb);
-				if (layer != null && layer.getForLayer() != null) {
-					Utils.transformViewToWorld(geometry, layer.getForLayer().getViewWorldTransform());
-				}
-				VectorFeature feature = addNewFeature(geometry);
-				fireEvent(new DrawFeatureEvent(timestamp, PointHandler.this, feature));
+        @Override
+        public void geometry(long timestamp, String wkb) {
+            try {
+                Geometry geometry = Utils.wkbHexToGeometry(wkb);
+                if (layer != null && layer.getForLayer() != null) {
+                    Utils.transformViewToWorld(geometry, layer.getForLayer().getViewWorldTransform());
+                }
+                VectorFeature feature = addNewFeature(geometry);
+                fireEvent(new DrawFeatureEvent(timestamp, PointHandler.this, feature));
 
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-	};
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
-	/**
-	 * The last drawn feature
-	 */
-	protected VectorFeature feature = null;
+    public PointHandler(Control control) {
+        super(control);
+        registerRpc(rpc);
+    }
 
-	/**
-	 * The drawing layer
-	 */
-	protected VectorFeatureLayer layer = null;
+    protected VectorFeature addNewFeature(Geometry geometry) {
+        if (geometry != null) {
+            feature = new VectorFeature(geometry);
+            feature.setStyle(featureStyle);
+            layer.addComponent(feature);
+            return feature;
+        }
+        return null;
+    }
 
-	public PointHandler(Control control) {
-		super(control);
-		registerRpc(rpc);
-	}
+    @Override
+    protected PointHandlerState getState() {
+        return (PointHandlerState) super.getState();
+    }
 
-	protected VectorFeature addNewFeature(Geometry geometry) {
-		if (geometry != null) {
-			feature = new VectorFeature(geometry);
-			feature.setStyle(featureStyle);
-			layer.addComponent(feature);
-			return feature;
-		}
-		return null;
-	}
+    @Override
+    public void setLayer(VectorFeatureLayer layer) {
+        this.layer = layer;
+        getState().layer = layer;
+    }
 
-	@Override
-	protected PointHandlerState getState() {
-		return (PointHandlerState) super.getState();
-	}
+    @Override
+    public boolean deactivate() {
+        if (!super.deactivate())
+            return false;
 
-	@Override
-	public void setLayer(VectorFeatureLayer layer) {
-		this.layer = layer;
-		getState().layer = layer;
-	}
+        cancel();
 
-	@Override
-	public boolean deactivate() {
-		if (!super.deactivate())
-			return false;
+        return true;
+    }
 
-		cancel();
+    /**
+     * Adds the click listener.
+     *
+     * @param listener the Listener to be added.
+     */
+    public void addClickListener(ClickListener listener) {
+        addListener(ClickEvent.class, listener, ClickListener.CLICK_METHOD);
+    }
 
-		return true;
-	}
+    /**
+     * Removes the click listener.
+     *
+     * @param listener the Listener to be removed.
+     */
+    public void removeClickListener(ClickListener listener) {
+        removeListener(ClickEvent.class, listener, ClickListener.CLICK_METHOD);
+    }
 
-	@Override
-	public void cancel() {
-		super.cancel();
-	}
+    /**
+     * Interface for listening for a {@link ClickEvent} fired by a
+     * {@link PointHandler}.
+     */
+    public interface ClickListener extends Serializable {
 
-	/**
-	 * Click event. This event is thrown, when the drawing layer is clicked.
-	 * 
-	 */
-	public class ClickEvent extends ComponentEvent {
+        public static final Method CLICK_METHOD = ReflectTools.findMethod(ClickListener.class, "click",
+                ClickEvent.class);
 
-		private Coordinate coordinate;
-		private String buttonName;
-		private boolean altKey;
-		private boolean ctrlKey;
-		private boolean metaKey;
-		private boolean shiftKey;
-		private boolean doubleClick;
+        /**
+         * Called when a drawing layer has been clicked.
+         *
+         * @param event An event containing information about the click.
+         */
+        public void click(ClickEvent event);
 
-		/**
-		 * Constructor with details
-		 * 
-		 * @param source
-		 *            The source where the click took place
-		 */
-		public ClickEvent(long timestamp, Component source, Coordinate coordinate, String buttonName, boolean altKey,
-				boolean ctrlKey, boolean metaKey, boolean shiftKey, boolean doubleClick) {
-			super(timestamp, source);
-			this.coordinate = coordinate;
-			this.buttonName = buttonName;
-			this.altKey = altKey;
-			this.ctrlKey = ctrlKey;
-			this.metaKey = metaKey;
-			this.shiftKey = shiftKey;
-			this.doubleClick = doubleClick;
-		}
+    }
 
-		/**
-		 * Returns the coordinate when the click took place. The position is in
-		 * coordinating system of layer.
-		 * 
-		 * @return The position coordinate
-		 */
-		public Coordinate getCoordinate() {
-			return coordinate;
-		}
+    /**
+     * Click event. This event is thrown, when the drawing layer is clicked.
+     */
+    public class ClickEvent extends MouseEvents.ClickEvent {
 
-		public String getButtonName() {
-			return buttonName;
-		}
+        private final Coordinate coordinate;
 
-		/**
-		 * Checks if the Alt key was down when the mouse event took place.
-		 * 
-		 * @return true if Alt was down when the event occurred, false otherwise
-		 *         or if unknown
-		 */
-		public boolean isAltKey() {
-			return altKey;
-		}
+        /**
+         * Constructor with details
+         *
+         * @param source The source where the click took place
+         */
+        public ClickEvent(long timestamp, Component source, MouseEventDetails details) {
+            super(timestamp, source, details);
+            this.coordinate = new Coordinate(details.getRelativeX(), details.getRelativeY());
+        }
 
-		/**
-		 * Checks if the Ctrl key was down when the mouse event took place.
-		 * 
-		 * @return true if Ctrl was pressed when the event occurred, false
-		 *         otherwise or if unknown
-		 */
-		public boolean isCtrlKey() {
-			return ctrlKey;
-		}
-
-		/**
-		 * Checks if the Meta key was down when the mouse event took place.
-		 * 
-		 * @return true if Meta was pressed when the event occurred, false
-		 *         otherwise or if unknown
-		 */
-		public boolean isMetaKey() {
-			return metaKey;
-		}
-
-		/**
-		 * Checks if the Shift key was down when the mouse event took place.
-		 * 
-		 * @return true if Shift was pressed when the event occurred, false
-		 *         otherwise or if unknown
-		 */
-		public boolean isShiftKey() {
-			return shiftKey;
-		}
-
-		public boolean isDoubleClick() {
-			return doubleClick;
-		}
-	}
-
-	/**
-	 * Interface for listening for a {@link ClickEvent} fired by a
-	 * {@link PointHandler}.
-	 * 
-	 */
-	public interface ClickListener extends Serializable {
-
-		public static final Method CLICK_METHOD = ReflectTools.findMethod(ClickListener.class, "click",
-				ClickEvent.class);
-
-		/**
-		 * Called when a drawing layer has been clicked.
-		 * 
-		 * @param event
-		 *            An event containing information about the click.
-		 */
-		public void click(ClickEvent event);
-
-	}
-
-	/**
-	 * Adds the click listener.
-	 * 
-	 * @param listener
-	 *            the Listener to be added.
-	 */
-	public void addClickListener(ClickListener listener) {
-		addListener(ClickEvent.class, listener, ClickListener.CLICK_METHOD);
-	}
-
-	/**
-	 * Removes the click listener.
-	 * 
-	 * @param listener
-	 *            the Listener to be removed.
-	 */
-	public void removeClickListener(ClickListener listener) {
-		removeListener(ClickEvent.class, listener, ClickListener.CLICK_METHOD);
-	}
+        /**
+         * Returns the coordinate when the click took place. The position is in
+         * coordinating system of layer.
+         *
+         * @return The position coordinate
+         */
+        public Coordinate getCoordinate() {
+            return coordinate;
+        }
+    }
 
 }

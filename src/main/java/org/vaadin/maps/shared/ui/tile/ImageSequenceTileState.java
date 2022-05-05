@@ -1,28 +1,21 @@
-/**
- * 
- */
 package org.vaadin.maps.shared.ui.tile;
+
+import com.vaadin.shared.communication.URLReference;
+import org.vaadin.maps.shared.ui.AbstractTileState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.vaadin.maps.shared.ui.AbstractTileState;
-
-import com.vaadin.shared.communication.URLReference;
-
 /**
  * @author Kamil Morong
- *
  */
-@SuppressWarnings("serial")
 public class ImageSequenceTileState extends AbstractTileState {
-	{
-		primaryStyleName = "v-imagesequencetile";
-	}
+    public List<URLReference> sources = new ArrayList<>();
+    public List<String> sourceTypes = new ArrayList<>();
+    public int index = 0;
 
-	public List<URLReference> sources = new ArrayList<URLReference>();
-	public List<String> sourceTypes = new ArrayList<String>();
-
-	public int index = 0;
+    {
+        primaryStyleName = "v-imagesequencetile";
+    }
 
 }

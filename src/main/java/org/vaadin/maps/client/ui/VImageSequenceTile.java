@@ -1,11 +1,4 @@
-/**
- * 
- */
 package org.vaadin.maps.client.ui;
-
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
@@ -17,165 +10,166 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Kamil Morong
- * 
  */
 public class VImageSequenceTile extends VImageTile {
 
-	public static final String CLASSNAME = "v-imagesequencetile";
+    public static final String CLASSNAME = "v-imagesequencetile";
+    private final LinkedList<String> urls = new LinkedList<>();
+    private int index = 0;
+    private int loadErrors;
 
-	private int index = 0;
-	private LinkedList<String> urls = new LinkedList<String>();
+    public VImageSequenceTile() {
+        setStylePrimaryName(CLASSNAME);
+    }
 
-	private int loadErrors;
+    public void setUrls(List<String> urls) {
+        this.urls.clear();
+        this.urls.addAll(urls);
+        loadImages();
+        setIndex(0);
+    }
 
-	public VImageSequenceTile() {
-		setStylePrimaryName(CLASSNAME);
-	}
+    private final void incLoadErrors() {
+        ++loadErrors;
+    }
 
-	public void setUrls(List<String> urls) {
-		this.urls.clear();
-		this.urls.addAll(urls);
-		loadImages();
-		setIndex(0);
-	}
+    private void loadImages() {
+        loadErrors = 0;
+        final HashSet<String> urlsToLoad = new HashSet<String>();
+        for (String url : urls) {
+            url = url.trim();
+            if (url != null && url.length() > 0 && !urlsToLoad.contains(url)) {
+                urlsToLoad.add(url);
+            }
+        }
 
-	private final void incLoadErrors() {
-		++loadErrors;
-	}
+        if (urlsToLoad.isEmpty()) {
+            fireEvent(new SequenceErrorEvent(VImageSequenceTile.this, loadErrors));
+        } else {
+            for (final String url : urlsToLoad) {
+                final Image image = new Image(url);
 
-	private void loadImages() {
-		loadErrors = 0;
-		final HashSet<String> urlsToLoad = new HashSet<String>();
-		for (String url : urls) {
-			url = url.trim();
-			if (url != null && url.length() > 0 && !urlsToLoad.contains(url)) {
-				urlsToLoad.add(url);
-			}
-		}
+                image.addLoadHandler(new LoadHandler() {
+                    @Override
+                    public void onLoad(LoadEvent event) {
+                        RootPanel.get().remove(image);
+                        urlsToLoad.remove(url);
 
-		if (urlsToLoad.isEmpty()) {
-			fireEvent(new SequenceErrorEvent(VImageSequenceTile.this, loadErrors));
-		} else {
-			for (final String url : urlsToLoad) {
-				final Image image = new Image(url);
+                        if (urlsToLoad.isEmpty()) {
+                            if (loadErrors > 0) {
+                                fireEvent(new SequenceErrorEvent(VImageSequenceTile.this, loadErrors));
+                            } else {
+                                fireEvent(new SequenceLoadedEvent(VImageSequenceTile.this));
+                            }
+                        }
+                    }
+                });
 
-				image.addLoadHandler(new LoadHandler() {
-					@Override
-					public void onLoad(LoadEvent event) {
-						RootPanel.get().remove(image);
-						urlsToLoad.remove(url);
+                image.addErrorHandler(new ErrorHandler() {
+                    @Override
+                    public void onError(ErrorEvent event) {
+                        incLoadErrors();
+                        RootPanel.get().remove(image);
+                        urlsToLoad.remove(url);
 
-						if (urlsToLoad.isEmpty()) {
-							if (loadErrors > 0) {
-								fireEvent(new SequenceErrorEvent(VImageSequenceTile.this, loadErrors));
-							} else {
-								fireEvent(new SequenceLoadedEvent(VImageSequenceTile.this));
-							}
-						}
-					}
-				});
+                        if (urlsToLoad.isEmpty()) {
+                            if (loadErrors > 0) {
+                                fireEvent(new SequenceErrorEvent(VImageSequenceTile.this, loadErrors));
+                            } else {
+                                fireEvent(new SequenceLoadedEvent(VImageSequenceTile.this));
+                            }
+                        }
+                    }
+                });
 
-				image.addErrorHandler(new ErrorHandler() {
-					@Override
-					public void onError(ErrorEvent event) {
-						incLoadErrors();
-						RootPanel.get().remove(image);
-						urlsToLoad.remove(url);
+                image.setVisible(false);
+                image.setSize("0px", "0px");
+                RootPanel.get().add(image);
+            }
+        }
+    }
 
-						if (urlsToLoad.isEmpty()) {
-							if (loadErrors > 0) {
-								fireEvent(new SequenceErrorEvent(VImageSequenceTile.this, loadErrors));
-							} else {
-								fireEvent(new SequenceLoadedEvent(VImageSequenceTile.this));
-							}
-						}
-					}
-				});
+    private void updateImage() {
+        setUrl(urls.get(index));
+        setVisible(true);
+    }
 
-				image.setVisible(false);
-				image.setSize("0px", "0px");
-				RootPanel.get().add(image);
-			}
-		}
-	}
+    public int getIndex() {
+        return index;
+    }
 
-	private void updateImage() {
-		setUrl(urls.get(index));
-		setVisible(true);
-	}
+    public void setIndex(int index) {
+        if (index < urls.size()) {
+            this.index = index;
 
-	public void setIndex(int index) {
-		if (index < urls.size()) {
-			this.index = index;
+            updateImage();
+        }
+    }
 
-			updateImage();
-		}
-	}
+    public HandlerRegistration addSequenceLoadedHandler(SequenceLoadedHandler handler) {
+        return addHandler(handler, SequenceLoadedEvent.TYPE);
+    }
 
-	public int getIndex() {
-		return index;
-	}
+    public HandlerRegistration addSequenceErrorHandler(SequenceErrorHandler handler) {
+        return addHandler(handler, SequenceErrorEvent.TYPE);
+    }
 
-	public interface SequenceLoadedHandler extends EventHandler {
-		void loaded(SequenceLoadedEvent event);
-	}
+    public interface SequenceLoadedHandler extends EventHandler {
+        void loaded(SequenceLoadedEvent event);
+    }
 
-	public static class SequenceLoadedEvent extends GwtEvent<SequenceLoadedHandler> {
+    public interface SequenceErrorHandler extends EventHandler {
+        void error(SequenceErrorEvent event);
+    }
 
-		public static final Type<SequenceLoadedHandler> TYPE = new Type<SequenceLoadedHandler>();
+    public static class SequenceLoadedEvent extends GwtEvent<SequenceLoadedHandler> {
 
-		public SequenceLoadedEvent(VImageSequenceTile imageSequenceTile) {
-			setSource(imageSequenceTile);
-		}
+        public static final Type<SequenceLoadedHandler> TYPE = new Type<SequenceLoadedHandler>();
 
-		@Override
-		public Type<SequenceLoadedHandler> getAssociatedType() {
-			return TYPE;
-		}
+        public SequenceLoadedEvent(VImageSequenceTile imageSequenceTile) {
+            setSource(imageSequenceTile);
+        }
 
-		@Override
-		protected void dispatch(SequenceLoadedHandler handler) {
-			handler.loaded(this);
-		}
-	}
+        @Override
+        public Type<SequenceLoadedHandler> getAssociatedType() {
+            return TYPE;
+        }
 
-	public interface SequenceErrorHandler extends EventHandler {
-		void error(SequenceErrorEvent event);
-	}
+        @Override
+        protected void dispatch(SequenceLoadedHandler handler) {
+            handler.loaded(this);
+        }
+    }
 
-	public static class SequenceErrorEvent extends GwtEvent<SequenceErrorHandler> {
+    public static class SequenceErrorEvent extends GwtEvent<SequenceErrorHandler> {
 
-		public static final Type<SequenceErrorHandler> TYPE = new Type<SequenceErrorHandler>();
+        public static final Type<SequenceErrorHandler> TYPE = new Type<SequenceErrorHandler>();
 
-		private int errorCount;
+        private int errorCount;
 
-		public SequenceErrorEvent(VImageSequenceTile imageSequenceTile, int errorCount) {
-			setSource(imageSequenceTile);
-		}
+        public SequenceErrorEvent(VImageSequenceTile imageSequenceTile, int errorCount) {
+            setSource(imageSequenceTile);
+        }
 
-		public int getErrorCount() {
-			return errorCount;
-		}
+        public int getErrorCount() {
+            return errorCount;
+        }
 
-		@Override
-		public Type<SequenceErrorHandler> getAssociatedType() {
-			return TYPE;
-		}
+        @Override
+        public Type<SequenceErrorHandler> getAssociatedType() {
+            return TYPE;
+        }
 
-		@Override
-		protected void dispatch(SequenceErrorHandler handler) {
-			handler.error(this);
-		}
-	}
-
-	public HandlerRegistration addSequenceLoadedHandler(SequenceLoadedHandler handler) {
-		return addHandler(handler, SequenceLoadedEvent.TYPE);
-	}
-
-	public HandlerRegistration addSequenceErrorHandler(SequenceErrorHandler handler) {
-		return addHandler(handler, SequenceErrorEvent.TYPE);
-	}
+        @Override
+        protected void dispatch(SequenceErrorHandler handler) {
+            handler.error(this);
+        }
+    }
 
 }

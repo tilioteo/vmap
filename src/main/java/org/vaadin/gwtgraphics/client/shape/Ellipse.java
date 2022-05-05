@@ -20,86 +20,79 @@ import org.vaadin.gwtgraphics.client.Shape;
 
 /**
  * Ellipse represents an ellipse.
- * 
+ *
  * @author Henri Kerola
- * 
  */
 public class Ellipse extends Shape {
 
-	/**
-	 * Creates a new Ellipse with the given position and radius properties.
-	 * 
-	 * @param x
-	 *            the x-coordinate position of the center of the ellipse in
-	 *            pixels
-	 * @param y
-	 *            the y-coordinate position of the center of the ellipse in
-	 *            pixels
-	 * @param radiusX
-	 *            the x-axis radius of the ellipse in pixels
-	 * @param radiusY
-	 *            the y-axis radius of the ellipse in pixels
-	 */
-	public Ellipse(int x, int y, int radiusX, int radiusY) {
-		setRadiusX(radiusX);
-		setRadiusY(radiusY);
-		setX(x);
-		setY(y);
-	}
+    /**
+     * Creates a new Ellipse with the given position and radius properties.
+     *
+     * @param x       the x-coordinate position of the center of the ellipse in
+     *                pixels
+     * @param y       the y-coordinate position of the center of the ellipse in
+     *                pixels
+     * @param radiusX the x-axis radius of the ellipse in pixels
+     * @param radiusY the y-axis radius of the ellipse in pixels
+     */
+    public Ellipse(int x, int y, int radiusX, int radiusY) {
+        setRadiusX(radiusX);
+        setRadiusY(radiusY);
+        setX(x);
+        setY(y);
+    }
 
-	@Override
-	public Class<? extends Drawing> getType() {
-		return Ellipse.class;
-	}
+    @Override
+    public Class<? extends Drawing> getType() {
+        return Ellipse.class;
+    }
 
-	/**
-	 * Returns the x-axis radius of the ellipse in pixels.
-	 * 
-	 * @return the x-axis radius of the ellipse in pixels
-	 */
-	public int getRadiusX() {
-		return getImpl().getEllipseRadiusX(getElement());
-	}
+    /**
+     * Returns the x-axis radius of the ellipse in pixels.
+     *
+     * @return the x-axis radius of the ellipse in pixels
+     */
+    public int getRadiusX() {
+        return getImpl().getEllipseRadiusX(getElement());
+    }
 
-	/**
-	 * Sets the x-axis radius of the ellipse in pixels.
-	 * 
-	 * @param radiusX
-	 *            the x-axis radius of the ellipse in pixels
-	 */
-	public void setRadiusX(int radiusX) {
-		getImpl().setEllipseRadiusX(getElement(), radiusX);
-	}
+    /**
+     * Sets the x-axis radius of the ellipse in pixels.
+     *
+     * @param radiusX the x-axis radius of the ellipse in pixels
+     */
+    public void setRadiusX(int radiusX) {
+        getImpl().setEllipseRadiusX(getElement(), radiusX);
+    }
 
-	/**
-	 * Returns the y-axis radius of the ellipse in pixels.
-	 * 
-	 * @return the y-axis radius of the ellipse in pixels
-	 */
-	public int getRadiusY() {
-		return getImpl().getEllipseRadiusY(getElement());
-	}
+    /**
+     * Returns the y-axis radius of the ellipse in pixels.
+     *
+     * @return the y-axis radius of the ellipse in pixels
+     */
+    public int getRadiusY() {
+        return getImpl().getEllipseRadiusY(getElement());
+    }
 
-	/**
-	 * Sets the y-axis radius of the ellipse in pixels.
-	 * 
-	 * @param radiusY
-	 *            the y-axis radius of the ellipse in pixels
-	 */
-	public void setRadiusY(int radiusY) {
-		getImpl().setEllipseRadiusY(getElement(), radiusY);
-	}
+    /**
+     * Sets the y-axis radius of the ellipse in pixels.
+     *
+     * @param radiusY the y-axis radius of the ellipse in pixels
+     */
+    public void setRadiusY(int radiusY) {
+        getImpl().setEllipseRadiusY(getElement(), radiusY);
+    }
 
-	@Override
-	public void setPropertyDouble(String property, double value) {
-		property = property.toLowerCase();
-		if ("radiusx".equals(property)) {
-			setRadiusX((int) value);
-		} else if ("radiusy".equals(property)) {
-			setRadiusY((int) value);
-		} else {
-			super.setPropertyDouble(property, value);
-		}
-	}
+    @Override
+    public void setPropertyDouble(String property, double value) {
+        property = property.toLowerCase();
+        if ("radiusx".equals(property)) {
+            setRadiusX((int) value);
+        } else if ("radiusy".equals(property)) {
+            setRadiusY((int) value);
+        } else {
+            super.setPropertyDouble(property, value);
+        }
+    }
 
 }

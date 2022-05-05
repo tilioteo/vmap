@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.vaadin.maps.shared.ui.feature;
 
 import org.vaadin.maps.shared.ui.ClickRpc;
@@ -8,11 +5,11 @@ import org.vaadin.maps.shared.ui.DoubleClickRpc;
 
 /**
  * @author Kamil Morong
- *
  */
 public interface FeatureServerRpc extends ClickRpc, DoubleClickRpc {
-	
-	public void mouseOver(long timestamp);
-	public void mouseOut(long timestamp);
+
+    void mouseOver(long timestamp);
+
+    void mouseOut(long timestamp);
 
 }

@@ -5,12 +5,14 @@
 	<groupId>org.vaadin.maps</groupId>
 	<artifactId>vmaps</artifactId>
 	<packaging>jar</packaging>
-	<version>0.9.16</version>
+	<version>0.9.17</version>
 	<name>Vaadin Maps Add-on</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<vaadin.version>7.6.6</vaadin.version>
+		<vaadin.version>7.6.8</vaadin.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 
 		<!-- ZIP Manifest fields -->
@@ -30,7 +32,7 @@
 	<licenses>
 		<license>
 			<name>Apache 2</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -60,8 +62,13 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>4.13.2</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.tilioteo</groupId>
+			<artifactId>commons</artifactId>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.tilioteo</groupId>

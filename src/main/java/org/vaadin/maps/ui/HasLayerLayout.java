@@ -1,16 +1,12 @@
-/**
- * 
- */
 package org.vaadin.maps.ui;
 
 /**
  * @author Kamil Morong
- *
  */
 public interface HasLayerLayout {
 
-	public LayerLayout getLayout();
+    LayerLayout getLayout();
 
-	public void setLayout(LayerLayout layout);
+    void setLayout(LayerLayout layout);
 
 }

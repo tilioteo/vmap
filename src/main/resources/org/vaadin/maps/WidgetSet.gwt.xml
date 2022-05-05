@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
 
-	<!-- WS Compiler: manually edited -->
+    <!-- WS Compiler: manually edited -->
 
-	<!-- Inherit DefaultWidgetSet -->
-	<inherits name="com.vaadin.DefaultWidgetSet" />
-	<inherits name="org.vaadin.gwtgraphics.GWTGraphics" />
-	<inherits name="com.google.gwt.core.Core" />
-	<inherits name="org.vaadin.gwt.i18n.I18n" />
-	<inherits name="com.gwtent.reflection.Reflection" />
+    <!-- Inherit DefaultWidgetSet -->
+    <inherits name="com.vaadin.DefaultWidgetSet"/>
+    <inherits name="org.vaadin.gwtgraphics.GWTGraphics"/>
+    <inherits name="com.google.gwt.core.Core"/>
+    <inherits name="org.vaadin.gwt.i18n.I18n"/>
+    <inherits name="com.gwtent.reflection.Reflection"/>
 
-	<source path="client" />
-	<source path="shared" />
+    <source path="client"/>
+    <source path="shared"/>
 
 </module>

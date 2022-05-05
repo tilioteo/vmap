@@ -18,39 +18,36 @@ package org.vaadin.gwtgraphics.client;
 /**
  * A class implementing this interface can be positioned by setting the x and y
  * coordinates.
- * 
+ *
  * @author Henri Kerola
- * 
  */
 public interface Positionable {
 
-	/**
-	 * Returns the x-coordinate position of the element.
-	 * 
-	 * @return the x-coordinate position in pixels
-	 */
-	public int getX();
+    /**
+     * Returns the x-coordinate position of the element.
+     *
+     * @return the x-coordinate position in pixels
+     */
+    int getX();
 
-	/**
-	 * Sets the x-coordinate position of the element.
-	 * 
-	 * @param x
-	 *            the new x-coordinate position in pixels
-	 */
-	public void setX(int x);
+    /**
+     * Sets the x-coordinate position of the element.
+     *
+     * @param x the new x-coordinate position in pixels
+     */
+    void setX(int x);
 
-	/**
-	 * Returns the y-coordinate position of the element.
-	 * 
-	 * @return the y-coordinate position in pixels
-	 */
-	public int getY();
+    /**
+     * Returns the y-coordinate position of the element.
+     *
+     * @return the y-coordinate position in pixels
+     */
+    int getY();
 
-	/**
-	 * Sets the y-coordinate position of the element.
-	 * 
-	 * @param y
-	 *            the new y-coordinate position in pixels
-	 */
-	public void setY(int y);
+    /**
+     * Sets the y-coordinate position of the element.
+     *
+     * @param y the new y-coordinate position in pixels
+     */
+    void setY(int y);
 }

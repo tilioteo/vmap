@@ -18,100 +18,93 @@ package org.vaadin.gwtgraphics.client.shape.path;
 /**
  * This class represents Path's moveTo step. The pen is lifted and moved to a
  * new location.
- * 
+ *
  * @author Henri Kerola
- * 
  */
 public class MoveTo extends ClosePath {
 
-	protected boolean relativeCoords;
+    protected boolean relativeCoords;
 
-	protected int x;
+    protected int x;
 
-	protected int y;
+    protected int y;
 
-	/**
-	 * Instantiates a new MoveTo step with given properties.
-	 * 
-	 * @param relativeCoords
-	 *            true if given coordinates are relative
-	 * @param x
-	 *            the x-coordinate in pixels
-	 * @param y
-	 *            the y-coordinate in pixels
-	 */
-	public MoveTo(boolean relativeCoords, int x, int y) {
-		this.relativeCoords = relativeCoords;
-		this.x = x;
-		this.y = y;
-	}
+    /**
+     * Instantiates a new MoveTo step with given properties.
+     *
+     * @param relativeCoords true if given coordinates are relative
+     * @param x              the x-coordinate in pixels
+     * @param y              the y-coordinate in pixels
+     */
+    public MoveTo(boolean relativeCoords, int x, int y) {
+        this.relativeCoords = relativeCoords;
+        this.x = x;
+        this.y = y;
+    }
 
-	/**
-	 * Returns true if coordinates relative. False means that coordinates are
-	 * absolute.
-	 * 
-	 * @return true of coordinates are relative
-	 */
-	public boolean isRelativeCoords() {
-		return relativeCoords;
-	}
+    /**
+     * Returns true if coordinates relative. False means that coordinates are
+     * absolute.
+     *
+     * @return true of coordinates are relative
+     */
+    public boolean isRelativeCoords() {
+        return relativeCoords;
+    }
 
-	/**
-	 * Returns the x-coordinate in pixels.
-	 * 
-	 * @return the x-coordinate in pixels
-	 */
-	public int getX() {
-		return x;
-	}
+    /**
+     * Sets if path step is relative. <code>True</code> means that coordinates
+     * are relative and <code>False</code> that are relative.
+     *
+     * @param relativeCoords coordinates are relative
+     */
+    public void setRelativeCoords(boolean relativeCoords) {
+        this.relativeCoords = relativeCoords;
+    }
 
-	/**
-	 * Returns the y-coordinate in pixels.
-	 * 
-	 * @return the y-coordinate in pixels
-	 */
-	public int getY() {
-		return y;
-	}
+    /**
+     * Returns the x-coordinate in pixels.
+     *
+     * @return the x-coordinate in pixels
+     */
+    public int getX() {
+        return x;
+    }
 
-	@Override
-	public String getSVGString() {
-		return isRelativeCoords() ? "m" : "M" + getX() + " " + getY();
-	}
+    /**
+     * Sets x component of step coordinate
+     *
+     * @param x x coordinate
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
 
-	/**
-	 * Sets if path step is relative. <code>True</code> means that coordinates
-	 * are relative and <code>False</code> that are relative.
-	 * 
-	 * @param relativeCoords
-	 *            coordinates are relative
-	 */
-	public void setRelativeCoords(boolean relativeCoords) {
-		this.relativeCoords = relativeCoords;
-	}
+    /**
+     * Returns the y-coordinate in pixels.
+     *
+     * @return the y-coordinate in pixels
+     */
+    public int getY() {
+        return y;
+    }
 
-	/**
-	 * Sets x component of step coordinate
-	 * 
-	 * @param x
-	 *            x coordinate
-	 */
-	public void setX(int x) {
-		this.x = x;
-	}
+    /**
+     * Sets y component of step coordinate
+     *
+     * @param y y coordinate
+     */
+    public void setY(int y) {
+        this.y = y;
+    }
 
-	/**
-	 * Sets y component of step coordinate
-	 * 
-	 * @param y
-	 *            y coordinate
-	 */
-	public void setY(int y) {
-		this.y = y;
-	}
+    @Override
+    public String getSVGString() {
+        return isRelativeCoords() ? "m" : "M" + getX() + " " + getY();
+    }
 
-	public void set(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
+    public void set(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.vaadin.maps.client.ui;
 
 /**
@@ -9,6 +6,6 @@ package org.vaadin.maps.client.ui;
  */
 public interface HasLayerLayout {
 
-	public void setLayout(VLayerLayout layout);
+	void setLayout(VLayerLayout layout);
 
 }

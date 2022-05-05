@@ -1,188 +1,181 @@
-/**
- * 
- */
 package org.vaadin.maps.client.ui;
-
-import java.util.Iterator;
-
-import org.vaadin.gwtgraphics.client.Drawing;
-import org.vaadin.gwtgraphics.client.DrawingArea;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.shape.Path;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
+import org.vaadin.gwtgraphics.client.Drawing;
+import org.vaadin.gwtgraphics.client.DrawingArea;
+import org.vaadin.gwtgraphics.client.Group;
+import org.vaadin.gwtgraphics.client.shape.Path;
+
+import java.util.Iterator;
 
 /**
  * @author Kamil Morong
- *
  */
 public class VVectorFeatureContainer extends DrawingArea implements CanShift {
 
-	public static final String CLASSNAME = "v-vectorfeaturecontainer";
+    public static final String CLASSNAME = "v-vectorfeaturecontainer";
+    private final Group container = new Group();
+    private final Group hiddenContainer = new Group();
+    private Element drawingElement = null;
+    private Path ieTridentPath = null;
 
-	private Element drawingElement = null;
+    private int shiftX = 0;
+    private int shiftY = 0;
 
-	private Group container = new Group();
-	private Group hiddenContainer = new Group();
-	private Path ieTridentPath = null;
+    private CanShift canShiftSlave = null;
 
-	private int shiftX = 0;
-	private int shiftY = 0;
+    public VVectorFeatureContainer() {
+        super(1, 1);
 
-	private CanShift canShiftSlave = null;
+        setStyleName(CLASSNAME);
 
-	public VVectorFeatureContainer() {
-		super(1, 1);
+        addIETridentHack();
 
-		setStyleName(CLASSNAME);
+        super.add(container);
 
-		addIETridentHack();
+        hiddenContainer.setOpacity(0);
+        super.add(hiddenContainer);
+    }
 
-		super.add(container);
+    @Override
+    public Class<? extends Drawing> getType() {
+        return null;
+    }
 
-		hiddenContainer.setOpacity(0);
-		super.add(hiddenContainer);
-	}
+    private Element ensureDrawingElement() {
+        if (null == drawingElement) {
+            drawingElement = getImpl().createElement(super.getType());
+            super.getElement().appendChild(drawingElement);
+        }
 
-	@Override
-	public Class<? extends Drawing> getType() {
-		return null;
-	}
+        return drawingElement;
+    }
 
-	private Element ensureDrawingElement() {
-		if (null == drawingElement) {
-			drawingElement = getImpl().createElement(super.getType());
-			super.getElement().appendChild(drawingElement);
-		}
+    @Override
+    public com.google.gwt.user.client.Element getElement() {
+        return DOM.asOld(ensureDrawingElement());
+    }
 
-		return drawingElement;
-	}
+    @Override
+    public Drawing addDrawing(Drawing drawing) {
+        if (drawing != null) {
+            add(drawing.asWidget());
 
-	@Override
-	public com.google.gwt.user.client.Element getElement() {
-		return DOM.asOld(ensureDrawingElement());
-	}
+            return drawing;
+        }
 
-	@Override
-	public Drawing addDrawing(Drawing drawing) {
-		if (drawing != null) {
-			add(drawing.asWidget());
+        return null;
+    }
 
-			return drawing;
-		}
+    @Override
+    public void add(Widget child) {
+        if (child != null) {
+            if (child instanceof VVectorFeature) {
+                VVectorFeature feature = (VVectorFeature) child;
+                feature.setShift(shiftX, shiftY);
 
-		return null;
-	}
+                if (feature.isHidden()) {
+                    hiddenContainer.add(child);
+                } else {
+                    container.add(feature);
+                }
+            } else if (child instanceof Drawing) {
+                container.add(child);
+            }
+        }
+    }
 
-	@Override
-	public void add(Widget child) {
-		if (child != null) {
-			if (child instanceof VVectorFeature) {
-				VVectorFeature feature = (VVectorFeature) child;
-				feature.setShift(shiftX, shiftY);
-	
-				if (feature.isHidden()) {
-					hiddenContainer.add(child);
-				} else {
-					container.add(feature);
-				}
-			} else if (child instanceof Drawing) {
-				container.add(child);
-			}
-		}
-	}
+    @Override
+    public Drawing removeDrawing(Drawing drawing) {
+        if (drawing != null) {
+            return remove(drawing.asWidget()) ? drawing : null;
+        }
 
-	@Override
-	public Drawing removeDrawing(Drawing drawing) {
-		if (drawing != null) {
-			return remove(drawing.asWidget()) ? drawing : null;
-		}
+        return null;
+    }
 
-		return null;
-	}
+    @Override
+    public boolean remove(Widget child) {
+        if (child != null) {
+            if (child instanceof VVectorFeature) {
+                Widget parent = child.getParent();
 
-	@Override
-	public boolean remove(Widget child) {
-		if (child != null) {
-			if (child instanceof VVectorFeature) {
-				Widget parent = child.getParent();
+                if (parent == container) {
+                    return container.remove(child);
+                } else if (parent == hiddenContainer) {
+                    return hiddenContainer.remove(child);
+                }
+            } else if (child instanceof Drawing) {
+                return container.remove(child);
+            }
+        }
 
-				if (parent == container) {
-					return container.remove(child);
-				} else if (parent == hiddenContainer) {
-					return hiddenContainer.remove(child);
-				}
-			} else if (child instanceof Drawing) {
-				return container.remove(child);
-			}
-		}
+        return false;
+    }
 
-		return false;
-	}
+    private void addIETridentHack() {
+        String userAgent = Window.Navigator.getUserAgent().toLowerCase();
+        if (userAgent.contains("trident")) {
+            ieTridentPath = new Path(-10, -10);
+            ieTridentPath.lineRelativelyTo(10000, 0);
+            ieTridentPath.lineRelativelyTo(0, 10000);
+            ieTridentPath.lineRelativelyTo(-10000, 0);
+            ieTridentPath.close();
+            ieTridentPath.setOpacity(0.0);
+            ieTridentPath.setFillOpacity(0.0);
+            ieTridentPath.setStrokeOpacity(0.0);
+            ieTridentPath.setStrokeWidth(0);
 
-	private void addIETridentHack() {
-		String userAgent = Window.Navigator.getUserAgent().toLowerCase();
-		if (userAgent.contains("trident")) {
-			ieTridentPath = new Path(-10, -10);
-			ieTridentPath.lineRelativelyTo(10000, 0);
-			ieTridentPath.lineRelativelyTo(0, 10000);
-			ieTridentPath.lineRelativelyTo(-10000, 0);
-			ieTridentPath.close();
-			ieTridentPath.setOpacity(0.0);
-			ieTridentPath.setFillOpacity(0.0);
-			ieTridentPath.setStrokeOpacity(0.0);
-			ieTridentPath.setStrokeWidth(0);
+            super.add(ieTridentPath);
+        }
+    }
 
-			super.add(ieTridentPath);
-		}
-	}
+    @Override
+    public int getShiftX() {
+        return shiftX;
+    }
 
-	@Override
-	public int getShiftX() {
-		return shiftX;
-	}
+    @Override
+    public int getShiftY() {
+        return shiftY;
+    }
 
-	@Override
-	public int getShiftY() {
-		return shiftY;
-	}
+    @Override
+    public void setShift(int x, int y) {
+        shiftX = x;
+        shiftY = y;
 
-	@Override
-	public void setShift(int x, int y) {
-		shiftX = x;
-		shiftY = y;
+        setChildrenShift();
+        if (canShiftSlave != null) {
+            canShiftSlave.setShift(x, y);
+        }
+    }
 
-		setChildrenShift();
-		if (canShiftSlave != null) {
-			canShiftSlave.setShift(x, y);
-		}
-	}
+    private void setChildrenShift() {
+        Iterator<Drawing> iterator;
+        for (iterator = container.drawingIterator(); iterator.hasNext(); ) {
+            Drawing drawing = iterator.next();
+            if (drawing instanceof CanShift) {
+                ((CanShift) drawing).setShift(shiftX, shiftY);
+            }
+        }
 
-	private void setChildrenShift() {
-		Iterator<Drawing> iterator;
-		for (iterator = container.drawingIterator(); iterator.hasNext();) {
-			Drawing drawing = iterator.next();
-			if (drawing instanceof CanShift) {
-				((CanShift) drawing).setShift(shiftX, shiftY);
-			}
-		}
+        for (iterator = hiddenContainer.drawingIterator(); iterator.hasNext(); ) {
+            Drawing drawing = iterator.next();
+            if (drawing instanceof CanShift) {
+                ((CanShift) drawing).setShift(shiftX, shiftY);
+            }
+        }
+    }
 
-		for (iterator = hiddenContainer.drawingIterator(); iterator.hasNext();) {
-			Drawing drawing = iterator.next();
-			if (drawing instanceof CanShift) {
-				((CanShift) drawing).setShift(shiftX, shiftY);
-			}
-		}
-	}
+    public CanShift getCanShiftSlave() {
+        return canShiftSlave;
+    }
 
-	public CanShift getCanShiftSlave() {
-		return canShiftSlave;
-	}
-
-	public void setCanShiftSlave(CanShift canShiftSlave) {
-		this.canShiftSlave = canShiftSlave;
-	}
+    public void setCanShiftSlave(CanShift canShiftSlave) {
+        this.canShiftSlave = canShiftSlave;
+    }
 }

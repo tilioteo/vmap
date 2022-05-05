@@ -18,125 +18,124 @@ package org.vaadin.gwt.i18n.client;
 
 public class DecimalFormatSymbols {
 
-	private static boolean nullEquals(Object obj1, Object obj2) {
-		return obj1 == null ? obj2 == null : obj1.equals(obj2);
-	}
+    private static final char decimalSeparator = '.';
+    private static final char digit = '#';
+    private static final String exponentSeparator = "E";
+    private static final char groupingSeparator = ',';
+    private static final String infinity = "\u221E";
+    private static final char minusSign = '-';
+    private static final String nan = "NaN";
+    private static final char patternSeparator = ';';
+    private static final char percent = '%';
+    private static final char perMill = '\u2030';
+    private static final char zeroDigit = '0';
 
-	private static int nullHash(Object obj) {
-		return obj == null ? 0 : obj.hashCode();
-	}
+    public DecimalFormatSymbols() {
+    }
 
-	private char decimalSeparator = '.';
-	private char digit = '#';
-	private String exponentSeparator = "E";
-	private char groupingSeparator = ',';
-	private String infinity = "\u221E";
-	private char minusSign = '-';
-	private String nan = "NaN";
-	private char patternSeparator = ';';
-	private char percent = '%';
-	private char perMill = '\u2030';
+    private static boolean nullEquals(Object obj1, Object obj2) {
+        return obj1 == null ? obj2 == null : obj1.equals(obj2);
+    }
 
-	private char zeroDigit = '0';
+    private static int nullHash(Object obj) {
+        return obj == null ? 0 : obj.hashCode();
+    }
 
-	public DecimalFormatSymbols() {
-	}
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof DecimalFormatSymbols)) {
+            return false;
+        }
+        DecimalFormatSymbols dfs = (DecimalFormatSymbols) other;
+        return decimalSeparator == dfs.decimalSeparator && digit == dfs.digit
+                && nullEquals(exponentSeparator, dfs.exponentSeparator) && groupingSeparator == dfs.groupingSeparator
+                && nullEquals(infinity, dfs.infinity) && minusSign == dfs.minusSign && nullEquals(nan, dfs.nan)
+                && patternSeparator == dfs.patternSeparator && percent == dfs.percent && perMill == dfs.perMill
+                && zeroDigit == dfs.zeroDigit;
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		if (!(other instanceof DecimalFormatSymbols)) {
-			return false;
-		}
-		DecimalFormatSymbols dfs = (DecimalFormatSymbols) other;
-		return decimalSeparator == dfs.decimalSeparator && digit == dfs.digit
-				&& nullEquals(exponentSeparator, dfs.exponentSeparator) && groupingSeparator == dfs.groupingSeparator
-				&& nullEquals(infinity, dfs.infinity) && minusSign == dfs.minusSign && nullEquals(nan, dfs.nan)
-				&& patternSeparator == dfs.patternSeparator && percent == dfs.percent && perMill == dfs.perMill
-				&& zeroDigit == dfs.zeroDigit;
-	}
+    /**
+     * @return the decimalSeparator
+     */
+    public char getDecimalSeparator() {
+        return decimalSeparator;
+    }
 
-	/**
-	 * @return the decimalSeparator
-	 */
-	public char getDecimalSeparator() {
-		return decimalSeparator;
-	}
+    /**
+     * @return the digit
+     */
+    public char getDigit() {
+        return digit;
+    }
 
-	/**
-	 * @return the digit
-	 */
-	public char getDigit() {
-		return digit;
-	}
+    /**
+     * @return the exponentSeparator
+     */
+    public String getExponentSeparator() {
+        return exponentSeparator;
+    }
 
-	/**
-	 * @return the exponentSeparator
-	 */
-	public String getExponentSeparator() {
-		return exponentSeparator;
-	}
+    /**
+     * @return the groupingSeparator
+     */
+    public char getGroupingSeparator() {
+        return groupingSeparator;
+    }
 
-	/**
-	 * @return the groupingSeparator
-	 */
-	public char getGroupingSeparator() {
-		return groupingSeparator;
-	}
+    /**
+     * @return the infinity
+     */
+    public String getInfinity() {
+        return infinity;
+    }
 
-	/**
-	 * @return the infinity
-	 */
-	public String getInfinity() {
-		return infinity;
-	}
+    /**
+     * @return the minusSign
+     */
+    public char getMinusSign() {
+        return minusSign;
+    }
 
-	/**
-	 * @return the minusSign
-	 */
-	public char getMinusSign() {
-		return minusSign;
-	}
+    /**
+     * @return the naN
+     */
+    public String getNaN() {
+        return nan;
+    }
 
-	/**
-	 * @return the naN
-	 */
-	public String getNaN() {
-		return nan;
-	}
+    /**
+     * @return the patternSeparator
+     */
+    public char getPatternSeparator() {
+        return patternSeparator;
+    }
 
-	/**
-	 * @return the patternSeparator
-	 */
-	public char getPatternSeparator() {
-		return patternSeparator;
-	}
+    /**
+     * @return the percent
+     */
+    public char getPercent() {
+        return percent;
+    }
 
-	/**
-	 * @return the percent
-	 */
-	public char getPercent() {
-		return percent;
-	}
+    /**
+     * @return the perMill
+     */
+    public char getPerMill() {
+        return perMill;
+    }
 
-	/**
-	 * @return the perMill
-	 */
-	public char getPerMill() {
-		return perMill;
-	}
+    /**
+     * @return the zeroDigit
+     */
+    public char getZeroDigit() {
+        return zeroDigit;
+    }
 
-	/**
-	 * @return the zeroDigit
-	 */
-	public char getZeroDigit() {
-		return zeroDigit;
-	}
-
-	@Override
-	public int hashCode() {
-		return decimalSeparator * 7 + digit * 11 + nullHash(exponentSeparator) * 13 + groupingSeparator * 17
-				+ nullHash(infinity) * 19 + minusSign * 23 + nullHash(nan) * 31 + patternSeparator * 37 + percent * 41
-				+ perMill * 43 + zeroDigit * 53;
-	}
+    @Override
+    public int hashCode() {
+        return decimalSeparator * 7 + digit * 11 + nullHash(exponentSeparator) * 13 + groupingSeparator * 17
+                + nullHash(infinity) * 19 + minusSign * 23 + nullHash(nan) * 31 + patternSeparator * 37 + percent * 41
+                + perMill * 43 + zeroDigit * 53;
+    }
 
 }

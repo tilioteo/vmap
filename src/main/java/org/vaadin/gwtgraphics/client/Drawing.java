@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.vaadin.gwtgraphics.client;
 
 import com.google.gwt.event.dom.client.HasAllMouseHandlers;
@@ -10,10 +7,9 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 /**
  * @author Kamil Morong
- *
  */
 public interface Drawing extends IsWidget, HasClickHandlers, HasAllMouseHandlers, HasDoubleClickHandlers {
 
-	public Class<? extends Drawing> getType();
+    Class<? extends Drawing> getType();
 
 }

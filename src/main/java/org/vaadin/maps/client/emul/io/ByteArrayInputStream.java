@@ -17,16 +17,16 @@ package org.vaadin.maps.client.emul.io;
 
 public class ByteArrayInputStream extends InputStream {
 
-	byte[] data;
-	int pos = 0;
+    byte[] data;
+    int pos = 0;
 
-	public ByteArrayInputStream(byte[] data) {
-		this.data = data;
-	}
+    public ByteArrayInputStream(byte[] data) {
+        this.data = data;
+    }
 
-	@Override
-	public int read() {
-		return pos < data.length ? data[pos++] : -1;
-	}
+    @Override
+    public int read() {
+        return pos < data.length ? data[pos++] : -1;
+    }
 
 }
