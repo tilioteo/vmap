@@ -243,6 +243,10 @@ public class ImageSequenceTile extends AbstractTile {
         void click(ClickEvent event);
     }
 
+    public interface HasIndex {
+        int getIndex();
+    }
+
     /**
      * Load event. This event is thrown, when the image sequence is loaded.
      */
@@ -297,7 +301,7 @@ public class ImageSequenceTile extends AbstractTile {
     /**
      * Change event. This event is thrown, when the image has changed.
      */
-    public static class ChangeEvent extends TimekeepingComponentEvent {
+    public static class ChangeEvent extends TimekeepingComponentEvent implements HasIndex {
 
         private final int index;
 
@@ -320,13 +324,14 @@ public class ImageSequenceTile extends AbstractTile {
             return (ImageSequenceTile) getSource();
         }
 
+        @Override
         public int getIndex() {
             return index;
         }
 
     }
 
-    public static class ClickEvent extends MouseEvents.ClickEvent {
+    public static class ClickEvent extends MouseEvents.ClickEvent implements HasIndex {
 
         private final int index;
 
@@ -344,6 +349,7 @@ public class ImageSequenceTile extends AbstractTile {
             return (ImageSequenceTile) getSource();
         }
 
+        @Override
         public int getIndex() {
             return index;
         }
